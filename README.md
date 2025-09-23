@@ -1,4 +1,3 @@
 # Credit-System
 
-
-I am working nopw
+Now it self I am working on this
