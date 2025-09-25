@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-red: #cc171d;
+      --dark-navy: #162336;
+      --medium-teal: #325765;
+      --light-teal: #4d818c;
+      --white: #ffffff;
+      --light-gray: #f8f9fa;
+      --border-gray: #e9ecef;
+      --text-dark: #2c3e50;
+      --text-light: #6c757d;
+      --success: #28a745;
+      --warning: #ffc107;
+      --danger: #dc3545;
+    }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, var(--light-teal) 0%, var(--medium-teal) 100%);
+      min-height: 100vh;
+      padding: 20px;
+      color: var(--text-dark);
+    }
+
+    .container {
+      background: var(--white);
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(22, 35, 54, 0.1);
+      overflow: hidden;
+    }
+
+    .header {
+      background: var(--dark-navy);
+      color: var(--white);
+      padding: 30px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .header p {
+      opacity: 0.9;
+      font-size: 16px;
+    }
+
+    .content {
+      padding: 30px;
+    }
+
+    .message {
+      margin-bottom: 20px;
+    }
+
+    .alert {
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .alert-success {
+      background: rgba(40, 167, 69, 0.1);
+      color: var(--success);
+      border: 1px solid rgba(40, 167, 69, 0.2);
+    }
+
+    .alert-error {
+      background: rgba(220, 53, 69, 0.1);
+      color: var(--danger);
+      border: 1px solid rgba(220, 53, 69, 0.2);
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-light);
+    }
+
+    .loading i {
+      font-size: 24px;
+      margin-bottom: 12px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .add-section {
+      background: var(--light-gray);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 30px;
+      border: 2px dashed var(--border-gray);
+      transition: all 0.3s ease;
+    }
+
+    .add-section:hover {
+      border-color: var(--light-teal);
+      background: rgba(77, 129, 140, 0.05);
+    }
+
+    .add-section h3 {
+      color: var(--medium-teal);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      color: var(--text-dark);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid var(--border-gray);
+      border-radius: 8px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      background: var(--white);
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--light-teal);
+      box-shadow: 0 0 0 3px rgba(77, 129, 140, 0.1);
+    }
+
+    .btn {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      position: relative;
+    }
+
+    .btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-primary {
+      background: var(--light-teal);
+      color: var(--white);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--medium-teal);
+    }
+
+    .btn-secondary {
+      background: var(--text-light);
+      color: var(--white);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: var(--text-dark);
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: var(--white);
+    }
+
+    .btn-danger:hover:not(:disabled) {
+      background: #c82333;
+    }
+
+    .btn-sm {
+      padding: 8px 12px;
+      font-size: 12px;
+    }
+
+    .btn-loading::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      margin: auto;
+      border: 2px solid transparent;
+      border-top-color: currentColor;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    .settings-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .setting-card {
+      background: var(--white);
+      border: 2px solid var(--border-gray);
+      border-radius: 12px;
+      padding: 20px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .setting-card:hover {
+      border-color: var(--light-teal);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(77, 129, 140, 0.15);
+    }
+
+    .setting-value {
+      color: var(--text-dark);
+      font-size: 16px;
+      line-height: 1.5;
+      word-break: break-word;
+      background: var(--light-gray);
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      min-height: 50px;
+      display: flex;
+      align-items: center;
+    }
+
+    .setting-value.empty {
+      color: var(--text-light);
+      font-style: italic;
+    }
+
+    .setting-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .edit-form {
+      display: none;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-gray);
+    }
+
+    .edit-form.active {
+      display: block;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      margin-top: 16px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-light);
+    }
+
+    .empty-state i {
+      font-size: 48px;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 30px;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+
+    .modal-overlay.active .modal {
+      transform: scale(1);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .modal-header i {
+      color: var(--danger);
+      font-size: 24px;
+    }
+
+    .modal-header h3 {
+      color: var(--text-dark);
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .modal-body {
+      color: var(--text-dark);
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        margin: 10px;
+        border-radius: 12px;
+      }
+      
+      .header {
+        padding: 20px;
+      }
+      
+      .header h1 {
+        font-size: 24px;
+      }
+      
+      .content {
+        padding: 20px;
+      }
+      
+      .setting-actions {
+        justify-content: flex-start;
+      }
+      
+      .form-actions {
+        flex-direction: column;
+      }
+
+      .modal-actions {
+        flex-direction: column;
+      }
+    }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 260px;
+            background: var(--dark-navy);
+            color: var(--white);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        .sidebar.collapsed {
+            width: 70px;
+        }
+
+        .sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            font-size: 24px;
+            color: var(--light-teal);
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .sidebar.collapsed .logo-text {
+            display: none;
+        }
+
+        .toggle-btn {
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 18px;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar.collapsed .toggle-btn {
+            transform: rotate(180deg);
+        }
+
+        .sidebar-menu {
+            padding: 16px 0;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--white);
+        }
+
+        .menu-item.active {
+            background: rgba(77, 129, 140, 0.2);
+            color: var(--white);
+            border-left-color: var(--light-teal);
+        }
+
+        .menu-icon {
+            font-size: 18px;
+            width: 24px;
+            margin-right: 12px;
+        }
+
+        .menu-text {
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .sidebar.collapsed .menu-text {
+            display: none;
+        }
+
+        .sidebar.collapsed .menu-item {
+            justify-content: center;
+            padding: 16px 0;
+        }
+
+        .sidebar.collapsed .menu-icon {
+            margin-right: 0;
+            font-size: 20px;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            transition: margin-left 0.3s ease;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-content.expanded {
+            margin-left: 70px;
+        }
+
+        .mobile-toggle {
+            display: none;
+            background: var(--white);
+            border: 2px solid var(--border-gray);
+            border-radius: 50%;
+            font-size: 20px;
+            color: var(--text-dark);
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .mobile-toggle:hover {
+            background: var(--light-teal);
+            color: var(--white);
+            border-color: var(--medium-teal);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .content-area {
+            flex: 1;
+            padding: 24px;
+            background: var(--light-gray);
+        }
+
+        .content-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 260px;
+            }
+
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            .overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+
+            .overlay.active {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+  </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-chart-line logo-icon"></i>
+                <span class="logo-text">Credit System</span>
+            </div>
+            <button class="toggle-btn" id="toggleSidebar">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+        </div>
+        
+        <nav class="sidebar-menu">
+            <a href="<?= baseUrl ?>?page=dashboard" class="menu-item" target="_top">
+                <i class="fas fa-home menu-icon"></i>
+                <span class="menu-text">Dashboard</span>
+            </a>
+            <a href="<?= baseUrl ?>?page=credit-management" class="menu-item" target="_top">
+                <i class="fas fa-credit-card menu-icon"></i>
+                <span class="menu-text">Credit Management</span>
+            </a>
+            <a href="<?= baseUrl ?>?page=device-tab" class="menu-item" target="_top">
+                <i class="fas fa-laptop menu-icon"></i>
+                <span class="menu-text">Devices</span>
+            </a>
+            <a href="<?= baseUrl ?>?page=clients-tab" class="menu-item" target="_top">
+                <i class="fas fa-users menu-icon"></i>
+                <span class="menu-text">Clients</span>
+            </a>
+            <a href="<?= baseUrl ?>?page=settings-tab" class="menu-item active" target="_top">
+                <i class="fas fa-cog menu-icon"></i>
+                <span class="menu-text">Settings</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Overlay for mobile -->
+    <div class="overlay" id="overlay"></div>
+
+    <button class="mobile-toggle" id="mobileToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <div class="container">
+          <div class="header">
+            <h1>
+              <i class="fas fa-cogs"></i>
+              Settings Tab
+            </h1>
+          </div>
+
+          <div class="content">
+            <div id="message"></div>
+            
+            <div id="loading" class="loading">
+              <div>
+                <i class="fas fa-spinner"></i>
+                <div>Loading settings...</div>
+              </div>
+            </div>
+
+            <div id="settingscontent" style="display: none;">
+              <div class="add-section">
+                <h3>
+                  <i class="fas fa-plus-circle"></i>
+                  Add New Business Model
+                </h3>
+                <div class="form-group">
+                  <label for="newSettingValue">Business Model</label>
+                  <input type="text" id="newSettingValue" class="form-control" placeholder="Enter the new business model">
+                </div>
+                <button id="addBtn" class="btn btn-primary" onclick="addNewSetting()">
+                  <i class="fas fa-plus"></i>
+                  Add Setting
+                </button>
+              </div>
+
+              <div id="settingsList" class="settings-list"></div>
+
+              <div id="emptyState" class="empty-state" style="display: none;">
+                <i class="fas fa-cog"></i>
+                <h3>No Settings Found</h3>
+                <p>Add your first setting using the form above</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="deleteModal" class="modal-overlay">
+          <div class="modal">
+            <div class="modal-header">
+              <i class="fas fa-exclamation-triangle"></i>
+              <h3>Confirm Delete</h3>
+            </div>
+            <div class="modal-body">
+              <p>Are you sure you want to delete this business model? This action cannot be undone.</p>
+            </div>
+            <div class="modal-actions">
+              <button id="confirmDeleteBtn" class="btn btn-danger btn-sm">
+                <i class="fas fa-trash"></i>
+                Delete
+              </button>
+              <button class="btn btn-secondary btn-sm" onclick="closeDeleteModal()">
+                <i class="fas fa-times"></i>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+    </main>
+  <script>
+        let settings = [];
+        let deleteSettingId = null;
+
+    function showMessage(message, type = 'error') {
+      const messageDiv = document.getElementById('message');
+      const alertClass = type === 'success' ? 'alert-success' : 'alert-error';
+      const icon = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-triangle';
+      
+      messageDiv.innerHTML = `
+        <div class="alert ${alertClass}">
+          <i class="${icon}"></i>
+          ${message}
+        </div>
+      `;
+      
+      setTimeout(() => {
+        messageDiv.innerHTML = '';
+      }, 5000);
+    }
+
+    function setButtonLoading(buttonId, loading = true) {
+      const btn = document.getElementById(buttonId);
+      if (!btn) return;
+      
+      if (loading) {
+        btn.disabled = true;
+        btn.classList.add('btn-loading');
+        const icon = btn.querySelector('i');
+        if (icon) icon.style.opacity = '0';
+      } else {
+        btn.disabled = false;
+        btn.classList.remove('btn-loading');
+        const icon = btn.querySelector('i');
+        if (icon) icon.style.opacity = '1';
+      }
+    }
+
+    function disableAllButtons(disable = true) {
+      const buttons = document.querySelectorAll('.btn');
+      buttons.forEach(btn => {
+        btn.disabled = disable;
+      });
+    }
+
+    function loadSettings() {
+      document.getElementById('loading').style.display = 'block';
+      document.getElementById('settingscontent').style.display = 'none';
+      
+      google.script.run
+        .withSuccessHandler(onSettingsLoaded)
+        .withFailureHandler(onError)
+        .getAllSettings();
+    }
+
+    function onSettingsLoaded(result) {
+      document.getElementById('loading').style.display = 'none';
+      
+      if (result.success) {
+        settings = result.settings;
+        renderSettings();
+        document.getElementById('settingscontent').style.display = 'block';
+      } else {
+        showMessage('Error loading settings: ' + result.error);
+      }
+    }
+
+    function onError(error) {
+      document.getElementById('loading').style.display = 'none';
+      disableAllButtons(false);
+      showMessage('Error: ' + error.toString());
+    }
+
+    function renderSettings() {
+      const settingsList = document.getElementById('settingsList');
+      const emptyState = document.getElementById('emptyState');
+      
+      if (settings.length === 0) {
+        settingsList.innerHTML = '';
+        emptyState.style.display = 'block';
+        return;
+      }
+      
+      emptyState.style.display = 'none';
+      
+      settingsList.innerHTML = settings.map(setting => `
+        <div class="setting-card" id="setting-${setting.id}">
+          <div class="setting-value ${!setting.value ? 'empty' : ''}">
+            ${setting.value ? escapeHtml(setting.value) : 'No value set'}
+          </div>
+          <div class="setting-actions">
+            <button id="editBtn-${setting.id}" class="btn btn-primary btn-sm" onclick="startEdit(${setting.id})">
+              <i class="fas fa-edit"></i>
+              Edit
+            </button>
+            <button id="deleteBtn-${setting.id}" class="btn btn-danger btn-sm" onclick="showDeleteModal(${setting.id})">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+          <div id="editForm-${setting.id}" class="edit-form">
+            <div class="form-group">
+              <label>Business Model</label>
+              <input type="text" id="editValue-${setting.id}" class="form-control" value="${escapeHtml(setting.value)}">
+            </div>
+            <div class="form-actions">
+              <button id="saveBtn-${setting.id}" class="btn btn-primary btn-sm" onclick="saveEdit(${setting.id})">
+                <i class="fas fa-save"></i>
+                Save
+              </button>
+              <button class="btn btn-secondary btn-sm" onclick="cancelEdit(${setting.id})">
+                <i class="fas fa-times"></i>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function addNewSetting() {
+      const value = document.getElementById('newSettingValue').value.trim();
+      
+      if (!value) {
+        showMessage('Please enter a setting value');
+        return;
+      }
+      
+      setButtonLoading('addBtn', true);
+      disableAllButtons(true);
+      
+      google.script.run
+        .withSuccessHandler(onAddSuccess)
+        .withFailureHandler(onAddError)
+        .addSetting(value);
+    }
+
+    function onAddSuccess(result) {
+      setButtonLoading('addBtn', false);
+      disableAllButtons(false);
+      
+      if (result.success) {
+        showMessage(result.message, 'success');
+        document.getElementById('newSettingValue').value = '';
+        loadSettings();
+      } else {
+        showMessage('Error adding setting: ' + result.error);
+      }
+    }
+
+    function onAddError(error) {
+      setButtonLoading('addBtn', false);
+      disableAllButtons(false);
+      showMessage('Error: ' + error.toString());
+    }
+
+    function startEdit(id) {
+      const editForm = document.getElementById(`editForm-${id}`);
+      editForm.classList.add('active');
+    }
+
+    function cancelEdit(id) {
+      const editForm = document.getElementById(`editForm-${id}`);
+      editForm.classList.remove('active');
+      
+      
+      const setting = settings.find(s => s.id === id);
+      if (setting) {
+        document.getElementById(`editValue-${id}`).value = setting.value;
+      }
+    }
+
+    function saveEdit(id) {
+      const value = document.getElementById(`editValue-${id}`).value.trim();
+      
+      if (!value) {
+        showMessage('Please enter a setting value');
+        return;
+      }
+      
+      setButtonLoading(`saveBtn-${id}`, true);
+      disableAllButtons(true);
+      
+      google.script.run
+        .withSuccessHandler(onUpdateSuccess)
+        .withFailureHandler(onUpdateError)
+        .updateSetting(id, value);
+    }
+
+    function onUpdateSuccess(result) {
+      disableAllButtons(false);
+      
+      if (result.success) {
+        showMessage(result.message, 'success');
+        loadSettings();
+      } else {
+        showMessage('Error updating setting: ' + result.error);
+      }
+    }
+
+    function onUpdateError(error) {
+      disableAllButtons(false);
+      showMessage('Error: ' + error.toString());
+    }
+
+    function showDeleteModal(id) {
+      deleteSettingId = id;
+      const modal = document.getElementById('deleteModal');
+      modal.classList.add('active');
+    }
+
+    function closeDeleteModal() {
+      const modal = document.getElementById('deleteModal');
+      modal.classList.remove('active');
+      deleteSettingId = null;
+    }
+
+    function confirmDelete() {
+      if (!deleteSettingId) return;
+      
+      setButtonLoading('confirmDeleteBtn', true);
+      disableAllButtons(true);
+      
+      google.script.run
+        .withSuccessHandler(onDeleteSuccess)
+        .withFailureHandler(onDeleteError)
+        .deleteSetting(deleteSettingId);
+    }
+
+    function onDeleteSuccess(result) {
+      setButtonLoading('confirmDeleteBtn', false);
+      disableAllButtons(false);
+      closeDeleteModal();
+      
+      if (result.success) {
+        showMessage(result.message, 'success');
+        loadSettings();
+      } else {
+        showMessage('Error deleting setting: ' + result.error);
+      }
+    }
+
+    function onDeleteError(error) {
+      setButtonLoading('confirmDeleteBtn', false);
+      disableAllButtons(false);
+      closeDeleteModal();
+      showMessage('Error: ' + error.toString());
+    }
+
+    
+    document.getElementById('confirmDeleteBtn').onclick = confirmDelete;
+
+    
+    document.getElementById('deleteModal').onclick = function(e) {
+      if (e.target === this) {
+        closeDeleteModal();
+      }
+    };
+
+    
+    window.onload = function() {
+      loadSettings();
+    };
+
+            document.addEventListener('DOMContentLoaded', function() {
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+        const toggleBtn = document.getElementById('toggleSidebar');
+        const mobileToggle = document.getElementById('mobileToggle');
+        const overlay = document.getElementById('overlay');
+
+
+        toggleBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
+
+
+            const isCollapsed = sidebar.classList.contains('collapsed');
+            localStorage.setItem('sidebarCollapsed', isCollapsed);
+        });
+
+
+        mobileToggle.addEventListener('click', function() {
+            sidebar.classList.add('mobile-open');
+            overlay.classList.add('active');
+        });
+
+
+        overlay.addEventListener('click', function() {
+            sidebar.classList.remove('mobile-open');
+            overlay.classList.remove('active');
+        });
+
+
+        const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+        if (sidebarCollapsed) {
+            sidebar.classList.add('collapsed');
+            mainContent.classList.add('expanded');
+        }
+
+
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove('mobile-open');
+                overlay.classList.remove('active');
+            }
+        });
+    });
+  </script>
+</body>
+</html>

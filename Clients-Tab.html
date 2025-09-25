@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-red: #cc171d;
+            --dark-navy: #162336;
+            --medium-teal: #325765;
+            --light-teal: #4d818c;
+            --white: #ffffff;
+            --light-gray: #f8f9fa;
+            --border-gray: #e9ecef;
+            --text-dark: #2c3e50;
+            --text-light: #6c757d;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--light-teal) 0%, var(--medium-teal) 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--text-dark);
+        }
+        .container {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(22, 35, 54, 0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: var(--dark-navy);
+            color: var(--white);
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        .header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+        .content {
+            padding: 30px;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-light);
+        }
+        .loading i {
+            font-size: 24px;
+            margin-bottom: 12px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            position: relative;
+        }
+        .btn:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .btn-primary {
+            background: var(--light-teal);
+            color: var(--white);
+        }
+        .btn-primary:hover:not(:disabled) {
+            background: var(--medium-teal);
+        }
+        .btn-secondary {
+            background: var(--text-light);
+            color: var(--white);
+        }
+        .btn-secondary:hover:not(:disabled) {
+            background: var(--text-dark);
+        }
+        .btn-danger {
+            background: var(--danger);
+            color: var(--white);
+        }
+        .btn-danger:hover:not(:disabled) {
+            background: #c82333;
+        }
+        .btn-sm {
+            padding: 8px 12px;
+            font-size: 12px;
+        }
+        .btn-loading::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            margin: auto;
+            border: 2px solid transparent;
+            border-top-color: currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+        .modal-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .modal-header i {
+            font-size: 24px;
+        }
+        .modal-header h3 {
+            color: var(--text-dark);
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .modal-body {
+            color: var(--text-dark);
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-gray);
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.3s ease;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--light-teal);
+        }
+        .form-group input:disabled {
+            background: var(--light-gray);
+            cursor: not-allowed;
+        }
+        .clients-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--border-gray);
+        }
+        .client-card {
+            background: var(--light-gray);
+            border: 1px solid var(--border-gray);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .client-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(22, 35, 54, 0.1);
+            border-color: var(--light-teal);
+        }
+        .client-icon {
+            background: var(--light-teal);
+            color: var(--white);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .client-info {
+            flex: 1;
+        }
+        .client-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        .client-actions {
+            display: flex;
+            gap: 8px;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-light);
+        }
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        .empty-state h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+        .search-box {
+            position: relative;
+            margin-bottom: 24px;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 12px 16px 12px 48px;
+            border: 2px solid var(--border-gray);
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.3s ease;
+        }
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--light-teal);
+        }
+        .search-box i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-size: 16px;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .alert-error {
+            background: rgba(220, 53, 69, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(220, 53, 69, 0.2);
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 260px;
+            background: var(--dark-navy);
+            color: var(--white);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        .sidebar.collapsed {
+            width: 70px;
+        }
+
+        .sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            font-size: 24px;
+            color: var(--light-teal);
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .sidebar.collapsed .logo-text {
+            display: none;
+        }
+
+        .toggle-btn {
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 18px;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar.collapsed .toggle-btn {
+            transform: rotate(180deg);
+        }
+
+        .sidebar-menu {
+            padding: 16px 0;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--white);
+        }
+
+        .menu-item.active {
+            background: rgba(77, 129, 140, 0.2);
+            color: var(--white);
+            border-left-color: var(--light-teal);
+        }
+
+        .menu-icon {
+            font-size: 18px;
+            width: 24px;
+            margin-right: 12px;
+        }
+
+        .menu-text {
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .sidebar.collapsed .menu-text {
+            display: none;
+        }
+
+        .sidebar.collapsed .menu-item {
+            justify-content: center;
+            padding: 16px 0;
+        }
+
+        .sidebar.collapsed .menu-icon {
+            margin-right: 0;
+            font-size: 20px;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            transition: margin-left 0.3s ease;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-content.expanded {
+            margin-left: 70px;
+        }
+
+        .mobile-toggle {
+            display: none;
+            background: var(--white);
+            border: 2px solid var(--border-gray);
+            border-radius: 50%;
+            font-size: 20px;
+            color: var(--text-dark);
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .mobile-toggle:hover {
+            background: var(--light-teal);
+            color: var(--white);
+            border-color: var(--medium-teal);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .content-area {
+            flex: 1;
+            padding: 24px;
+            background: var(--light-gray);
+        }
+
+        .content-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 260px;
+            }
+
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            .overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+
+            .overlay.active {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-chart-line logo-icon"></i>
+                <span class="logo-text">Credit System</span>
+            </div>
+            <button class="toggle-btn" id="toggleSidebar">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+        </div>
+        
+        <nav class="sidebar-menu">
+            <a href="<?= baseUrl ?>?page=dashboard" class="menu-item" target="_top">
+                <i class="fas fa-home menu-icon"></i>
+                <span class="menu-text">Dashboard</span>
+            </a>
+            <a href="<?= baseUrl ?>?page=credit-management" class="menu-item" target="_top">
+                <i class="fas fa-credit-card menu-icon"></i>
+                <span class="menu-text">Credit Management</span>
+            </a>
+            <a href="<?= baseUrl ?>?page=device-tab" class="menu-item" target="_top">
+                <i class="fas fa-laptop menu-icon"></i>
+                <span class="menu-text">Devices</span>
+            </a>
+            <a href="<?= baseUrl ?>?page=clients-tab" class="menu-item active" target="_top">
+                <i class="fas fa-users menu-icon"></i>
+                <span class="menu-text">Clients</span>
+            </a>
+            <a href="<?= baseUrl ?>?page=settings-tab" class="menu-item" target="_top">
+                <i class="fas fa-cog menu-icon"></i>
+                <span class="menu-text">Settings</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Overlay for mobile -->
+    <div class="overlay" id="overlay"></div>
+
+    <button class="mobile-toggle" id="mobileToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+    <div class="container">
+        <div class="header">
+            <h1>
+                <i class="fas fa-users"></i>
+                Clients Tab
+            </h1>
+        </div>
+
+        <div class="content">
+            <div id="loading" class="loading">
+                <i class="fas fa-spinner"></i>
+                <p>Loading client data...</p>
+            </div>
+
+            <div id="error" class="alert alert-error" style="display: none;">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span id="error-message">Failed to load client data</span>
+            </div>
+
+            <div id="clients-container" style="display: none;">
+                <div class="clients-header">
+                    <h2>
+                        <i class="fas fa-address-book"></i>
+                        Client Directory
+                    </h2>
+                </div>
+
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-input" placeholder="Search clients by name...">
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="showAddClientModal()">
+                        <i class="fas fa-plus"></i>
+                        Add New Client
+                    </button>
+                </div>
+
+                <div id="clients-list"></div>
+
+                <div id="empty-state" class="empty-state" style="display: none;">
+                    <i class="fas fa-user-slash"></i>
+                    <h3>No Clients Found</h3>
+                    <p>No clients match your search criteria or the sheet is empty.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="client-modal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <i class="fas fa-user-plus" id="modal-icon"></i>
+                <h3 id="modal-title">Add New Client</h3>
+            </div>
+            <div class="modal-body">
+                <form id="client-form">
+                    <div class="form-group">
+                        <label for="client-name">Client Name *</label>
+                        <input type="text" id="client-name" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeClientModal()">Cancel</button>
+                <button class="btn btn-primary" id="save-client-btn" onclick="saveClient()">
+                    <i class="fas fa-save"></i>
+                    Save Client
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="confirm-modal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <i class="fas fa-exclamation-triangle" style="color: var(--danger);"></i>
+                <h3 id="confirm-title">Confirm Action</h3>
+            </div>
+            <div class="modal-body">
+                <p id="confirm-message">Are you sure you want to perform this action?</p>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeConfirmModal()">Cancel</button>
+                <button class="btn btn-danger" id="confirm-btn" onclick="confirmAction()">
+                    <i class="fas fa-check"></i>
+                    Confirm
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification-modal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <i id="notification-icon" class="fas fa-info-circle" style="color: var(--success);"></i>
+                <h3 id="notification-title">Notification</h3>
+            </div>
+            <div class="modal-body">
+                <p id="notification-message">Operation completed successfully.</p>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="closeNotificationModal()">OK</button>
+            </div>
+        </div>
+    </div>
+    </main>
+    
+    <script>
+        let allClients = [];
+        let filteredClients = [];
+        let currentEditingClient = null;
+        let pendingAction = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            const toggleBtn = document.getElementById('toggleSidebar');
+            const mobileToggle = document.getElementById('mobileToggle');
+            const overlay = document.getElementById('overlay');
+
+
+            toggleBtn.addEventListener('click', function() {
+                sidebar.classList.toggle('collapsed');
+                mainContent.classList.toggle('expanded');
+
+
+                const isCollapsed = sidebar.classList.contains('collapsed');
+                localStorage.setItem('sidebarCollapsed', isCollapsed);
+            });
+
+
+            mobileToggle.addEventListener('click', function() {
+                sidebar.classList.add('mobile-open');
+                overlay.classList.add('active');
+            });
+
+
+            overlay.addEventListener('click', function() {
+                sidebar.classList.remove('mobile-open');
+                overlay.classList.remove('active');
+            });
+
+
+            const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+            if (sidebarCollapsed) {
+                sidebar.classList.add('collapsed');
+                mainContent.classList.add('expanded');
+            }
+
+
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    sidebar.classList.remove('mobile-open');
+                    overlay.classList.remove('active');
+                }
+            });
+        });
+
+        window.onload = function() {
+            loadClients();
+        };
+
+        function loadClients() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('error').style.display = 'none';
+            document.getElementById('clients-container').style.display = 'none';
+
+            google.script.run
+                .withSuccessHandler(onClientsLoaded)
+                .withFailureHandler(onLoadError)
+                .getClientsData();
+        }
+
+        function onClientsLoaded(data) {
+            document.getElementById('loading').style.display = 'none';
+            
+            if (!data || data.length === 0) {
+                showEmptyState();
+                return;
+            }
+
+            allClients = data;
+            filteredClients = [...allClients];
+            displayClients();
+            document.getElementById('clients-container').style.display = 'block';
+        }
+
+        function onLoadError(error) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('error').style.display = 'flex';
+            document.getElementById('error-message').textContent = 'Error: ' + error.message;
+        }
+
+        function displayClients() {
+            const clientsList = document.getElementById('clients-list');
+            const emptyState = document.getElementById('empty-state');
+
+            if (filteredClients.length === 0) {
+                clientsList.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+
+            clientsList.innerHTML = filteredClients.map(client => `
+                <div class="client-card">
+                    <div class="client-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="client-info">
+                        <div class="client-name">${client.name || 'Unnamed Client'}</div>
+                    </div>
+                    <div class="client-actions">
+                        <button class="btn btn-sm btn-secondary" onclick="editClient('${client.id}')">
+                            <i class="fas fa-edit"></i>
+                            Edit
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteClient('${client.id}')">
+                            <i class="fas fa-trash"></i>
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showEmptyState() {
+            document.getElementById('clients-container').style.display = 'block';
+            document.getElementById('clients-list').innerHTML = '';
+            document.getElementById('empty-state').style.display = 'block';
+        }
+
+        document.getElementById('search-input').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            
+            if (searchTerm === '') {
+                filteredClients = [...allClients];
+            } else {
+                filteredClients = allClients.filter(client => 
+                    (client.name && client.name.toLowerCase().includes(searchTerm))
+                );
+            }
+            
+            displayClients();
+        });
+
+        function showAddClientModal() {
+            currentEditingClient = null;
+            document.getElementById('modal-title').textContent = 'Add New Client';
+            document.getElementById('modal-icon').className = 'fas fa-user-plus';
+            document.getElementById('client-name').value = '';
+            document.getElementById('save-client-btn').innerHTML = '<i class="fas fa-save"></i> Save Client';
+            document.getElementById('client-modal').classList.add('active');
+        }
+
+        function editClient(clientId) {
+            currentEditingClient = allClients.find(c => c.id === clientId);
+            if (!currentEditingClient) return;
+
+            document.getElementById('modal-title').textContent = 'Edit Client';
+            document.getElementById('modal-icon').className = 'fas fa-user-edit';
+            document.getElementById('client-name').value = currentEditingClient.name || '';
+            document.getElementById('save-client-btn').innerHTML = '<i class="fas fa-save"></i> Update Client';
+            document.getElementById('client-modal').classList.add('active');
+        }
+
+        function closeClientModal() {
+            document.getElementById('client-modal').classList.remove('active');
+            currentEditingClient = null;
+        }
+
+        function saveClient() {
+            const name = document.getElementById('client-name').value.trim();
+            
+            if (!name) {
+                showNotification('Error', 'Client name is required.', 'error');
+                return;
+            }
+
+            const saveBtn = document.getElementById('save-client-btn');
+            saveBtn.disabled = true;
+            saveBtn.classList.add('btn-loading');
+
+            if (currentEditingClient) {
+                google.script.run
+                    .withSuccessHandler(() => {
+                        saveBtn.disabled = false;
+                        saveBtn.classList.remove('btn-loading');
+                        closeClientModal();
+                        showNotification('Success', 'Client updated successfully!', 'success');
+                        loadClients();
+                    })
+                    .withFailureHandler((error) => {
+                        saveBtn.disabled = false;
+                        saveBtn.classList.remove('btn-loading');
+                        showNotification('Error', 'Failed to update client: ' + error.message, 'error');
+                    })
+                    .updateClient(currentEditingClient.id, name);
+            } else {
+                google.script.run
+                    .withSuccessHandler(() => {
+                        saveBtn.disabled = false;
+                        saveBtn.classList.remove('btn-loading');
+                        closeClientModal();
+                        showNotification('Success', 'Client added successfully!', 'success');
+                        loadClients();
+                    })
+                    .withFailureHandler((error) => {
+                        saveBtn.disabled = false;
+                        saveBtn.classList.remove('btn-loading');
+                        showNotification('Error', 'Failed to add client: ' + error.message, 'error');
+                    })
+                    .addClient(name);
+            }
+        }
+
+        function deleteClient(clientId) {
+            const client = allClients.find(c => c.id === clientId);
+            if (!client) return;
+
+            showConfirmation(
+                'Delete Client',
+                `Are you sure you want to delete "${client.name}"? This action cannot be undone.`,
+                () => {
+                    google.script.run
+                        .withSuccessHandler(() => {
+                            showNotification('Success', 'Client deleted successfully!', 'success');
+                            loadClients();
+                        })
+                        .withFailureHandler((error) => {
+                            showNotification('Error', 'Failed to delete client: ' + error.message, 'error');
+                        })
+                        .deleteClient(clientId);
+                }
+            );
+        }
+
+        function showConfirmation(title, message, callback) {
+            document.getElementById('confirm-title').textContent = title;
+            document.getElementById('confirm-message').textContent = message;
+            pendingAction = callback;
+            document.getElementById('confirm-modal').classList.add('active');
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('confirm-modal').classList.remove('active');
+            pendingAction = null;
+        }
+
+        function confirmAction() {
+            if (pendingAction) {
+                pendingAction();
+                pendingAction = null;
+            }
+            closeConfirmModal();
+        }
+
+        function showNotification(title, message, type = 'success') {
+            const icon = document.getElementById('notification-icon');
+            
+            if (type === 'error') {
+                icon.className = 'fas fa-exclamation-circle';
+                icon.style.color = 'var(--danger)';
+            } else {
+                icon.className = 'fas fa-check-circle';
+                icon.style.color = 'var(--success)';
+            }
+
+            document.getElementById('notification-title').textContent = title;
+            document.getElementById('notification-message').textContent = message;
+            document.getElementById('notification-modal').classList.add('active');
+        }
+
+        function closeNotificationModal() {
+            document.getElementById('notification-modal').classList.remove('active');
+        }
+
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal-overlay')) {
+                if (e.target.id === 'client-modal') closeClientModal();
+                if (e.target.id === 'confirm-modal') closeConfirmModal();
+                if (e.target.id === 'notification-modal') closeNotificationModal();
+            }
+        });
+    </script>
+</body>
+</html>
