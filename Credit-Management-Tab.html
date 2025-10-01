@@ -7,6 +7,8 @@
     <title>Credit Management</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
     <style>
         :root {
             --primary-red: #cc171d;
@@ -131,6 +133,48 @@
             border-color: var(--light-teal);
         }
 
+        /* Added styles for date filter section */
+        .date-filter-section {
+            background: var(--light-gray);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 2px solid var(--border-gray);
+        }
+
+        .date-filter-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .date-filter-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .date-input {
+            padding: 10px 15px;
+            border: 2px solid var(--border-gray);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            background: var(--white);
+            min-width: 150px;
+            transition: border-color 0.3s ease;
+        }
+
+        .date-input:focus {
+            outline: none;
+            border-color: var(--light-teal);
+        }
+
         .stats {
             display: flex;
             gap: 20px;
@@ -168,7 +212,7 @@
       .table-container {
           overflow-x: auto;
           overflow-y: auto;
-          max-width: 160vh; 
+          max-width: 170vh;
           border-radius: 8px;
           border: 1px solid var(--border-gray);
       }
@@ -444,6 +488,16 @@
         .btn-secondary {
             background: var(--text-light);
             color: var(--white);
+        }
+
+        /* Added style for export button */
+        .btn-export {
+            background: #28a745;
+            color: var(--white);
+        }
+
+        .btn-export:hover {
+            background: #218838;
         }
 
         .btn-sm {
@@ -834,25 +888,25 @@
                 <i class="fas fa-chevron-left"></i>
             </button>
         </div>
-        
+
         <nav class="sidebar-menu">
-            <a href="<?= baseUrl ?>?page=dashboard" class="menu-item" target="_top">
+            <a href="<?=baseUrl ?>?page=dashboard" class="menu-item" target="_top">
                 <i class="fas fa-home menu-icon"></i>
                 <span class="menu-text">Dashboard</span>
             </a>
-            <a href="<?= baseUrl ?>?page=credit-management" class="menu-item active" target="_top">
+            <a href="<?=baseUrl ?>?page=credit-management" class="menu-item active" target="_top">
                 <i class="fas fa-credit-card menu-icon"></i>
                 <span class="menu-text">Credit Management</span>
             </a>
-            <a href="<?= baseUrl ?>?page=device-tab" class="menu-item" target="_top">
+            <a href="<?=baseUrl ?>?page=device-tab" class="menu-item" target="_top">
                 <i class="fas fa-laptop menu-icon"></i>
                 <span class="menu-text">Devices</span>
             </a>
-            <a href="<?= baseUrl ?>?page=clients-tab" class="menu-item" target="_top">
+            <a href="<?=baseUrl ?>?page=clients-tab" class="menu-item" target="_top">
                 <i class="fas fa-users menu-icon"></i>
                 <span class="menu-text">Clients</span>
             </a>
-            <a href="<?= baseUrl ?>?page=settings-tab" class="menu-item" target="_top">
+            <a href="<?=baseUrl ?>?page=settings-tab" class="menu-item" target="_top">
                 <i class="fas fa-cog menu-icon"></i>
                 <span class="menu-text">Settings</span>
             </a>
@@ -882,32 +936,63 @@
                     <input type="text" id="globalSearch" placeholder="Search across all fields...">
                     <i class="fas fa-search"></i>
                 </div>
-                
+
                 <div class="filter-group">
                     <select id="clientNameFilter" class="filter-select">
                         <option value="">All Clients</option>
                     </select>
-                    
+
                     <select id="deviceSerialFilter" class="filter-select">
                         <option value="">All Devices</option>
                     </select>
-                    
+
                     <select id="businessModelFilter" class="filter-select">
                         <option value="">All Models</option>
                     </select>
-                    
+
                     <select id="paymentStatusFilter" class="filter-select">
                         <option value="">All Status</option>
                     </select>
-                    
+
                     <button class="btn btn-primary btn-sm" onclick="clearFilters()">
                         <i class="fas fa-times"></i>
                         Clear
                     </button>
-                    
-                                        <button class="btn btn-success btn-sm" onclick="openAddModal()">
+
+                    <!-- Added Export to Excel button -->
+                    <button class="btn btn-export btn-sm" onclick="exportToExcel()">
+                        <i class="fas fa-file-excel"></i>
+                        Export to Excel
+                    </button>
+
+                    <button class="btn btn-success btn-sm" onclick="openAddModal()">
                         <i class="fas fa-plus"></i>
                         Add New
+                    </button>
+                </div>
+            </div>
+
+            <!-- Added date filter section -->
+            <div class="date-filter-section">
+                <div class="date-filter-title">
+                    <i class="fas fa-calendar-alt"></i>
+                    Date Filter
+                </div>
+                <div class="date-filter-controls">
+                    <select id="dateFieldFilter" class="filter-select">
+                        <option value="">No Date Filter</option>
+                        <option value="timestamp">Timestamp</option>
+                        <option value="paymentDate">Payment Date</option>
+                    </select>
+                    <input type="date" id="startDate" class="date-input" placeholder="Start Date" disabled>
+                    <input type="date" id="endDate" class="date-input" placeholder="End Date" disabled>
+                    <button class="btn btn-primary btn-sm" onclick="applyDateFilter()" id="applyDateBtn" disabled>
+                        <i class="fas fa-filter"></i>
+                        Apply Date Filter
+                    </button>
+                    <button class="btn btn-secondary btn-sm" onclick="clearDateFilter()" id="clearDateBtn" disabled>
+                        <i class="fas fa-times"></i>
+                        Clear Date
                     </button>
                 </div>
             </div>
@@ -959,21 +1044,21 @@
                 <table>
                     <thead>
                         <tr>
-                            <th><i class="fas fa-clock"></i> Timestamp</th>
-                            <th><i class="fas fa-user"></i> Client Name</th>
-                            <th><i class="fas fa-barcode"></i> Device Serial Number</th>
-                            <th><i class="fas fa-business-time"></i> Business Model</th>
-                            <th><i class="fas fa-balance-scale"></i> Balance from K-Laser System</th>
-                            <th><i class="fas fa-plus-circle"></i> Top Up Amount</th>
-                            <th><i class="fas fa-calendar"></i> Payment Date</th>
-                            <th><i class="fas fa-info-circle"></i> Payment Status</th>
-                            <th><i class="fas fa-chart-line"></i> Credit Utilised by Client Report</th>
-                            <th><i class="fas fa-list"></i> Usage Breakdown</th>
-                            <th><i class="fas fa-exclamation-triangle"></i> Missing Credit</th>
-                            <th><i class="fas fa-dollar-sign"></i> Credit to be charged</th>
-                            <th><i class="fas fa-tag"></i> Charges per Credit (RM)</th>
-                            <th><i class="fas fa-calculator"></i> Total Charges (RM)</th>
-                            <th><i class="fas fa-cogs"></i> Actions</th>
+                            <th>Timestamp</th>
+                            <th>Client Name</th>
+                            <th>Device Serial Number</th>
+                            <th>Business Model</th>
+                            <th>Balance from K-Laser System</th>
+                            <th>Top Up Amount</th>
+                            <th>Payment Date</th>
+                            <th>Payment Status</th>
+                            <th>Credit Utilised by Client Report</th>
+                            <th>Usage Breakdown</th>
+                            <th>Missing Credit</th>
+                            <th>Credit to be charged</th>
+                            <th>Charges per Credit (RM)</th>
+                            <th>Total Charges (RM)</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="dataTableBody">
@@ -1017,7 +1102,7 @@
             <div class="modal-body">
                 <form id="recordForm">
                     <input type="hidden" id="editRowIndex" value="">
-                    
+
                     <div class="form-group">
                         <label for="deviceSerial">Device Serial Number *</label>
                         <div class="searchable-dropdown">
@@ -1026,7 +1111,7 @@
                         </div>
                         <small id="deviceError" style="color: var(--danger); display: none;">Please select a valid device from the list</small>
                     </div>
-                    
+
                     <div class="form-row">
                         <div class="form-group">
                             <label for="balance">Balance from K-Laser System *</label>
@@ -1037,7 +1122,7 @@
                             <input type="number" id="topUp" step="0.01" min="0">
                         </div>
                     </div>
-                    
+
                     <div class="form-row">
                         <div class="form-group">
                             <label for="paymentDate">Payment Date</label>
@@ -1053,12 +1138,12 @@
                             </select>
                         </div>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="creditUsed">Credit Utilised by Client Report *</label>
                         <input type="number" id="creditUsed" step="1" min="0" required>
                     </div>
-                    
+
                     <div class="form-group">
                         <label>Credit Utilised Breakdown *</label>
                         <div class="breakdown-builder">
@@ -1069,18 +1154,14 @@
                             <div id="breakdownSummary" class="breakdown-summary"></div>
                         </div>
                     </div>
-                    
+
                     <div class="form-row">
                         <div class="form-group">
                             <label for="creditToCharge">Credit to be charged *</label>
                             <input type="number" id="creditToCharge" step="1" min="0" required>
                         </div>
-                        <div class="form-group">
-                            <label for="chargesPerCredit">Charges per Credit (RM) *</label>
-                            <input type="number" id="chargesPerCredit" step="0.01" min="0" required>
-                        </div>
                     </div>
-                    
+
                     <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
                         <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
                         <button type="submit" class="btn btn-success" id="saveButton">
@@ -1173,14 +1254,14 @@
             const parsedData = typeof data === 'string' ? JSON.parse(data) : data;
             allData = Array.isArray(parsedData) ? parsedData : [];
             filteredData = [...allData];
-            
-            
+
+
             populateFilters();
             displayData();
             updateStats();
-            
+
             document.getElementById('loadingDiv').style.display = 'none';
-            
+
             if (allData.length > 0) {
               document.getElementById('tableContainer').style.display = 'block';
               document.getElementById('noDataDiv').style.display = 'none';
@@ -1206,16 +1287,16 @@
         function onError(error) {
             console.error('Error:', error);
             showError(`Error loading data: ${error.message || 'Unknown error'}`, 'Data Load Error');
-            
+
             allData = [];
             filteredData = [];
-            
+
             document.getElementById('loadingDiv').innerHTML = `
                 <i class="fas fa-exclamation-triangle" style="color: var(--danger);"></i>
                 <p style="color: var(--danger);">Error loading data</p>
                 <button class="btn btn-primary btn-sm" onclick="loadData()">Retry</button>
             `;
-            
+
             populateFilters();
             displayData();
             updateStats();
@@ -1229,16 +1310,16 @@
             const iconElement = document.getElementById('alertModalIcon');
             const confirmBtn = document.getElementById('alertModalConfirm');
             const cancelBtn = document.getElementById('alertModalCancel');
-            
+
 
             if (!title) {
                 title = type.charAt(0).toUpperCase() + type.slice(1);
             }
-            
+
 
             header.className = 'modal-header';
             iconElement.className = 'fas';
-            
+
             switch (type) {
                 case 'success':
                     header.classList.add('alert-success');
@@ -1266,11 +1347,9 @@
                     confirmBtn.classList.add('btn-primary');
                     break;
             }
-            
 
             titleElement.textContent = title;
             messageElement.textContent = message;
-            
 
             if (confirmCallback) {
                 window.alertModalCallback = confirmCallback;
@@ -1281,7 +1360,7 @@
                 confirmBtn.textContent = 'OK';
                 cancelBtn.style.display = 'none';
             }
-            
+
             modal.style.display = 'block';
         }
 
@@ -1296,7 +1375,6 @@
             }
             closeAlertModal();
         }
-
 
         window.addEventListener('click', function(event) {
             const modal = document.getElementById('alertModal');
@@ -1342,19 +1420,19 @@
         function populateSelect(selectId, options) {
             const select = document.getElementById(selectId);
             const currentValue = select.value;
-            
+
 
             while (select.children.length > 1) {
                 select.removeChild(select.lastChild);
             }
-            
+
             options.forEach(option => {
                 const optionElement = document.createElement('option');
                 optionElement.value = option;
                 optionElement.textContent = option;
                 select.appendChild(optionElement);
             });
-            
+
             select.value = currentValue;
         }
 
@@ -1366,14 +1444,14 @@
             const button = document.getElementById(buttonId);
             const buttonText = document.getElementById(buttonId + 'Text');
             const buttonSpinner = document.getElementById(buttonId + 'Spinner');
-            
+
             if (isLoading) {
 
                 button.classList.add('btn-loading', 'btn-disabled');
                 if (buttonText) buttonText.textContent = loadingText;
                 if (buttonSpinner) buttonSpinner.style.display = 'inline-block';
                 isSubmitting = true;
-                
+
 
                 document.getElementById('recordForm').classList.add('form-loading');
             } else {
@@ -1382,7 +1460,7 @@
                 if (buttonText) buttonText.textContent = 'Save Record';
                 if (buttonSpinner) buttonSpinner.style.display = 'none';
                 isSubmitting = false;
-                
+
 
                 document.getElementById('recordForm').classList.remove('form-loading');
             }
@@ -1410,26 +1488,25 @@
                 showWarning('Please wait while we process your request...', 'Processing');
                 return false;
             }
-            
+
             if (!validateBreakdown()) {
                 showError('Please ensure the breakdown total matches the Credit Used amount.', 'Validation Error');
                 return false;
             }
-            
+
             if (!validateDeviceSelection()) {
                 showError('Please select a valid device from the dropdown list.', 'Device Selection Required');
                 return false;
             }
-            
+
 
             const requiredFields = [
                 { id: 'deviceSerial', name: 'Device Serial Number' },
                 { id: 'balance', name: 'Balance' },
                 { id: 'creditUsed', name: 'Credit Used' },
                 { id: 'creditToCharge', name: 'Credit to Charge' },
-                { id: 'chargesPerCredit', name: 'Charges per Credit' }
             ];
-            
+
             for (const field of requiredFields) {
                 const value = document.getElementById(field.id).value.trim();
                 if (!value) {
@@ -1438,18 +1515,20 @@
                     return false;
                 }
             }
-            
+
             return true;
         }
 
         function populateDeviceDropdown() {
             const dropdown = document.getElementById('deviceOptions');
             dropdown.innerHTML = '';
-            
+
             devicesList.forEach(device => {
                 const option = document.createElement('div');
                 option.className = 'dropdown-option';
-                option.innerHTML = `<strong>${device.serial}</strong>`;
+                option.innerHTML = `
+                    <strong>${device.serial}</strong>
+                `;
                 option.onclick = () => selectDevice(device);
                 dropdown.appendChild(option);
             });
@@ -1459,7 +1538,9 @@
             selectedDevice = device;
             const deviceInput = document.getElementById('deviceSerial');
             deviceInput.value = device.serial;
-            deviceInput.dataset.deviceId = device.id; 
+            deviceInput.dataset.deviceId = device.id;
+            deviceInput.dataset.clientId = device.clientId || ''; 
+
             document.getElementById('deviceOptions').style.display = 'none';
             document.getElementById('deviceError').style.display = 'none';
         }
@@ -1479,20 +1560,20 @@
 
             filteredData.forEach((row, index) => {
                 const tr = document.createElement('tr');
-                
+
                 tr.innerHTML = `
-                    <td>${formatDate(row[0])}</td>
+                    <td>${formatDateTime(row[0])}</td>
                     <td><strong>${row[2] || ''}</strong></td>
                     <td><code>${row[4] || ''}</code></td>
                     <td>${row[5] || ''}</td>
-                    <td>${formatCurrency(row[6], true)}</td>
-                    <td>${formatCurrency(row[7], true)}</td>
+                    <td>${formatNumber(row[6], true)}</td>
+                    <td>${formatNumber(row[7], true)}</td>
                     <td>${formatDate(row[8])}</td>
                     <td>${formatStatus(row[9])}</td>
                     <td>${formatNumber(row[10], true)}</td>
                     <td>${formatBreakdown(row[11])}</td>
                     <td>${formatNumber(row[12], true)}</td>
-                    <td>${formatCurrency(row[13], true)}</td>
+                    <td>${formatNumber(row[13], true)}</td>
                     <td>${formatCurrency(row[14], true)}</td>
                     <td><strong>${formatCurrency(row[15], true)}</strong></td>
                     <td>
@@ -1503,7 +1584,7 @@
                         </div>
                     </td>
                 `;
-                
+
                 tbody.appendChild(tr);
             });
         }
@@ -1512,18 +1593,18 @@
             if (!breakdown || breakdown === '{}' || breakdown === '[]') {
                 return '<div class="breakdown-chips"><span class="breakdown-chip">No breakdown</span></div>';
             }
-            
+
             try {
                 const parsed = JSON.parse(breakdown);
                 if (Object.keys(parsed).length === 0) {
                     return '<div class="breakdown-chips"><span class="breakdown-chip">No breakdown</span></div>';
                 }
-                
+
                 const chips = Object.entries(parsed).map(([type, amount]) => {
                     const displayAmount = amount === 0 ? '0' : (amount || '0');
                     return `<span class="breakdown-chip">${type}: ${displayAmount}</span>`;
                 }).join('');
-                
+
                 return `<div class="breakdown-chips">${chips}</div>`;
             } catch (e) {
                 return breakdown || 'Invalid breakdown';
@@ -1534,12 +1615,12 @@
             if (value === null || value === undefined || value === '') {
                 return showZero ? 'RM 0.00' : '';
             }
-            
+
             const numValue = parseFloat(value);
             if (isNaN(numValue)) {
                 return showZero ? 'RM 0.00' : '';
             }
-            
+
             return 'RM ' + numValue.toFixed(2);
         }
 
@@ -1547,7 +1628,7 @@
             if (value === null || value === undefined || value === '') {
                 return showZero ? '0' : '';
             }
-            
+
             const numValue = parseFloat(value);
             if (isNaN(numValue)) {
                 return showZero ? '0' : '';
@@ -1556,7 +1637,7 @@
             if (Number.isInteger(numValue)) {
                 return numValue.toString();
             }
-            
+
             return numValue.toString();
         }
 
@@ -1565,7 +1646,7 @@
         function filterDevices(searchTerm) {
             const dropdown = document.getElementById('deviceOptions');
             const errorElement = document.getElementById('deviceError');
-            
+
             if (searchTerm.length === 0) {
 
                 populateDeviceDropdown();
@@ -1574,13 +1655,13 @@
                 errorElement.style.display = 'block';
                 return;
             }
-            
-            const filteredDevices = devicesList.filter(device => 
+
+            const filteredDevices = devicesList.filter(device =>
                 device.serial.toLowerCase().includes(searchTerm.toLowerCase())
             );
-            
+
             dropdown.innerHTML = '';
-            
+
             if (filteredDevices.length > 0) {
                 filteredDevices.forEach(device => {
                     const option = document.createElement('div');
@@ -1608,23 +1689,21 @@
         }
 
         function validateDeviceSelection() {
-            const deviceInput = document.getElementById('deviceSerial').value;
+            const deviceInput = document.getElementById('deviceSerial');
             const errorElement = document.getElementById('deviceError');
-            
 
-            if (!selectedDevice || selectedDevice.serial !== deviceInput) {
-
-                const deviceExists = devicesList.some(device => device.serial === deviceInput);
+            if (!selectedDevice || selectedDevice.serial !== deviceInput.value) {
+                const deviceExists = devicesList.some(device => device.serial === deviceInput.value);
                 if (!deviceExists) {
                     errorElement.style.display = 'block';
                     return false;
                 } else {
-
-                    selectedDevice = devicesList.find(device => device.serial === deviceInput);
-                    document.getElementById('deviceSerial').dataset.deviceId = selectedDevice.id;
+                    selectedDevice = devicesList.find(device => device.serial === deviceInput.value);
+                    deviceInput.dataset.deviceId = selectedDevice.id;
+                    deviceInput.dataset.clientId = selectedDevice.clientId || ''; 
                 }
             }
-            
+
             errorElement.style.display = 'none';
             return true;
         }
@@ -1633,10 +1712,10 @@
             if (!status || status === '') {
                 return '<span class="status-badge status-pending">Not Set</span>';
             }
-            
+
             const statusLower = status.toLowerCase();
             let className = 'status-badge ';
-            
+
             if (statusLower.includes('paid')) {
                 className += 'status-paid';
             } else if (statusLower.includes('pending')) {
@@ -1646,7 +1725,7 @@
             } else {
                 className += 'status-pending';
             }
-            
+
             return `<span class="${className}">${status}</span>`;
         }
 
@@ -1675,7 +1754,7 @@
             filteredData = allData.filter(row => {
 
                 if (globalSearch) {
-                    const searchMatch = row.some(cell => 
+                    const searchMatch = row.some(cell =>
                         cell && cell.toString().toLowerCase().includes(globalSearch)
                     );
                     if (!searchMatch) return false;
@@ -1690,6 +1769,8 @@
                 return true;
             });
 
+            applyDateFilterToData();
+
             displayData();
             updateStats();
         }
@@ -1700,10 +1781,158 @@
             document.getElementById('deviceSerialFilter').value = '';
             document.getElementById('businessModelFilter').value = '';
             document.getElementById('paymentStatusFilter').value = '';
-            
+
+            clearDateFilter();
+
             filteredData = [...allData];
             displayData();
             updateStats();
+        }
+
+
+        document.getElementById('dateFieldFilter').addEventListener('change', function() {
+            const dateField = this.value;
+            const startDate = document.getElementById('startDate');
+            const endDate = document.getElementById('endDate');
+            const applyBtn = document.getElementById('applyDateBtn');
+            const clearBtn = document.getElementById('clearDateBtn');
+
+            if (dateField) {
+                startDate.disabled = false;
+                endDate.disabled = false;
+                applyBtn.disabled = false;
+                clearBtn.disabled = false;
+            } else {
+                startDate.disabled = true;
+                endDate.disabled = true;
+                applyBtn.disabled = true;
+                clearBtn.disabled = true;
+                startDate.value = '';
+                endDate.value = '';
+                applyFilters();
+            }
+        });
+
+        function applyDateFilter() {
+            applyFilters();
+        }
+
+        function applyDateFilterToData() {
+            const dateField = document.getElementById('dateFieldFilter').value;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+
+            if (!dateField || (!startDate && !endDate)) {
+                return;
+            }
+
+            const columnIndex = dateField === 'timestamp' ? 0 : 8;
+
+            filteredData = filteredData.filter(row => {
+                const dateValue = row[columnIndex];
+                if (!dateValue) return false;
+
+                const rowDate = new Date(dateValue);
+                if (isNaN(rowDate.getTime())) return false;
+
+
+                rowDate.setHours(0, 0, 0, 0);
+
+                if (startDate) {
+                    const start = new Date(startDate);
+                    start.setHours(0, 0, 0, 0);
+                    if (rowDate < start) return false;
+                }
+
+                if (endDate) {
+                    const end = new Date(endDate);
+                    end.setHours(23, 59, 59, 999);
+                    if (rowDate > end) return false;
+                }
+
+                return true;
+            });
+        }
+
+        function clearDateFilter() {
+            document.getElementById('dateFieldFilter').value = '';
+            document.getElementById('startDate').value = '';
+            document.getElementById('endDate').value = '';
+            document.getElementById('startDate').disabled = true;
+            document.getElementById('endDate').disabled = true;
+            document.getElementById('applyDateBtn').disabled = true;
+            document.getElementById('clearDateBtn').disabled = true;
+            applyFilters();
+        }
+
+        function exportToExcel() {
+            if (filteredData.length === 0) {
+                showWarning('No data to export. Please adjust your filters.', 'Export Warning');
+                return;
+            }
+
+            try {
+
+                const exportData = filteredData.map(row => ({
+                    'Timestamp': formatDateTime(row[0]),
+                    'Client ID': row[1] || '',
+                    'Client Name': row[2] || '',
+                    'Device ID': row[3] || '',
+                    'Device Serial Number': row[4] || '',
+                    'Business Model': row[5] || '',
+                    'Balance from K-Laser System': row[6] || 0,
+                    'Top Up Amount': row[7] || 0,
+                    'Payment Date': formatDate(row[8]),
+                    'Payment Status': row[9] || '',
+                    'Credit Utilised by Client Report': row[10] || 0,
+                    'Usage Breakdown': row[11] || '',
+                    'Missing Credit': row[12] || 0,
+                    'Credit to be charged': row[13] || 0,
+                    'Charges per Credit (RM)': row[14] || 0,
+                    'Total Charges (RM)': row[15] || 0
+                }));
+
+
+                const wb = XLSX.utils.book_new();
+                const ws = XLSX.utils.json_to_sheet(exportData);
+
+
+                const colWidths = [
+                    { wch: 20 }, 
+                    { wch: 15 }, 
+                    { wch: 20 }, 
+                    { wch: 15 }, 
+                    { wch: 20 }, 
+                    { wch: 15 }, 
+                    { wch: 25 }, 
+                    { wch: 15 }, 
+                    { wch: 15 }, 
+                    { wch: 15 }, 
+                    { wch: 30 }, 
+                    { wch: 30 }, 
+                    { wch: 15 }, 
+                    { wch: 20 }, 
+                    { wch: 20 }, 
+                    { wch: 20 }  
+                ];
+                ws['!cols'] = colWidths;
+
+
+                XLSX.utils.book_append_sheet(wb, ws, 'Credit Management');
+
+
+                const today = new Date();
+                const dateStr = today.toISOString().split('T')[0];
+                const filename = `Credit_Management_${dateStr}.xlsx`;
+
+
+                XLSX.writeFile(wb, filename);
+
+                showSuccess(`Successfully exported ${filteredData.length} records to ${filename}`, 'Export Successful');
+            } catch (error) {
+                console.error('Export error:', error);
+                showError('Failed to export data. Please try again.', 'Export Error');
+            }
         }
 
         function openAddModal() {
@@ -1712,14 +1941,14 @@
             document.getElementById('recordForm').reset();
             breakdownItems = [];
             selectedDevice = null;
-            
+
 
             setButtonLoading('saveButton', false);
-            
+
 
             populateDeviceDropdown();
             document.getElementById('deviceOptions').style.display = 'block';
-            
+
             updateBreakdownDisplay();
             document.getElementById('recordModal').style.display = 'block';
         }
@@ -1729,25 +1958,25 @@
             const row = allData[rowIndex];
             document.getElementById('modalTitle').textContent = 'Edit Record';
             document.getElementById('editRowIndex').value = rowIndex;
-            
 
             const deviceSerial = row[4];
             selectedDevice = devicesList.find(device => device.serial === deviceSerial);
-            
 
             document.getElementById('deviceSerial').value = row[4];
+
+
+            document.getElementById('clientIdDisplay').value = row[1] || '';
+            document.getElementById('clientId').value = row[1] || '';
+
             document.getElementById('balance').value = row[6];
             document.getElementById('topUp').value = row[7];
             document.getElementById('paymentDate').value = formatDateForInput(row[8]);
             document.getElementById('paymentStatus').value = row[9] || 'Pending';
             document.getElementById('creditUsed').value = row[10];
             document.getElementById('creditToCharge').value = row[13];
-            document.getElementById('chargesPerCredit').value = row[14];
-            
 
             document.getElementById('deviceOptions').style.display = 'none';
             document.getElementById('deviceError').style.display = 'none';
-            
 
             try {
                 const breakdown = JSON.parse(row[11] || '{}');
@@ -1755,7 +1984,7 @@
             } catch (e) {
                 breakdownItems = [];
             }
-            
+
             updateBreakdownDisplay();
             document.getElementById('recordModal').style.display = 'block';
         }
@@ -1766,16 +1995,37 @@
             document.getElementById('recordModal').style.display = 'none';
         }
 
+        function formatDateTime(dateValue) {
+            if (!dateValue) return 'Not set';
+
+            if (typeof dateValue === 'string' && dateValue.trim() === '') {
+                return 'Not set';
+            }
+
+            const date = new Date(dateValue);
+            if (isNaN(date.getTime())) return 'Invalid date';
+
+            return date.toLocaleString('en-MY', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+        }
+
         function formatDate(dateValue) {
             if (!dateValue) return 'Not set';
 
             if (typeof dateValue === 'string' && dateValue.trim() === '') {
                 return 'Not set';
             }
-            
+
             const date = new Date(dateValue);
             if (isNaN(date.getTime())) return 'Invalid date';
-            
+
             return date.toLocaleDateString('en-MY', {
                 year: 'numeric',
                 month: 'short',
@@ -1791,7 +2041,7 @@
         }
 
         function addBreakdownItem() {
-            breakdownItems.push({type: '', amount: 0});
+            breakdownItems.push({type: 'Patient', amount: 0});
             updateBreakdownDisplay();
         }
 
@@ -1803,22 +2053,28 @@
         function updateBreakdownDisplay() {
             const container = document.getElementById('breakdownItems');
             container.innerHTML = '';
-            
+
+
+            const breakdownOptions = ['Patient', 'Staff', 'Marketing', 'Training', 'Others'];
+
             breakdownItems.forEach((item, index) => {
                 const div = document.createElement('div');
                 div.className = 'breakdown-item';
                 div.innerHTML = `
-                    <input type="text" placeholder="Type (e.g., Doctor, Patient)" value="${item.type}" 
-                           onchange="breakdownItems[${index}].type = this.value; validateBreakdown()">
+                    <select onchange="breakdownItems[${index}].type = this.value; validateBreakdown()">
+                        ${breakdownOptions.map(option =>
+                            `<option value="${option}" ${item.type === option ? 'selected' : ''}>${option}</option>`
+                        ).join('')}
+                    </select>
                     <input type="number" placeholder="Amount" value="${item.amount}" min="0" step="1"
-                           onchange="breakdownItems[${index}].amount = parseInt(this.value) || 0; validateBreakdown()">
+                          onchange="breakdownItems[${index}].amount = parseInt(this.value) || 0; validateBreakdown()">
                     <button type="button" onclick="removeBreakdownItem(${index})">
                         <i class="fas fa-trash"></i>
                     </button>
                 `;
                 container.appendChild(div);
             });
-            
+
             validateBreakdown();
         }
 
@@ -1826,16 +2082,25 @@
             const creditUsed = parseInt(document.getElementById('creditUsed').value) || 0;
             const breakdownTotal = breakdownItems.reduce((sum, item) => sum + (parseInt(item.amount) || 0), 0);
             const summary = document.getElementById('breakdownSummary');
-            
-            if (breakdownTotal === creditUsed && creditUsed > 0) {
+
+
+            const types = breakdownItems.map(item => item.type);
+            const hasDuplicates = new Set(types).size !== types.length;
+
+            if (breakdownTotal === creditUsed && creditUsed > 0 && !hasDuplicates) {
                 summary.innerHTML = `<span class="breakdown-valid">✓ Breakdown total matches Credit Used: ${breakdownTotal}</span>`;
                 return true;
             } else {
-                summary.innerHTML = `<span class="breakdown-error">✗ Breakdown total (${breakdownTotal}) must equal Credit Used (${creditUsed})</span>`;
+                let errorMessage = '';
+                if (hasDuplicates) {
+                    errorMessage = `✗ Duplicate breakdown types found. Each type must be unique.`;
+                } else {
+                    errorMessage = `✗ Breakdown total (${breakdownTotal}) must equal Credit Used (${creditUsed})`;
+                }
+                summary.innerHTML = `<span class="breakdown-error">${errorMessage}</span>`;
                 return false;
             }
         }
-
 
         document.getElementById('globalSearch').addEventListener('input', applyFilters);
         document.getElementById('clientNameFilter').addEventListener('change', applyFilters);
@@ -1870,23 +2135,26 @@
 
         document.getElementById('recordForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
+
 
             if (isSubmitting) {
                 showWarning('Please wait while we process your previous request.', 'Already Processing');
                 return;
             }
-            
+
 
             if (!validateForm()) {
                 return;
             }
-            
+
 
             setButtonLoading('saveButton', true);
-            
+
             try {
+                const clientId = selectedDevice ? (selectedDevice.clientId || '') : '';
+
                 const formData = {
+                    clientId: clientId,
                     deviceId: selectedDevice.id,
                     deviceSerial: selectedDevice.serial,
                     balance: parseFloat(document.getElementById('balance').value) || 0,
@@ -1896,11 +2164,10 @@
                     creditUsed: parseInt(document.getElementById('creditUsed').value) || 0,
                     breakdown: JSON.stringify(Object.fromEntries(breakdownItems.map(item => [item.type, parseInt(item.amount) || 0]))),
                     creditToCharge: parseInt(document.getElementById('creditToCharge').value) || 0,
-                    chargesPerCredit: parseFloat(document.getElementById('chargesPerCredit').value) || 0
                 };
-                
+
                 const editIndex = document.getElementById('editRowIndex').value;
-                
+
                 if (editIndex !== '') {
 
                     await new Promise((resolve, reject) => {
@@ -1913,11 +2180,11 @@
                             })
                             .updateRecord(parseInt(editIndex), formData);
                     });
-                    
+
                     showSuccess('Record updated successfully!', 'Update Successful');
                     closeModal();
                     loadData();
-                    
+
                 } else {
 
                     await new Promise((resolve, reject) => {
@@ -1930,12 +2197,12 @@
                             })
                             .addRecord(formData);
                     });
-                    
+
                     showSuccess('Record added successfully!', 'Record Added');
                     closeModal();
                     loadData();
                 }
-                
+
             } catch (error) {
                 console.error('Submission error:', error);
                 showError(`Operation failed: ${error.message || 'Unknown error occurred'}`, 'Error');
