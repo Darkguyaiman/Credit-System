@@ -1963,11 +1963,6 @@
             selectedDevice = devicesList.find(device => device.serial === deviceSerial);
 
             document.getElementById('deviceSerial').value = row[4];
-
-
-            document.getElementById('clientIdDisplay').value = row[1] || '';
-            document.getElementById('clientId').value = row[1] || '';
-
             document.getElementById('balance').value = row[6];
             document.getElementById('topUp').value = row[7];
             document.getElementById('paymentDate').value = formatDateForInput(row[8]);
