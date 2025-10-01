@@ -35,13 +35,15 @@ function getDevices() {
     if (lastRow < 2) {
       return []; 
     }
-    const dataRange = sheet.getRange(2, 1, lastRow - 1, 2);
+
+    const dataRange = sheet.getRange(2, 1, lastRow - 1, 3);
     const values = dataRange.getValues();
     const devices = values
       .filter(row => row[0] && row[1]) 
       .map(row => ({
         id: row[0],
-        serial: row[1]
+        serial: row[1],
+        clientId: row[2] || '' 
       }));
     return devices;
   } catch (error) {
@@ -51,6 +53,7 @@ function getDevices() {
 }
 
 function addRecord(data) {
+  console.log(data)
   try {
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Credit Management');
     if (!sheet) throw new Error('Sheet "Credit Management" not found.');
@@ -60,13 +63,15 @@ function addRecord(data) {
     if (nextRow < 2) nextRow = sheet.getLastRow() + 1;
 
     sheet.getRange(nextRow, 1).setValue(new Date());
+    sheet.getRange(nextRow, 2).setValue(data.clientId); 
     sheet.getRange(nextRow, 4).setValue(data.deviceId);
     sheet.getRange(nextRow, 7, 1, 2).setValues([[data.balance, data.topUp]]);
 
     const paymentDate = data.paymentDate ? new Date(data.paymentDate) : '';
     sheet.getRange(nextRow, 9, 1, 4).setValues([[paymentDate, data.paymentStatus, data.creditUsed, data.breakdown]]);
 
-    sheet.getRange(nextRow, 14, 1, 2).setValues([[data.creditToCharge, data.chargesPerCredit]]);
+
+    sheet.getRange(nextRow, 14).setValue(data.creditToCharge);
 
     return { success: true, message: 'Record added successfully' };
   } catch (error) {
@@ -82,6 +87,7 @@ function updateRecord(rowIndex, data) {
 
     const sheetRow = rowIndex + 2;
 
+    sheet.getRange(sheetRow, 2).setValue(data.clientId);
     sheet.getRange(sheetRow, 4).setValue(data.deviceId);         
     sheet.getRange(sheetRow, 7).setValue(data.balance);          
     sheet.getRange(sheetRow, 8).setValue(data.topUp);            
@@ -93,7 +99,7 @@ function updateRecord(rowIndex, data) {
     sheet.getRange(sheetRow, 11).setValue(data.creditUsed);      
     sheet.getRange(sheetRow, 12).setValue(data.breakdown);       
     sheet.getRange(sheetRow, 14).setValue(data.creditToCharge);  
-    sheet.getRange(sheetRow, 15).setValue(data.chargesPerCredit);
+
 
     return { success: true, message: 'Record updated successfully' };
   } catch (error) {
