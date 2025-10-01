@@ -28,7 +28,7 @@ function getDeviceData() {
     }
     
     const lastRow = sheet.getLastRow();
-    const lastCol = 5;
+    const lastCol = 6;
     
     if (lastRow < 2) {
       return [];
@@ -44,7 +44,8 @@ function getDeviceData() {
         serialNumber: row[1] ? row[1].toString() : '',
         clientId: row[2] ? row[2].toString() : '',
         clientName: row[3] ? row[3].toString() : '',
-        businessModel: row[4] ? row[4].toString() : ''
+        businessModel: row[4] ? row[4].toString() : '',
+        chargesPerCredit: row[5] ? parseFloat(row[5]) || 0 : 0
       }));
     
     return devices;
@@ -139,12 +140,15 @@ function addDevice(deviceData) {
       targetRow = lastRow + 1;
     }
 
-    sheet.getRange(targetRow, 1, 1, 5).setValues([[
+    sheet.getRange(targetRow, 1, 1, 3).setValues([[
       deviceId,
       deviceData.serialNumber,
-      deviceData.clientId,
-      '',
-      deviceData.businessModel
+      deviceData.clientId
+    ]]);
+
+    sheet.getRange(targetRow, 5, 1, 2).setValues([[
+      deviceData.businessModel,
+      deviceData.chargesPerCredit || 0
     ]]);
 
     return { success: true, deviceId: deviceId };
@@ -155,38 +159,38 @@ function addDevice(deviceData) {
   }
 }
 
-
 function updateDevice(deviceData) {
   try {
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Devices');
-    
     if (!sheet) {
       throw new Error('Sheet named "Devices" not found');
     }
 
     const lastRow = sheet.getLastRow();
-    const dataRange = sheet.getRange(2, 1, lastRow - 1, 5);
+    const dataRange = sheet.getRange(2, 1, lastRow - 1, 6);
     const values = dataRange.getValues();
     
     for (let i = 0; i < values.length; i++) {
       if (values[i][0] === deviceData.deviceId) {
         const rowNumber = i + 2;
-        
+
         sheet.getRange(rowNumber, 2).setValue(deviceData.serialNumber);
         sheet.getRange(rowNumber, 3).setValue(deviceData.clientId);
         sheet.getRange(rowNumber, 5).setValue(deviceData.businessModel);
-        
+        sheet.getRange(rowNumber, 6).setValue(deviceData.chargesPerCredit || 0);
+
         return { success: true };
       }
     }
-    
+
     throw new Error('Device not found');
-    
+
   } catch (error) {
     console.error('Error in updateDevice:', error);
     throw new Error('Failed to update device: ' + error.message);
   }
 }
+
 
 function deleteDevice(deviceId) {
   try {
