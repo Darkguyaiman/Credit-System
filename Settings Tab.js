@@ -6,7 +6,7 @@ function doGet() {
     .addMetaTag('viewport', 'width=device-width, initial-scale=1');
 }
 
-function getAllSettings() {
+function getAllUsers() {
   try {
     const ss = SpreadsheetApp.getActiveSpreadsheet();
     const sheet = ss.getSheetByName('Settings');
@@ -15,34 +15,52 @@ function getAllSettings() {
       throw new Error('Settings sheet not found');
     }
     
-    
     const lastRow = sheet.getLastRow();
     if (lastRow < 2) {
-      return { success: true, settings: [] };
+      return { success: true, users: [] };
     }
     
-    const range = sheet.getRange(2, 1, lastRow - 1, 1);
-    const values = range.getValues().flat();
+    const range = sheet.getRange(2, 2, lastRow - 1, 3);
+    const values = range.getValues();
     
-    const settings = [];
+    const users = [];
     for (let i = 0; i < values.length; i++) {
-      const value = values[i];
-      if (value) { 
-        settings.push({
-          id: i + 2, 
-          name: `Setting ${i + 1}`, 
-          value: value.toString()
+      const username = values[i][0];
+      const email = values[i][1];
+      const role = values[i][2];
+      
+      if (username || email || role) {
+        users.push({
+          id: i + 2,
+          username: username ? username.toString() : '',
+          email: email ? email.toString() : '',
+          role: role ? role.toString() : ''
         });
       }
     }
     
-    return { success: true, settings };
+    return { success: true, users };
   } catch (error) {
     return { success: false, error: error.toString() };
   }
 }
 
-function addSetting(value) {
+function addUser(username, email, role) {
+  try {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Settings');
+    if (!sheet) throw new Error('Settings sheet not found');
+    const data = sheet.getRange('B2:B' + sheet.getLastRow()).getValues();
+    let nextRow = data.findIndex(r => !r[0]) + 2;
+    if (nextRow < 2) nextRow = sheet.getLastRow() + 1;
+    sheet.getRange(nextRow, 2, 1, 3).setValues([[username, email, role]]);
+    return { success: true, message: 'User added successfully' };
+  } catch (error) {
+    return { success: false, error: error.toString() };
+  }
+}
+
+
+function updateUser(rowId, username, email, role) {
   try {
     const ss = SpreadsheetApp.getActiveSpreadsheet();
     const sheet = ss.getSheetByName('Settings');
@@ -51,35 +69,17 @@ function addSetting(value) {
       throw new Error('Settings sheet not found');
     }
     
+    sheet.getRange(rowId, 2).setValue(username);
+    sheet.getRange(rowId, 3).setValue(email);
+    sheet.getRange(rowId, 4).setValue(role);
     
-    const lastRow = sheet.getLastRow();
-    const newRow = lastRow + 1;
-    sheet.getRange(newRow, 1).setValue(value);
-    
-    return { success: true, message: 'Setting added successfully' };
+    return { success: true, message: 'User updated successfully' };
   } catch (error) {
     return { success: false, error: error.toString() };
   }
 }
 
-function updateSetting(rowId, value) {
-  try {
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
-    const sheet = ss.getSheetByName('Settings');
-    
-    if (!sheet) {
-      throw new Error('Settings sheet not found');
-    }
-    
-    sheet.getRange(rowId, 1).setValue(value);
-    
-    return { success: true, message: 'Setting updated successfully' };
-  } catch (error) {
-    return { success: false, error: error.toString() };
-  }
-}
-
-function deleteSetting(rowId) {
+function deleteUser(rowId) {
   try {
     const ss = SpreadsheetApp.getActiveSpreadsheet();
     const sheet = ss.getSheetByName('Settings');
@@ -90,7 +90,7 @@ function deleteSetting(rowId) {
     
     sheet.deleteRow(rowId);
     
-    return { success: true, message: 'Setting deleted successfully' };
+    return { success: true, message: 'User deleted successfully' };
   } catch (error) {
     return { success: false, error: error.toString() };
   }

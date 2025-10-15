@@ -9,9 +9,7 @@ function doGet() {
 function getInitialData() {
   try {
     return {
-      devices: getDeviceData(),
-      clients: getClientData(),
-      businessModels: getBusinessModelData()
+      clients: getClientData()
     };
   } catch (error) {
     console.error('Error in getInitialData:', error);
@@ -19,39 +17,62 @@ function getInitialData() {
   }
 }
 
-function getDeviceData() {
+function getDeviceDataByType(businessType) {
   try {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Devices');
+    let sheetName = '';
+    if (businessType === 'Revenue Sharing') {
+      sheetName = 'D Revenue Sharing';
+    } else if (businessType === 'Prepaid') {
+      sheetName = 'D Prepaid';
+    } else if (businessType === 'Postpaid') {
+      sheetName = 'D Postpaid';
+    } else {
+      throw new Error('Invalid business type');
+    }
+    
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
     
     if (!sheet) {
-      throw new Error('Sheet named "Devices" not found');
+      throw new Error('Sheet named "' + sheetName + '" not found');
     }
     
     const lastRow = sheet.getLastRow();
-    const lastCol = 6;
     
     if (lastRow < 2) {
       return [];
     }
     
+    const lastCol = businessType === 'Prepaid' || businessType === 'Postpaid' ? 5 : 4;
     const dataRange = sheet.getRange(2, 1, lastRow - 1, lastCol);
     const values = dataRange.getValues();
     
     const devices = values
       .filter(row => row[0] && row[0].toString().trim() !== '')
-      .map(row => ({
-        deviceId: row[0] ? row[0].toString() : '',
-        serialNumber: row[1] ? row[1].toString() : '',
-        clientId: row[2] ? row[2].toString() : '',
-        clientName: row[3] ? row[3].toString() : '',
-        businessModel: row[4] ? row[4].toString() : '',
-        chargesPerCredit: row[5] ? parseFloat(row[5]) || 0 : 0
-      }));
+      .map(row => {
+        const device = {
+          deviceId: row[0] ? row[0].toString() : '',
+          serialNumber: row[1] ? row[1].toString() : '',
+          clientId: row[2] ? row[2].toString() : '',
+          clientName: row[3] ? row[3].toString() : ''
+        };
+        
+        if (businessType === 'Postpaid') {
+          device.chargesPerCredit = row[4] ? parseFloat(row[4]) || 0 : 0;
+        } else if (businessType === 'Prepaid') {
+          try {
+            device.creditPurchaseOptions = row[4] ? JSON.parse(row[4].toString()) : [];
+          } catch (e) {
+            device.creditPurchaseOptions = [];
+          }
+        }
+        
+        return device;
+      });
     
     return devices;
     
   } catch (error) {
-    console.error('Error in getDeviceData:', error);
+    console.error('Error in getDeviceDataByType:', error);
     throw new Error('Failed to load device data: ' + error.message);
   }
 }
@@ -88,45 +109,27 @@ function getClientData() {
   }
 }
 
-function getBusinessModelData() {
-  try {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Settings');
-    
-    if (!sheet) {
-      throw new Error('Sheet named "Settings" not found');
-    }
-    
-    const lastRow = sheet.getLastRow();
-    
-    if (lastRow < 2) {
-      return [];
-    }
-    
-    const dataRange = sheet.getRange(2, 1, lastRow - 1, 1);
-    const values = dataRange.getValues();
-    
-    const businessModels = values
-      .filter(row => row[0] && row[0].toString().trim() !== '')
-      .map(row => row[0].toString());
-    
-    return businessModels;
-    
-  } catch (error) {
-    console.error('Error in getBusinessModelData:', error);
-    throw new Error('Failed to load business model data: ' + error.message);
-  }
-}
-
 function addDevice(deviceData) {
   try {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Devices');
+    let sheetName = '';
+    if (deviceData.businessType === 'Revenue Sharing') {
+      sheetName = 'D Revenue Sharing';
+    } else if (deviceData.businessType === 'Prepaid') {
+      sheetName = 'D Prepaid';
+    } else if (deviceData.businessType === 'Postpaid') {
+      sheetName = 'D Postpaid';
+    } else {
+      throw new Error('Invalid business type');
+    }
+    
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
     if (!sheet) {
-      throw new Error('Sheet named "Devices" not found');
+      throw new Error('Sheet named "' + sheetName + '" not found');
     }
 
     const deviceId = Utilities.getUuid();
     const lastRow = sheet.getLastRow();
-    const values = sheet.getRange(2, 1, lastRow - 1, 1).getValues();
+    const values = sheet.getRange(2, 1, Math.max(lastRow - 1, 1), 1).getValues();
 
     let targetRow = null;
     for (let i = 0; i < values.length; i++) {
@@ -146,10 +149,12 @@ function addDevice(deviceData) {
       deviceData.clientId
     ]]);
 
-    sheet.getRange(targetRow, 5, 1, 2).setValues([[
-      deviceData.businessModel,
-      deviceData.chargesPerCredit || 0
-    ]]);
+    if (deviceData.businessType === 'Postpaid') {
+      sheet.getRange(targetRow, 5).setValue(deviceData.chargesPerCredit || 0);
+    } else if (deviceData.businessType === 'Prepaid') {
+      const jsonString = JSON.stringify(deviceData.creditPurchaseOptions || []);
+      sheet.getRange(targetRow, 5).setValue(jsonString);
+    }
 
     return { success: true, deviceId: deviceId };
 
@@ -161,13 +166,25 @@ function addDevice(deviceData) {
 
 function updateDevice(deviceData) {
   try {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Devices');
+    let sheetName = '';
+    if (deviceData.businessType === 'Revenue Sharing') {
+      sheetName = 'D Revenue Sharing';
+    } else if (deviceData.businessType === 'Prepaid') {
+      sheetName = 'D Prepaid';
+    } else if (deviceData.businessType === 'Postpaid') {
+      sheetName = 'D Postpaid';
+    } else {
+      throw new Error('Invalid business type');
+    }
+    
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
     if (!sheet) {
-      throw new Error('Sheet named "Devices" not found');
+      throw new Error('Sheet named "' + sheetName + '" not found');
     }
 
     const lastRow = sheet.getLastRow();
-    const dataRange = sheet.getRange(2, 1, lastRow - 1, 6);
+    const lastCol = deviceData.businessType === 'Prepaid' || deviceData.businessType === 'Postpaid' ? 5 : 4;
+    const dataRange = sheet.getRange(2, 1, lastRow - 1, lastCol);
     const values = dataRange.getValues();
     
     for (let i = 0; i < values.length; i++) {
@@ -176,8 +193,13 @@ function updateDevice(deviceData) {
 
         sheet.getRange(rowNumber, 2).setValue(deviceData.serialNumber);
         sheet.getRange(rowNumber, 3).setValue(deviceData.clientId);
-        sheet.getRange(rowNumber, 5).setValue(deviceData.businessModel);
-        sheet.getRange(rowNumber, 6).setValue(deviceData.chargesPerCredit || 0);
+        
+        if (deviceData.businessType === 'Postpaid') {
+          sheet.getRange(rowNumber, 5).setValue(deviceData.chargesPerCredit || 0);
+        } else if (deviceData.businessType === 'Prepaid') {
+          const jsonString = JSON.stringify(deviceData.creditPurchaseOptions || []);
+          sheet.getRange(rowNumber, 5).setValue(jsonString);
+        }
 
         return { success: true };
       }
@@ -191,11 +213,21 @@ function updateDevice(deviceData) {
   }
 }
 
-
-function deleteDevice(deviceId) {
+function deleteDevice(deviceId, businessType) {
   try {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Devices');
-    if (!sheet) throw new Error('Sheet named "Devices" not found');
+    let sheetName = '';
+    if (businessType === 'Revenue Sharing') {
+      sheetName = 'D Revenue Sharing';
+    } else if (businessType === 'Prepaid') {
+      sheetName = 'D Prepaid';
+    } else if (businessType === 'Postpaid') {
+      sheetName = 'D Postpaid';
+    } else {
+      throw new Error('Invalid business type');
+    }
+    
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
+    if (!sheet) throw new Error('Sheet named "' + sheetName + '" not found');
 
     const lastRow = sheet.getLastRow();
     if (lastRow < 2) return { success: true, message: "Deleted already" };
@@ -223,4 +255,3 @@ function deleteDevice(deviceId) {
     throw new Error('Failed to delete device: ' + error.message);
   }
 }
-
