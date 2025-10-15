@@ -73,6 +73,37 @@
             padding: 30px;
         }
 
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--border-gray);
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+            margin-bottom: -2px;
+        }
+
+        .tab:hover {
+            color: var(--text-dark);
+            background: var(--light-gray);
+        }
+
+        .tab.active {
+            color: var(--light-teal);
+            border-bottom-color: var(--light-teal);
+        }
+
         .controls {
             display: flex;
             gap: 20px;
@@ -345,7 +376,7 @@
             border-radius: 12px;
             padding: 30px;
             width: 90%;
-            max-width: 500px;
+            max-width: 600px;
             max-height: 90vh;
             overflow-y: auto;
             animation: slideIn 0.3s ease;
@@ -575,7 +606,6 @@
             }
         }
 
-        /* Sidebar Styles */
         .sidebar {
             width: 260px;
             background: var(--dark-navy);
@@ -694,7 +724,6 @@
             font-size: 20px;
         }
 
-        /* Main Content Styles */
         .main-content {
             flex: 1;
             margin-left: 260px;
@@ -751,7 +780,6 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
-        /* Mobile Responsive */
         @media (max-width: 768px) {
             .sidebar {
                 transform: translateX(-100%);
@@ -816,10 +844,89 @@
             font-size: 12px;
             font-weight: 500;
         }
+
+        .credit-options-container {
+            border: 2px solid var(--border-gray);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .credit-option-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr auto;
+            gap: 10px;
+            align-items: end;
+            margin-bottom: 12px;
+            padding: 12px;
+            background: var(--light-gray);
+            border-radius: 6px;
+        }
+
+        .credit-option-item .form-group {
+            margin-bottom: 0;
+        }
+
+        .credit-option-item label {
+            font-size: 12px;
+        }
+
+        .credit-option-item input {
+            padding: 8px 12px;
+            font-size: 13px;
+        }
+
+        .btn-remove-option {
+            background: var(--danger);
+            color: var(--white);
+            border: none;
+            border-radius: 6px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .btn-remove-option:hover {
+            background: #c82333;
+        }
+
+        .btn-add-option {
+            background: var(--light-teal);
+            color: var(--white);
+            border: none;
+            border-radius: 6px;
+            padding: 10px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-add-option:hover {
+            background: var(--medium-teal);
+        }
+
+        .credit-options-list {
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .credit-option-badge {
+            display: inline-block;
+            background: var(--light-teal);
+            color: var(--white);
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin: 2px;
+            font-size: 11px;
+        }
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <div class="logo">
@@ -855,14 +962,12 @@
         </nav>
     </aside>
 
-    <!-- Overlay for mobile -->
     <div class="overlay" id="overlay"></div>
 
     <button class="mobile-toggle" id="mobileToggle">
         <i class="fas fa-bars"></i>
     </button>
 
-    <!-- Main Content -->
     <main class="main-content" id="mainContent">
     <div class="container">
         <div class="header">
@@ -873,6 +978,18 @@
         </div>
 
         <div class="content">
+            <div class="tabs">
+                <button class="tab active" data-type="Prepaid" onclick="switchTab('Prepaid')">
+                    <i class="fas fa-wallet"></i> Prepaid
+                </button>
+                <button class="tab" data-type="Postpaid" onclick="switchTab('Postpaid')">
+                    <i class="fas fa-file-invoice-dollar"></i> Postpaid
+                </button>
+                <button class="tab" data-type="Revenue Sharing" onclick="switchTab('Revenue Sharing')">
+                    <i class="fas fa-handshake"></i> Revenue Sharing
+                </button>
+            </div>
+
             <div class="controls">
                 <div class="search-box">
                     <i class="fas fa-search"></i>
@@ -883,12 +1000,6 @@
                     <div class="filter-select">
                         <select id="clientFilter">
                             <option value="">All Clients</option>
-                        </select>
-                    </div>
-                    
-                    <div class="filter-select">
-                        <select id="businessModelFilter">
-                            <option value="">All Models</option>
                         </select>
                     </div>
                     
@@ -935,14 +1046,7 @@
 
             <div id="tableContainer" class="table-container" style="display: none;">
                 <table>
-                    <thead>
-                        <tr>
-                            <th><i class="fas fa-barcode"></i> Device Serial Number</th>
-                            <th><i class="fas fa-user"></i> Client Name</th>
-                            <th><i class="fas fa-briefcase"></i> Business Model</th>
-                            <th><i class="fas fa-money-bill"></i> Charges per Credit (RM)</th>
-                            <th><i class="fas fa-cogs"></i> Actions</th>
-                        </tr>
+                    <thead id="tableHeader">
                     </thead>
                     <tbody id="deviceTableBody">
                     </tbody>
@@ -977,20 +1081,25 @@
                         <div id="clientDropdown" class="dropdown-options"></div>
                     </div>
                 </div>
-                
-                <div class="form-group">
-                    <label for="businessModel">Business Model *</label>
-                    <div class="searchable-select">
-                        <input type="text" id="businessModel" placeholder="Type to search business models..." required>
-                        <div id="businessModelDropdown" class="dropdown-options"></div>
+
+                <div id="postpaidFields" style="display: none;">
+                    <div class="form-group">
+                        <label for="chargesPerCredit">Charges per Credit (RM) *</label>
+                        <div class="currency-input">
+                            <span class="currency-prefix">RM</span>
+                            <input type="number" id="chargesPerCredit" step="0.01" min="0" placeholder="0.00">
+                        </div>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="chargesPerCredit">Charges per Credit (RM) *</label>
-                    <div class="currency-input">
-                        <span class="currency-prefix">RM</span>
-                        <input type="number" id="chargesPerCredit" step="0.01" min="0" placeholder="0.00" required>
+                <div id="prepaidFields" style="display: none;">
+                    <div class="form-group">
+                        <label>Credit Purchase Options *</label>
+                        <div class="credit-options-container" id="creditOptionsContainer">
+                        </div>
+                        <button type="button" class="btn-add-option" onclick="addCreditOption()">
+                            <i class="fas fa-plus"></i> Add Option
+                        </button>
                     </div>
                 </div>
                 
@@ -1020,9 +1129,9 @@
         let allDevices = [];
         let filteredDevices = [];
         let clientOptions = [];
-        let businessModelOptions = [];
         let currentEditingDevice = null;
         let selectedClientId = null;
+        let currentBusinessType = 'Prepaid';
 
         document.addEventListener('DOMContentLoaded', function() {
             loadInitialData();
@@ -1036,35 +1145,29 @@
             const mobileToggle = document.getElementById('mobileToggle');
             const overlay = document.getElementById('overlay');
 
-
             toggleBtn.addEventListener('click', function() {
                 sidebar.classList.toggle('collapsed');
                 mainContent.classList.toggle('expanded');
 
-
                 const isCollapsed = sidebar.classList.contains('collapsed');
                 localStorage.setItem('sidebarCollapsed', isCollapsed);
             });
-
 
             mobileToggle.addEventListener('click', function() {
                 sidebar.classList.add('mobile-open');
                 overlay.classList.add('active');
             });
 
-
             overlay.addEventListener('click', function() {
                 sidebar.classList.remove('mobile-open');
                 overlay.classList.remove('active');
             });
-
 
             const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
             if (sidebarCollapsed) {
                 sidebar.classList.add('collapsed');
                 mainContent.classList.add('expanded');
             }
-
 
             window.addEventListener('resize', function() {
                 if (window.innerWidth > 768) {
@@ -1083,17 +1186,12 @@
                 applyFilters();
             });
 
-            document.getElementById('businessModelFilter').addEventListener('change', function() {
-                applyFilters();
-            });
-
             document.getElementById('deviceForm').addEventListener('submit', function(e) {
                 e.preventDefault();
                 saveDevice();
             });
 
             setupSearchableDropdown('clientName', 'clientDropdown', 'client');
-            setupSearchableDropdown('businessModel', 'businessModelDropdown', 'businessModel');
 
             document.getElementById('deviceModal').addEventListener('click', function(e) {
                 if (e.target === this) {
@@ -1109,10 +1207,6 @@
         }
 
         function loadInitialData() {
-            document.getElementById('loadingState').style.display = 'block';
-            document.getElementById('tableContainer').style.display = 'none';
-            document.getElementById('noResults').style.display = 'none';
-
             google.script.run
                 .withSuccessHandler(onInitialDataLoaded)
                 .withFailureHandler(onDataError)
@@ -1120,19 +1214,48 @@
         }
 
         function onInitialDataLoaded(data) {
-            allDevices = data.devices;
             clientOptions = data.clients;
-            businessModelOptions = data.businessModels;
-            
-            filteredDevices = [...allDevices];
-            
-            populateFilters();
-            updateStats();
-            renderTable();
-            
-            document.getElementById('loadingState').style.display = 'none';
-            document.getElementById('tableContainer').style.display = 'block';
+            populateClientFilter();
+            switchTab('Prepaid');
         }
+
+        function switchTab(businessType) {
+            currentBusinessType = businessType;
+            
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`.tab[data-type="${businessType}"]`).classList.add('active');
+
+            document.getElementById('loadingState').style.display = 'block';
+            document.getElementById('tableContainer').style.display = 'none';
+            document.getElementById('noResults').style.display = 'none';
+
+            google.script.run
+                .withSuccessHandler(onDeviceDataLoaded)
+                .withFailureHandler(onDataError)
+                .getDeviceDataByType(businessType);
+        }
+
+        function onDeviceDataLoaded(devices) {
+            allDevices = devices || [];
+            filteredDevices = [...allDevices];
+
+            updateStats();
+            renderTableHeader();
+            renderTable();
+
+            document.getElementById('loadingState').style.display = 'none';
+
+            if (filteredDevices.length > 0) {
+                document.getElementById('tableContainer').style.display = 'block';
+                document.getElementById('noResults').style.display = 'none';
+            } else {
+                document.getElementById('tableContainer').style.display = 'none';
+                document.getElementById('noResults').style.display = 'block';
+            }
+        }
+
 
         function onDataError(error) {
             console.error('Error loading data:', error);
@@ -1142,43 +1265,29 @@
             `;
         }
 
-        function populateFilters() {
-            const clientNames = [...new Set(allDevices.map(device => device.clientName))].sort();
+        function populateClientFilter() {
             const clientFilter = document.getElementById('clientFilter');
             clientFilter.innerHTML = '<option value="">All Clients</option>';
-            clientNames.forEach(name => {
+            clientOptions.forEach(client => {
                 const option = document.createElement('option');
-                option.value = name;
-                option.textContent = name;
+                option.value = client.name;
+                option.textContent = client.name;
                 clientFilter.appendChild(option);
-            });
-
-            const businessModels = [...new Set(allDevices.map(device => device.businessModel))].sort();
-            const businessModelFilter = document.getElementById('businessModelFilter');
-            businessModelFilter.innerHTML = '<option value="">All Models</option>';
-            businessModels.forEach(model => {
-                const option = document.createElement('option');
-                option.value = model;
-                option.textContent = model;
-                businessModelFilter.appendChild(option);
             });
         }
 
         function applyFilters() {
             const searchTerm = document.getElementById('globalSearch').value.toLowerCase();
             const clientFilter = document.getElementById('clientFilter').value;
-            const businessModelFilter = document.getElementById('businessModelFilter').value;
 
             filteredDevices = allDevices.filter(device => {
                 const matchesSearch = !searchTerm || 
                     device.serialNumber.toLowerCase().includes(searchTerm) ||
-                    device.clientName.toLowerCase().includes(searchTerm) ||
-                    device.businessModel.toLowerCase().includes(searchTerm);
+                    device.clientName.toLowerCase().includes(searchTerm);
 
                 const matchesClient = !clientFilter || device.clientName === clientFilter;
-                const matchesBusinessModel = !businessModelFilter || device.businessModel === businessModelFilter;
 
-                return matchesSearch && matchesClient && matchesBusinessModel;
+                return matchesSearch && matchesClient;
             });
 
             updateStats();
@@ -1195,6 +1304,38 @@
 
         function formatCurrency(amount) {
             return parseFloat(amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+        }
+
+        function renderTableHeader() {
+            const thead = document.getElementById('tableHeader');
+            
+            if (currentBusinessType === 'Revenue Sharing') {
+                thead.innerHTML = `
+                    <tr>
+                        <th><i class="fas fa-barcode"></i> Device Serial Number</th>
+                        <th><i class="fas fa-user"></i> Client Name</th>
+                        <th><i class="fas fa-cogs"></i> Actions</th>
+                    </tr>
+                `;
+            } else if (currentBusinessType === 'Postpaid') {
+                thead.innerHTML = `
+                    <tr>
+                        <th><i class="fas fa-barcode"></i> Device Serial Number</th>
+                        <th><i class="fas fa-user"></i> Client Name</th>
+                        <th><i class="fas fa-money-bill"></i> Charges per Credit (RM)</th>
+                        <th><i class="fas fa-cogs"></i> Actions</th>
+                    </tr>
+                `;
+            } else if (currentBusinessType === 'Prepaid') {
+                thead.innerHTML = `
+                    <tr>
+                        <th><i class="fas fa-barcode"></i> Device Serial Number</th>
+                        <th><i class="fas fa-user"></i> Client Name</th>
+                        <th><i class="fas fa-tags"></i> Credit Purchase Options</th>
+                        <th><i class="fas fa-cogs"></i> Actions</th>
+                    </tr>
+                `;
+            }
         }
 
         function renderTable() {
@@ -1215,20 +1356,54 @@
 
             filteredDevices.forEach(device => {
                 const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td><span class="serial-number">${escapeHtml(device.serialNumber)}</span></td>
-                    <td><span class="client-name">${escapeHtml(device.clientName)}</span></td>
-                    <td><span class="business-model">${escapeHtml(device.businessModel)}</span></td>
-                    <td><span class="charges">RM ${formatCurrency(device.chargesPerCredit || 0)}</span></td>
-                    <td class="actions">
-                        <button class="btn btn-primary btn-sm" onclick="editDevice('${device.deviceId}')">
-                            <i class="fas fa-edit"></i> Edit
-                        </button>
-                        <button class="btn btn-danger btn-sm" onclick="confirmDeleteDevice('${device.deviceId}')">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                `;
+                
+                if (currentBusinessType === 'Revenue Sharing') {
+                    row.innerHTML = `
+                        <td><span class="serial-number">${escapeHtml(device.serialNumber)}</span></td>
+                        <td><span class="client-name">${escapeHtml(device.clientName)}</span></td>
+                        <td class="actions">
+                            <button class="btn btn-primary btn-sm" onclick='editDevice(${JSON.stringify(device)})'>
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-danger btn-sm" onclick="confirmDeleteDevice('${device.deviceId}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                } else if (currentBusinessType === 'Postpaid') {
+                    row.innerHTML = `
+                        <td><span class="serial-number">${escapeHtml(device.serialNumber)}</span></td>
+                        <td><span class="client-name">${escapeHtml(device.clientName)}</span></td>
+                        <td><span class="charges">RM ${formatCurrency(device.chargesPerCredit || 0)}</span></td>
+                        <td class="actions">
+                            <button class="btn btn-primary btn-sm" onclick='editDevice(${JSON.stringify(device)})'>
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-danger btn-sm" onclick="confirmDeleteDevice('${device.deviceId}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                } else if (currentBusinessType === 'Prepaid') {
+                    const optionsHtml = (device.creditPurchaseOptions || []).map(opt => 
+                        `<span class="credit-option-badge">${opt.creditAmount} credits: RM ${formatCurrency(opt.priceAfterDiscount)}</span>`
+                    ).join(' ');
+                    
+                    row.innerHTML = `
+                        <td><span class="serial-number">${escapeHtml(device.serialNumber)}</span></td>
+                        <td><span class="client-name">${escapeHtml(device.clientName)}</span></td>
+                        <td><div class="credit-options-list">${optionsHtml || '<em>No options</em>'}</div></td>
+                        <td class="actions">
+                            <button class="btn btn-primary btn-sm" onclick='editDevice(${JSON.stringify(device)})'>
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-danger btn-sm" onclick="confirmDeleteDevice('${device.deviceId}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                }
+                
                 tbody.appendChild(row);
             });
         }
@@ -1236,33 +1411,119 @@
         function clearAllFilters() {
             document.getElementById('globalSearch').value = '';
             document.getElementById('clientFilter').value = '';
-            document.getElementById('businessModelFilter').value = '';
             applyFilters();
         }
 
         function openAddModal() {
             currentEditingDevice = null;
             selectedClientId = null;
-            document.getElementById('modalTitle').textContent = 'Add Device';
+            document.getElementById('modalTitle').textContent = `Add ${currentBusinessType} Device`;
             document.getElementById('saveBtn').innerHTML = '<i class="fas fa-save"></i> Save Device';
             document.getElementById('deviceForm').reset();
+            
+            document.getElementById('postpaidFields').style.display = 'none';
+            document.getElementById('prepaidFields').style.display = 'none';
+            
+            if (currentBusinessType === 'Postpaid') {
+                document.getElementById('postpaidFields').style.display = 'block';
+                document.getElementById('chargesPerCredit').required = true;
+            } else if (currentBusinessType === 'Prepaid') {
+                document.getElementById('prepaidFields').style.display = 'block';
+                document.getElementById('creditOptionsContainer').innerHTML = '';
+                addCreditOption();
+            }
+            
             document.getElementById('deviceModal').classList.add('show');
         }
 
-        function editDevice(deviceId) {
-            currentEditingDevice = allDevices.find(d => d.deviceId === deviceId);
-            if (!currentEditingDevice) return;
-
-            selectedClientId = currentEditingDevice.clientId;
-            document.getElementById('modalTitle').textContent = 'Edit Device';
+        function editDevice(device) {
+            currentEditingDevice = device;
+            selectedClientId = device.clientId;
+            document.getElementById('modalTitle').textContent = `Edit ${currentBusinessType} Device`;
             document.getElementById('saveBtn').innerHTML = '<i class="fas fa-save"></i> Update Device';
             
-            document.getElementById('serialNumber').value = currentEditingDevice.serialNumber;
-            document.getElementById('clientName').value = currentEditingDevice.clientName;
-            document.getElementById('businessModel').value = currentEditingDevice.businessModel;
-            document.getElementById('chargesPerCredit').value = currentEditingDevice.chargesPerCredit || '0.00';
+            document.getElementById('serialNumber').value = device.serialNumber;
+            document.getElementById('clientName').value = device.clientName;
+            
+            document.getElementById('postpaidFields').style.display = 'none';
+            document.getElementById('prepaidFields').style.display = 'none';
+            
+            if (currentBusinessType === 'Postpaid') {
+                document.getElementById('postpaidFields').style.display = 'block';
+                document.getElementById('chargesPerCredit').value = device.chargesPerCredit || '0.00';
+                document.getElementById('chargesPerCredit').required = true;
+            } else if (currentBusinessType === 'Prepaid') {
+                document.getElementById('prepaidFields').style.display = 'block';
+                document.getElementById('creditOptionsContainer').innerHTML = '';
+                
+                if (device.creditPurchaseOptions && device.creditPurchaseOptions.length > 0) {
+                    device.creditPurchaseOptions.forEach(option => {
+                        addCreditOption(option);
+                    });
+                } else {
+                    addCreditOption();
+                }
+            }
             
             document.getElementById('deviceModal').classList.add('show');
+        }
+
+        function addCreditOption(data = null) {
+            const container = document.getElementById('creditOptionsContainer');
+            const optionId = Date.now();
+            
+            const optionDiv = document.createElement('div');
+            optionDiv.className = 'credit-option-item';
+            optionDiv.id = `option-${optionId}`;
+            
+            optionDiv.innerHTML = `
+                <div class="form-group">
+                    <label>Credit Amount</label>
+                    <input type="number" class="credit-amount" min="1" step="1" value="${data ? data.creditAmount : ''}" required>
+                </div>
+                <div class="form-group">
+                    <label>Price (RM)</label>
+                    <input type="number" class="credit-price" min="0" step="0.01" value="${data ? data.price : ''}" required>
+                </div>
+                <div class="form-group">
+                    <label>Discount (%)</label>
+                    <input type="number" class="credit-discount" min="0" max="100" step="0.01" value="${data ? data.discount : '0'}" required>
+                </div>
+                <div class="form-group">
+                    <label>Final Price (RM)</label>
+                    <input type="number" class="credit-final-price" readonly value="${data ? data.priceAfterDiscount : '0.00'}">
+                </div>
+                <button type="button" class="btn-remove-option" onclick="removeCreditOption(${optionId})">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+            
+            container.appendChild(optionDiv);
+            
+            const priceInput = optionDiv.querySelector('.credit-price');
+            const discountInput = optionDiv.querySelector('.credit-discount');
+            const finalPriceInput = optionDiv.querySelector('.credit-final-price');
+            
+            function calculateFinalPrice() {
+                const price = parseFloat(priceInput.value) || 0;
+                const discount = parseFloat(discountInput.value) || 0;
+                const finalPrice = price - (price * discount / 100);
+                finalPriceInput.value = finalPrice.toFixed(2);
+            }
+            
+            priceInput.addEventListener('input', calculateFinalPrice);
+            discountInput.addEventListener('input', calculateFinalPrice);
+            
+            if (data) {
+                calculateFinalPrice();
+            }
+        }
+
+        function removeCreditOption(optionId) {
+            const option = document.getElementById(`option-${optionId}`);
+            if (option) {
+                option.remove();
+            }
         }
 
         function confirmDeleteDevice(deviceId) {
@@ -1285,12 +1546,12 @@
             google.script.run
                 .withSuccessHandler(() => {
                     showPopup('Device deleted successfully!', 'success');
-                    loadInitialData();
+                    switchTab(currentBusinessType);
                 })
                 .withFailureHandler((error) => {
                     showPopup('Error deleting device: ' + error.message, 'error');
                 })
-                .deleteDevice(deviceId);
+                .deleteDevice(deviceId, currentBusinessType);
         }
 
         function closeModal() {
@@ -1307,9 +1568,8 @@
             const saveBtn = document.getElementById('saveBtn');
             const serialNumber = document.getElementById('serialNumber').value.trim();
             const clientName = document.getElementById('clientName').value.trim();
-            const businessModel = document.getElementById('businessModel').value.trim();
 
-            if (!serialNumber || !clientName || !businessModel) {
+            if (!serialNumber || !clientName) {
                 showPopup('Please fill in all required fields', 'error');
                 return;
             }
@@ -1320,26 +1580,52 @@
                 return;
             }
 
-            if (!businessModelOptions.includes(businessModel)) {
-                showPopup('Please select a valid business model from the dropdown', 'error');
-                return;
-            }
+            const deviceData = {
+                serialNumber: serialNumber,
+                clientId: clientOption.id,
+                businessType: currentBusinessType
+            };
 
-            const chargesValue = parseFloat(document.getElementById('chargesPerCredit').value);
-            if (isNaN(chargesValue) || chargesValue < 0) {
-                showPopup('Please enter a valid positive number for charges', 'error');
-                return;
+            if (currentBusinessType === 'Postpaid') {
+                const chargesValue = parseFloat(document.getElementById('chargesPerCredit').value);
+                if (isNaN(chargesValue) || chargesValue < 0) {
+                    showPopup('Please enter a valid positive number for charges', 'error');
+                    return;
+                }
+                deviceData.chargesPerCredit = chargesValue;
+            } else if (currentBusinessType === 'Prepaid') {
+                const optionItems = document.querySelectorAll('.credit-option-item');
+                const creditPurchaseOptions = [];
+                
+                for (let item of optionItems) {
+                    const creditAmount = parseInt(item.querySelector('.credit-amount').value);
+                    const price = parseFloat(item.querySelector('.credit-price').value);
+                    const discount = parseFloat(item.querySelector('.credit-discount').value);
+                    const priceAfterDiscount = parseFloat(item.querySelector('.credit-final-price').value);
+                    
+                    if (isNaN(creditAmount) || isNaN(price) || isNaN(discount)) {
+                        showPopup('Please fill in all credit option fields correctly', 'error');
+                        return;
+                    }
+                    
+                    creditPurchaseOptions.push({
+                        creditAmount: creditAmount,
+                        price: price,
+                        discount: discount,
+                        priceAfterDiscount: priceAfterDiscount
+                    });
+                }
+                
+                if (creditPurchaseOptions.length === 0) {
+                    showPopup('Please add at least one credit purchase option', 'error');
+                    return;
+                }
+                
+                deviceData.creditPurchaseOptions = creditPurchaseOptions;
             }
 
             saveBtn.disabled = true;
             saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
-
-            const deviceData = {
-                serialNumber: serialNumber,
-                clientId: clientOption.id,
-                businessModel: businessModel,
-                chargesPerCredit: chargesValue
-            };
 
             if (currentEditingDevice) {
                 deviceData.deviceId = currentEditingDevice.deviceId;
@@ -1347,7 +1633,7 @@
                     .withSuccessHandler(() => {
                         showPopup('Device updated successfully!', 'success');
                         closeModal();
-                        loadInitialData();
+                        switchTab(currentBusinessType);
                         saveBtn.disabled = false;
                         saveBtn.innerHTML = '<i class="fas fa-save"></i> Update Device';
                     })
@@ -1362,7 +1648,7 @@
                     .withSuccessHandler(() => {
                         showPopup('Device added successfully!', 'success');
                         closeModal();
-                        loadInitialData();
+                        switchTab(currentBusinessType);
                         saveBtn.disabled = false;
                         saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Device';
                     })
@@ -1401,13 +1687,12 @@
 
         function populateDropdown(inputId, dropdownId, type, searchTerm = '') {
             const dropdown = document.getElementById(dropdownId);
-            const options = type === 'client' ? clientOptions : businessModelOptions;
+            const options = clientOptions;
             
             dropdown.innerHTML = '';
 
             const filteredOptions = options.filter(option => {
-                const text = type === 'client' ? option.name : option;
-                return text.toLowerCase().includes(searchTerm.toLowerCase());
+                return option.name.toLowerCase().includes(searchTerm.toLowerCase());
             });
 
             if (filteredOptions.length === 0) {
@@ -1423,12 +1708,10 @@
             filteredOptions.forEach(option => {
                 const div = document.createElement('div');
                 div.className = 'dropdown-option';
-                div.textContent = type === 'client' ? option.name : option;
+                div.textContent = option.name;
                 div.addEventListener('click', function() {
                     document.getElementById(inputId).value = this.textContent;
-                    if (type === 'client') {
-                        selectedClientId = option.id;
-                    }
+                    selectedClientId = option.id;
                     dropdown.style.display = 'none';
                 });
                 dropdown.appendChild(div);

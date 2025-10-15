@@ -2078,11 +2078,10 @@
             const breakdownTotal = breakdownItems.reduce((sum, item) => sum + (parseInt(item.amount) || 0), 0);
             const summary = document.getElementById('breakdownSummary');
 
-
             const types = breakdownItems.map(item => item.type);
             const hasDuplicates = new Set(types).size !== types.length;
 
-            if (breakdownTotal === creditUsed && creditUsed > 0 && !hasDuplicates) {
+            if (breakdownTotal === creditUsed && !hasDuplicates) {
                 summary.innerHTML = `<span class="breakdown-valid">✓ Breakdown total matches Credit Used: ${breakdownTotal}</span>`;
                 return true;
             } else {

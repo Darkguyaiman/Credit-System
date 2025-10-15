@@ -741,15 +741,17 @@
                             <div class="metric-label">Avg Credit Missing</div>
                         </div>
                         <div class="metric-card">
-                            <i class="fas fa-balance-scale"></i>
-                            <div class="metric-value" id="balance">0</div>
-                            <div class="metric-label">Average Credit Balance from K-Laser System</div>
+                          <i class="fas fa-wallet"></i>
+                          <div class="metric-value" id="balance">0</div>
+                          <div class="metric-label">Max Balance from K-Laser System</div>
                         </div>
+
                         <div class="metric-card">
-                            <i class="fas fa-chart-pie"></i>
-                            <div class="metric-value" id="utilised">0</div>
-                            <div class="metric-label">Average Credit Utilised by Client Report</div>
+                          <i class="fas fa-credit-card"></i>
+                          <div class="metric-value" id="utilised">0</div>
+                          <div class="metric-label">Min Credit Utilised by Client Report</div>
                         </div>
+
                     </div>
                 </div>
 
@@ -994,8 +996,9 @@
             animateValue(document.getElementById('topups'), 0, data.topups || 0, 1400);
             animateValue(document.getElementById('records'), 0, data.records || 0, 1600);
             animateValue(document.getElementById('missing'), 0, data.missing || 0, 1800);
-            animateValue(document.getElementById('balance'), 0, data.balance || 0, 2000);
-            animateValue(document.getElementById('utilised'), 0, data.utilised || 0, 2200);
+            document.getElementById('balance').textContent = data.balance || 'N/A';
+            document.getElementById('utilised').textContent = data.utilised || 'N/A';
+
 
             if (paymentChart) paymentChart.destroy();
             if (businessChart) businessChart.destroy();
