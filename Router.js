@@ -1,21 +1,22 @@
 function doGet(e) {
   const validPages = {
     "dashboard": "Dashboard-Tab",
-    "credit-management": "Credit-Management-Tab",
     "device-tab": "Device-Tab",
     "clients-tab": "Clients-Tab",
-    "settings-tab": "Settings-Tab"
+    "settings-tab": "Settings-Tab",
+    "prepaid": "Prepaid-page",
+    "postpaid": "Postpaid-page",
+    "revenue-sharing": "Revenue-Sharing-page"
   };
 
   const requestedPage = e?.parameter?.page || "dashboard";
-  let page = validPages[requestedPage] || "404";
-
+  const page = validPages[requestedPage] || "404";
   const url = ScriptApp.getService().getUrl();
 
   let template;
   try {
     template = HtmlService.createTemplateFromFile(page);
-  } catch (err) {
+  } catch {
     template = HtmlService.createTemplateFromFile("404");
   }
 
