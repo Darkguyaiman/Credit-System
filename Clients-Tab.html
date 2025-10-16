@@ -442,6 +442,94 @@
             font-size: 20px;
         }
 
+        .menu-section {
+          margin-bottom: 4px;
+        }
+
+        .menu-toggle {
+          cursor: pointer;
+          position: relative;
+          justify-content: space-between;
+        }
+
+        .menu-toggle .toggle-arrow {
+          font-size: 12px;
+          transition: transform 0.3s ease;
+          margin-left: auto;
+        }
+
+        .menu-section.expanded .menu-toggle .toggle-arrow {
+          transform: rotate(180deg);
+        }
+
+        .submenu {
+          max-height: 0;
+          overflow: hidden;
+          transition: max-height 0.3s ease;
+          background: rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-section.expanded .submenu {
+          max-height: 200px;
+        }
+
+        .submenu-item {
+          display: flex;
+          align-items: center;
+          padding: 10px 20px 10px 52px;
+          color: rgba(255, 255, 255, 0.7);
+          text-decoration: none;
+          transition: all 0.2s;
+          border-left: 3px solid transparent;
+          font-size: 14px;
+        }
+
+        .submenu-item:hover {
+          background: rgba(255, 255, 255, 0.05);
+          color: var(--white);
+        }
+
+        .submenu-item.active {
+          background: rgba(77, 129, 140, 0.2);
+          color: var(--white);
+          border-left-color: var(--light-teal);
+        }
+
+        .submenu-icon {
+          font-size: 14px;
+          width: 20px;
+          margin-right: 12px;
+        }
+
+        .submenu-text {
+          font-weight: 400;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+
+        /* Collapsed sidebar styles */
+        .sidebar.collapsed .submenu {
+          display: none;
+        }
+
+        .sidebar.collapsed .menu-toggle .toggle-arrow {
+          display: none;
+        }
+
+        .sidebar.collapsed .submenu-item {
+          padding: 12px 0;
+          justify-content: center;
+        }
+
+        .sidebar.collapsed .submenu-text {
+          display: none;
+        }
+
+        .sidebar.collapsed .submenu-icon {
+          margin-right: 0;
+          font-size: 16px;
+        }
+
         /* Main Content Styles */
         .main-content {
             flex: 1;
@@ -557,10 +645,27 @@
                 <i class="fas fa-home menu-icon"></i>
                 <span class="menu-text">Dashboard</span>
             </a>
-            <a href="<?= baseUrl ?>?page=credit-management" class="menu-item" target="_top">
+            <div class="menu-section">
+              <div class="menu-item menu-toggle" id="creditManagementToggle">
                 <i class="fas fa-credit-card menu-icon"></i>
                 <span class="menu-text">Credit Management</span>
-            </a>
+                <i class="fas fa-chevron-down toggle-arrow"></i>
+              </div>
+              <div class="submenu" id="creditManagementSubmenu">
+                <a href="<?= baseUrl ?>?page=postpaid" class="submenu-item" target="_top">
+                  <i class="fas fa-file-invoice-dollar submenu-icon"></i>
+                  <span class="submenu-text">Postpaid</span>
+                </a>
+                <a href="<?= baseUrl ?>?page=prepaid" class="submenu-item" target="_top">
+                  <i class="fas fa-money-bill-wave submenu-icon"></i>
+                  <span class="submenu-text">Prepaid</span>
+                </a>
+                <a href="<?= baseUrl ?>?page=revenue-sharing" class="submenu-item" target="_top">
+                  <i class="fas fa-chart-pie submenu-icon"></i>
+                  <span class="submenu-text">Revenue Sharing</span>
+                </a>
+              </div>
+            </div>
             <a href="<?= baseUrl ?>?page=device-tab" class="menu-item" target="_top">
                 <i class="fas fa-laptop menu-icon"></i>
                 <span class="menu-text">Devices</span>
@@ -701,48 +806,70 @@
         let pendingAction = null;
 
         document.addEventListener('DOMContentLoaded', function() {
-            const sidebar = document.getElementById('sidebar');
-            const mainContent = document.getElementById('mainContent');
-            const toggleBtn = document.getElementById('toggleSidebar');
-            const mobileToggle = document.getElementById('mobileToggle');
-            const overlay = document.getElementById('overlay');
+          const sidebar = document.getElementById('sidebar');
+          const mainContent = document.getElementById('mainContent');
+          const toggleBtn = document.getElementById('toggleSidebar');
+          const mobileToggle = document.getElementById('mobileToggle');
+          const overlay = document.getElementById('overlay');
+          
+          // Credit Management toggle functionality
+          const creditManagementToggle = document.getElementById('creditManagementToggle');
+          const creditManagementSubmenu = document.getElementById('creditManagementSubmenu');
+          const menuSection = creditManagementToggle.closest('.menu-section');
 
+          creditManagementToggle.addEventListener('click', function(e) {
+            // Don't toggle if sidebar is collapsed
+            if (sidebar.classList.contains('collapsed')) return;
+            
+            menuSection.classList.toggle('expanded');
+            
+            // Save state to localStorage
+            const isExpanded = menuSection.classList.contains('expanded');
+            localStorage.setItem('creditManagementExpanded', isExpanded);
+          });
 
-            toggleBtn.addEventListener('click', function() {
-                sidebar.classList.toggle('collapsed');
-                mainContent.classList.toggle('expanded');
+          // Load saved state from localStorage
+          const creditManagementExpanded = localStorage.getItem('creditManagementExpanded') === 'true';
+          if (creditManagementExpanded && !sidebar.classList.contains('collapsed')) {
+            menuSection.classList.add('expanded');
+          }
 
+          // Existing sidebar toggle functionality
+          toggleBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
 
-                const isCollapsed = sidebar.classList.contains('collapsed');
-                localStorage.setItem('sidebarCollapsed', isCollapsed);
-            });
-
-
-            mobileToggle.addEventListener('click', function() {
-                sidebar.classList.add('mobile-open');
-                overlay.classList.add('active');
-            });
-
-
-            overlay.addEventListener('click', function() {
-                sidebar.classList.remove('mobile-open');
-                overlay.classList.remove('active');
-            });
-
-
-            const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-            if (sidebarCollapsed) {
-                sidebar.classList.add('collapsed');
-                mainContent.classList.add('expanded');
+            const isCollapsed = sidebar.classList.contains('collapsed');
+            localStorage.setItem('sidebarCollapsed', isCollapsed);
+            
+            // Close submenu when sidebar collapses
+            if (isCollapsed) {
+              menuSection.classList.remove('expanded');
             }
+          });
 
+          mobileToggle.addEventListener('click', function() {
+            sidebar.classList.add('mobile-open');
+            overlay.classList.add('active');
+          });
 
-            window.addEventListener('resize', function() {
-                if (window.innerWidth > 768) {
-                    sidebar.classList.remove('mobile-open');
-                    overlay.classList.remove('active');
-                }
-            });
+          overlay.addEventListener('click', function() {
+            sidebar.classList.remove('mobile-open');
+            overlay.classList.remove('active');
+          });
+
+          const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+          if (sidebarCollapsed) {
+            sidebar.classList.add('collapsed');
+            mainContent.classList.add('expanded');
+          }
+
+          window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+              sidebar.classList.remove('mobile-open');
+              overlay.classList.remove('active');
+            }
+          });
         });
 
         window.onload = function() {
