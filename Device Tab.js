@@ -29,23 +29,27 @@ function getDeviceDataByType(businessType) {
     } else {
       throw new Error('Invalid business type');
     }
-    
+
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
-    
-    if (!sheet) {
-      throw new Error('Sheet named "' + sheetName + '" not found');
-    }
-    
+    if (!sheet) throw new Error('Sheet named "' + sheetName + '" not found');
+
     const lastRow = sheet.getLastRow();
-    
-    if (lastRow < 2) {
-      return [];
+    if (lastRow < 2) return [];
+
+    let lastCol;
+    let balanceColIndex;
+
+    if (businessType === 'Prepaid' || businessType === 'Postpaid') {
+      lastCol = 6;
+      balanceColIndex = 5;
+    } else if (businessType === 'Revenue Sharing') {
+      lastCol = 5;
+      balanceColIndex = 4;
     }
-    
-    const lastCol = businessType === 'Prepaid' || businessType === 'Postpaid' ? 5 : 4;
+
     const dataRange = sheet.getRange(2, 1, lastRow - 1, lastCol);
     const values = dataRange.getValues();
-    
+
     const devices = values
       .filter(row => row[0] && row[0].toString().trim() !== '')
       .map(row => {
@@ -53,9 +57,10 @@ function getDeviceDataByType(businessType) {
           deviceId: row[0] ? row[0].toString() : '',
           serialNumber: row[1] ? row[1].toString() : '',
           clientId: row[2] ? row[2].toString() : '',
-          clientName: row[3] ? row[3].toString() : ''
+          clientName: row[3] ? row[3].toString() : '',
+          totalBalance: row[balanceColIndex] ? parseFloat(row[balanceColIndex]) || 0 : 0
         };
-        
+
         if (businessType === 'Postpaid') {
           device.chargesPerCredit = row[4] ? parseFloat(row[4]) || 0 : 0;
         } else if (businessType === 'Prepaid') {
@@ -65,17 +70,18 @@ function getDeviceDataByType(businessType) {
             device.creditPurchaseOptions = [];
           }
         }
-        
+
         return device;
       });
-    
+
     return devices;
-    
+
   } catch (error) {
     console.error('Error in getDeviceDataByType:', error);
     throw new Error('Failed to load device data: ' + error.message);
   }
 }
+
 
 function getClientData() {
   try {

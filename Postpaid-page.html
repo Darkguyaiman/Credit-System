@@ -49,25 +49,24 @@
         }
 
         .header {
-            background: var(--dark-navy);
+            background: linear-gradient(135deg, var(--dark-navy) 0%, var(--medium-teal) 100%);
             color: var(--white);
             padding: 30px;
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .header h1 {
             font-size: 28px;
             font-weight: 600;
-            margin-bottom: 8px;
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 12px;
         }
 
-        .header p {
-            opacity: 0.9;
-            font-size: 16px;
+        .header h1 i {
+            font-size: 32px;
         }
 
         .content {
@@ -1000,10 +999,10 @@
     <main class="main-content" id="mainContent">
     <div class="container">
         <div class="header">
-            <h1>
-                <i class="fas fa-credit-card"></i>
-                Credit Management Tab
-            </h1>
+                <h1>
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    Postpaid
+                </h1>
         </div>
 
         <div class="content">

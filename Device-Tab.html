@@ -1251,29 +1251,29 @@
           const mobileToggle = document.getElementById('mobileToggle');
           const overlay = document.getElementById('overlay');
           
-          // Credit Management toggle functionality
+
           const creditManagementToggle = document.getElementById('creditManagementToggle');
           const creditManagementSubmenu = document.getElementById('creditManagementSubmenu');
           const menuSection = creditManagementToggle.closest('.menu-section');
 
           creditManagementToggle.addEventListener('click', function(e) {
-            // Don't toggle if sidebar is collapsed
+
             if (sidebar.classList.contains('collapsed')) return;
             
             menuSection.classList.toggle('expanded');
             
-            // Save state to localStorage
+
             const isExpanded = menuSection.classList.contains('expanded');
             localStorage.setItem('creditManagementExpanded', isExpanded);
           });
 
-          // Load saved state from localStorage
+
           const creditManagementExpanded = localStorage.getItem('creditManagementExpanded') === 'true';
           if (creditManagementExpanded && !sidebar.classList.contains('collapsed')) {
             menuSection.classList.add('expanded');
           }
 
-          // Existing sidebar toggle functionality
+
           toggleBtn.addEventListener('click', function() {
             sidebar.classList.toggle('collapsed');
             mainContent.classList.toggle('expanded');
@@ -1281,7 +1281,7 @@
             const isCollapsed = sidebar.classList.contains('collapsed');
             localStorage.setItem('sidebarCollapsed', isCollapsed);
             
-            // Close submenu when sidebar collapses
+
             if (isCollapsed) {
               menuSection.classList.remove('expanded');
             }
@@ -1444,19 +1444,21 @@
             const thead = document.getElementById('tableHeader');
             
             if (currentBusinessType === 'Revenue Sharing') {
-                thead.innerHTML = `
-                    <tr>
-                        <th><i class="fas fa-barcode"></i> Device Serial Number</th>
-                        <th><i class="fas fa-user"></i> Client Name</th>
-                        <th><i class="fas fa-cogs"></i> Actions</th>
-                    </tr>
-                `;
+              thead.innerHTML = `
+                <tr>
+                  <th><i class="fas fa-barcode"></i> Device Serial Number</th>
+                  <th><i class="fas fa-user"></i> Client Name</th>
+                  <th><i class="fas fa-coins"></i> Total Device Balance</th>
+                  <th><i class="fas fa-cogs"></i> Actions</th>
+                </tr>
+              `;
             } else if (currentBusinessType === 'Postpaid') {
                 thead.innerHTML = `
                     <tr>
                         <th><i class="fas fa-barcode"></i> Device Serial Number</th>
                         <th><i class="fas fa-user"></i> Client Name</th>
                         <th><i class="fas fa-money-bill"></i> Charges per Credit (RM)</th>
+                        <th><i class="fas fa-coins"></i> Total Device Balance</th>
                         <th><i class="fas fa-cogs"></i> Actions</th>
                     </tr>
                 `;
@@ -1466,6 +1468,7 @@
                         <th><i class="fas fa-barcode"></i> Device Serial Number</th>
                         <th><i class="fas fa-user"></i> Client Name</th>
                         <th><i class="fas fa-tags"></i> Credit Purchase Options</th>
+                        <th><i class="fas fa-coins"></i> Total Device Balance</th>
                         <th><i class="fas fa-cogs"></i> Actions</th>
                     </tr>
                 `;
@@ -1495,6 +1498,7 @@
                     row.innerHTML = `
                         <td><span class="serial-number">${escapeHtml(device.serialNumber)}</span></td>
                         <td><span class="client-name">${escapeHtml(device.clientName)}</span></td>
+                        <td><span class="text">${device.totalBalance || 0}</span></td>
                         <td class="actions">
                             <button class="btn btn-primary btn-sm" onclick='editDevice(${JSON.stringify(device)})'>
                                 <i class="fas fa-edit"></i> Edit
@@ -1509,6 +1513,7 @@
                         <td><span class="serial-number">${escapeHtml(device.serialNumber)}</span></td>
                         <td><span class="client-name">${escapeHtml(device.clientName)}</span></td>
                         <td><span class="charges">RM ${formatCurrency(device.chargesPerCredit || 0)}</span></td>
+                        <td><span class="text">${device.totalBalance || 0}</span></td>
                         <td class="actions">
                             <button class="btn btn-primary btn-sm" onclick='editDevice(${JSON.stringify(device)})'>
                                 <i class="fas fa-edit"></i> Edit
@@ -1527,6 +1532,7 @@
                         <td><span class="serial-number">${escapeHtml(device.serialNumber)}</span></td>
                         <td><span class="client-name">${escapeHtml(device.clientName)}</span></td>
                         <td><div class="credit-options-list">${optionsHtml || '<em>No options</em>'}</div></td>
+                        <td><span class="text">${device.totalBalance || 0}</span></td>
                         <td class="actions">
                             <button class="btn btn-primary btn-sm" onclick='editDevice(${JSON.stringify(device)})'>
                                 <i class="fas fa-edit"></i> Edit
@@ -1554,10 +1560,11 @@
             document.getElementById('modalTitle').textContent = `Add ${currentBusinessType} Device`;
             document.getElementById('saveBtn').innerHTML = '<i class="fas fa-save"></i> Save Device';
             document.getElementById('deviceForm').reset();
-            
+
             document.getElementById('postpaidFields').style.display = 'none';
             document.getElementById('prepaidFields').style.display = 'none';
-            
+            document.querySelectorAll('#postpaidFields [required], #prepaidFields [required]').forEach(el => el.required = false);
+
             if (currentBusinessType === 'Postpaid') {
                 document.getElementById('postpaidFields').style.display = 'block';
                 document.getElementById('chargesPerCredit').required = true;
@@ -1565,8 +1572,9 @@
                 document.getElementById('prepaidFields').style.display = 'block';
                 document.getElementById('creditOptionsContainer').innerHTML = '';
                 addCreditOption();
+                document.querySelectorAll('#prepaidFields input').forEach(el => el.required = true);
             }
-            
+
             document.getElementById('deviceModal').classList.add('show');
         }
 
@@ -1575,13 +1583,14 @@
             selectedClientId = device.clientId;
             document.getElementById('modalTitle').textContent = `Edit ${currentBusinessType} Device`;
             document.getElementById('saveBtn').innerHTML = '<i class="fas fa-save"></i> Update Device';
-            
+
             document.getElementById('serialNumber').value = device.serialNumber;
             document.getElementById('clientName').value = device.clientName;
-            
+
             document.getElementById('postpaidFields').style.display = 'none';
             document.getElementById('prepaidFields').style.display = 'none';
-            
+            document.querySelectorAll('#postpaidFields [required], #prepaidFields [required]').forEach(el => el.required = false);
+
             if (currentBusinessType === 'Postpaid') {
                 document.getElementById('postpaidFields').style.display = 'block';
                 document.getElementById('chargesPerCredit').value = device.chargesPerCredit || '0.00';
@@ -1589,18 +1598,17 @@
             } else if (currentBusinessType === 'Prepaid') {
                 document.getElementById('prepaidFields').style.display = 'block';
                 document.getElementById('creditOptionsContainer').innerHTML = '';
-                
                 if (device.creditPurchaseOptions && device.creditPurchaseOptions.length > 0) {
-                    device.creditPurchaseOptions.forEach(option => {
-                        addCreditOption(option);
-                    });
+                    device.creditPurchaseOptions.forEach(option => addCreditOption(option));
                 } else {
                     addCreditOption();
                 }
+                document.querySelectorAll('#prepaidFields input').forEach(el => el.required = true);
             }
-            
+
             document.getElementById('deviceModal').classList.add('show');
         }
+
 
         function addCreditOption(data = null) {
             const container = document.getElementById('creditOptionsContainer');

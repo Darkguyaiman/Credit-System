@@ -53,6 +53,9 @@ function getPrepaidDevices() {
   }
 }
 
+
+
+
 function addPrepaidRecord(data) {
   try {
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('(CM) Prepaid');
@@ -62,14 +65,20 @@ function addPrepaidRecord(data) {
     let nextRow = colA.findIndex(r => !r[0]) + 2;
     if (nextRow < 2) nextRow = sheet.getLastRow() + 1;
 
-    const topUpJSON = data.topUp ? JSON.stringify(data.topUp) : '';
+    const topUp = data.topUp || {};
+    const creditAmount = Number(topUp.creditAmount || 0);
+    const priceAfterDiscount = Number(topUp.priceAfterDiscount || 0);
+    const topUpJSON = Object.keys(topUp).length ? JSON.stringify(topUp) : '';
+
+    const newBalance = Number(data.balance || 0) + creditAmount;
 
     sheet.getRange(nextRow, 1).setValue(new Date());
     sheet.getRange(nextRow, 2).setValue(data.clientId);
-    sheet.getRange(nextRow, 3).setValue(data.clientName);
     sheet.getRange(nextRow, 4).setValue(data.deviceId);
-    sheet.getRange(nextRow, 6).setValue(data.balance);
+    sheet.getRange(nextRow, 6).setValue(data.balance); 
     sheet.getRange(nextRow, 7).setValue(topUpJSON);
+    sheet.getRange(nextRow, 10).setValue(priceAfterDiscount); 
+    sheet.getRange(nextRow, 11).setValue(newBalance); 
 
     const paymentDate = data.paymentDate ? new Date(data.paymentDate) : '';
     const paymentStatus = paymentDate ? 'Paid' : (data.paymentStatus || '');
@@ -87,13 +96,20 @@ function updatePrepaidRecord(rowIndex, data) {
     if (!sheet) throw new Error('Sheet "(CM) Prepaid" not found.');
 
     const sheetRow = rowIndex + 2;
-    const topUpJSON = data.topUp ? JSON.stringify(data.topUp) : '';
+
+    const topUp = data.topUp || {};
+    const creditAmount = Number(topUp.creditAmount || 0);
+    const priceAfterDiscount = Number(topUp.priceAfterDiscount || 0);
+    const topUpJSON = Object.keys(topUp).length ? JSON.stringify(topUp) : '';
+
+    const newBalance = Number(data.balance || 0) + creditAmount;
 
     sheet.getRange(sheetRow, 2).setValue(data.clientId);
-    sheet.getRange(sheetRow, 3).setValue(data.clientName);
     sheet.getRange(sheetRow, 4).setValue(data.deviceId);
     sheet.getRange(sheetRow, 6).setValue(data.balance);
     sheet.getRange(sheetRow, 7).setValue(topUpJSON);
+    sheet.getRange(sheetRow, 10).setValue(priceAfterDiscount);
+    sheet.getRange(sheetRow, 11).setValue(newBalance);
 
     const paymentDate = data.paymentDate ? new Date(data.paymentDate) : '';
     const paymentStatus = paymentDate ? 'Paid' : (data.paymentStatus || '');

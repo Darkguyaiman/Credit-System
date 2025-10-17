@@ -7,7 +7,6 @@
     <title>Credit Management</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
     <style>
         :root {
@@ -49,25 +48,24 @@
         }
 
         .header {
-            background: var(--dark-navy);
+            background: linear-gradient(135deg, var(--dark-navy) 0%, var(--medium-teal) 100%);
             color: var(--white);
             padding: 30px;
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .header h1 {
             font-size: 28px;
             font-weight: 600;
-            margin-bottom: 8px;
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 12px;
         }
 
-        .header p {
-            opacity: 0.9;
-            font-size: 16px;
+        .header h1 i {
+            font-size: 32px;
         }
 
         .content {
@@ -255,6 +253,7 @@
         th:nth-child(7), td:nth-child(7) { width: 130px; }
         th:nth-child(8), td:nth-child(8) { width: 140px; }
         th:nth-child(9), td:nth-child(9) { width: 100px; }
+        th:nth-child(10), td:nth-child(10) { width: 100px; }
 
         .status-badge {
             padding: 4px 8px;
@@ -957,10 +956,10 @@
     <main class="main-content" id="mainContent">
     <div class="container">
         <div class="header">
-            <h1>
-                <i class="fas fa-credit-card"></i>
-                Credit Management Tab
-            </h1>
+                <h1>
+                    <i class="fas fa-money-bill-wave"></i>
+                    Prepaid
+                </h1>
         </div>
 
         <div class="content">
@@ -1079,6 +1078,7 @@
                             <th>Payment Date</th>
                             <th>Payment Status</th>
                             <th>Total Charges (RM)</th>
+                            <th>Current Balance</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -1570,6 +1570,7 @@
                     <td>${formatDate(row[7])}</td>
                     <td>${formatStatus(row[8])}</td>
                     <td><strong>${formatCurrency(row[9], true)}</strong></td>
+                    <td>${formatNumber(row[10], true)}</td>
                     <td>
                         <div class="action-buttons">
                             <button class="btn btn-primary btn-sm" onclick="editRecord(${allData.indexOf(row)})">
@@ -1860,7 +1861,8 @@
                     'Top Up Amount': row[6] || 0,
                     'Payment Date': formatDate(row[7]),
                     'Payment Status': row[8] || '',
-                    'Total Charges (RM)': row[9] || 0
+                    'Total Charges (RM)': row[9] || 0,
+                    'Current Balance': row[10] || 0
                 }));
 
                 const wb = XLSX.utils.book_new();
@@ -1994,9 +1996,9 @@
             
             if (paymentDate) {
                 paymentStatus.value = 'Paid';
-                paymentStatus.disabled = true; // lock status
+                paymentStatus.disabled = true; 
             } else {
-                paymentStatus.disabled = false; // allow changes again if date removed
+                paymentStatus.disabled = false; 
             }
         }
 
