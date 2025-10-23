@@ -6,25 +6,52 @@ function doGet() {
     .addMetaTag('viewport', 'width=device-width, initial-scale=1');
 }
 
-function getRevenueSharingData() {
+function getRevenueSharingDataMonthly() {
   try {
-    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    const sheet = spreadsheet.getSheetByName('(CM) Revenue Sharing');
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('(CM) Revenue Sharing');
     if (!sheet) return JSON.stringify([]);
-    
+
     const lastRow = sheet.getLastRow();
-    const lastCol = 9; 
-    
+    const lastCol = 9;
     if (lastRow < 2) return JSON.stringify([]);
-    
+
     const dataRange = sheet.getRange(2, 1, lastRow - 1, lastCol);
     const values = dataRange.getValues();
-    
-    const filteredData = values.filter(row => row.some(cell => cell !== null && cell !== undefined && cell !== ''));
-    
+
+    const filteredData = values.filter(row => {
+      const timestamp = row[0];
+      const topUp = parseFloat(row[7]) || 0;
+      return timestamp && topUp === 0;
+    });
+
     return JSON.stringify(filteredData);
   } catch (error) {
-    console.error('Error in getRevenueSharingData:', error);
+    console.error('Error in getRevenueSharingDataMonthly:', error);
+    return JSON.stringify([]);
+  }
+}
+
+
+function getRevenueSharingDataTopUp() {
+  try {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('(CM) Revenue Sharing');
+    if (!sheet) return JSON.stringify([]);
+
+    const lastRow = sheet.getLastRow();
+    const lastCol = 9;
+    if (lastRow < 2) return JSON.stringify([]);
+
+    const dataRange = sheet.getRange(2, 1, lastRow - 1, lastCol);
+    const values = dataRange.getValues();
+
+    const filteredData = values.filter(row => {
+      const topUp = parseFloat(row[7]) || 0;
+      return topUp !== 0;
+    });
+
+    return JSON.stringify(filteredData);
+  } catch (error) {
+    console.error('Error in getRevenueSharingDataTopUp:', error);
     return JSON.stringify([]);
   }
 }

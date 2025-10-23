@@ -563,7 +563,7 @@
         }
 
         .menu-section.expanded .submenu {
-          max-height: 200px;
+          max-height: 300px;
         }
 
         .submenu-item {
@@ -759,20 +759,46 @@
                 <span class="menu-text">Credit Management</span>
                 <i class="fas fa-chevron-down toggle-arrow"></i>
               </div>
-              <div class="submenu" id="creditManagementSubmenu">
-                <a href="<?= baseUrl ?>?page=postpaid" class="submenu-item" target="_top">
-                  <i class="fas fa-file-invoice-dollar submenu-icon"></i>
-                  <span class="submenu-text">Postpaid</span>
-                </a>
-                <a href="<?= baseUrl ?>?page=prepaid" class="submenu-item" target="_top">
-                  <i class="fas fa-money-bill-wave submenu-icon"></i>
-                  <span class="submenu-text">Prepaid</span>
-                </a>
-                <a href="<?= baseUrl ?>?page=revenue-sharing" class="submenu-item" target="_top">
-                  <i class="fas fa-chart-pie submenu-icon"></i>
-                  <span class="submenu-text">Revenue Sharing</span>
-                </a>
-              </div>
+                <div class="submenu" id="creditManagementSubmenu">
+                    <div class="menu-section">
+                      <a href="<?= baseUrl ?>?page=prepaid" class="menu-item" target="_top">
+                        <i class="fas fa-money-bill-wave menu-icon"></i>
+                        <span class="menu-text">Prepaid</span>
+                      </a>
+                    </div>
+                    <div class="menu-section">
+                      <div class="menu-item" style="cursor: default;">
+                        <i class="fas fa-file-invoice-dollar menu-icon"></i>
+                        <span class="menu-text">Postpaid</span>
+                      </div>
+                      <div class="submenu always-open">
+                        <a href="<?= baseUrl ?>?page=postpaid-monthly" class="submenu-item" target="_top">
+                          <i class="fas fa-calendar-alt submenu-icon"></i>
+                          <span class="submenu-text">Monthly Report</span>
+                        </a>
+                        <a href="<?= baseUrl ?>?page=postpaid-topup" class="submenu-item" target="_top">
+                          <i class="fas fa-coins submenu-icon"></i>
+                          <span class="submenu-text">Top Up</span>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="menu-section">
+                      <div class="menu-item" style="cursor: default;">
+                        <i class="fas fa-chart-pie menu-icon"></i>
+                        <span class="menu-text">Revenue Sharing</span>
+                      </div>
+                      <div class="submenu always-open">
+                        <a href="<?= baseUrl ?>?page=revenue-sharing-monthly" class="submenu-item" target="_top">
+                          <i class="fas fa-calendar-alt submenu-icon"></i>
+                          <span class="submenu-text">Monthly Report</span>
+                        </a>
+                        <a href="<?= baseUrl ?>?page=revenue-sharing-topup" class="submenu-item" target="_top">
+                          <i class="fas fa-coins submenu-icon"></i>
+                          <span class="submenu-text">Top Up</span>
+                        </a>
+                      </div>
+                    </div>
+                </div>
             </div>
             <a href="<?= baseUrl ?>?page=device-tab" class="menu-item" target="_top">
                 <i class="fas fa-laptop menu-icon"></i>
@@ -840,7 +866,7 @@
                             <div class="metric-value" id="records">0</div>
                             <div class="metric-label">Credit Records</div>
                         </div>
-                        <div class="metric-card">
+                        <div class="metric-card" style="display: none;">
                             <i class="fas fa-exclamation-triangle"></i>
                             <div class="metric-value" id="missing">0</div>
                             <div class="metric-label">Avg Credit Missing</div>

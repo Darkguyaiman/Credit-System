@@ -5,11 +5,17 @@ function doGet(e) {
     "clients-tab": "Clients-Tab",
     "settings-tab": "Settings-Tab",
     "prepaid": "Prepaid-page",
-    "postpaid": "Postpaid-page",
-    "revenue-sharing": "Revenue-Sharing-page"
+
+    // Postpaid
+    "postpaid-monthly": "Postpaid-Monthly",
+    "postpaid-topup": "Postpaid-TopUp",
+
+    // Revenue Sharing
+    "revenue-sharing-monthly": "Revenue-Sharing-Monthly",
+    "revenue-sharing-topup": "Revenue-Sharing-TopUp"
   };
 
-  const requestedPage = e?.parameter?.page || "dashboard";
+  const requestedPage = (e?.parameter?.page || "dashboard").toLowerCase();
   const page = validPages[requestedPage] || "404";
   const url = ScriptApp.getService().getUrl();
 

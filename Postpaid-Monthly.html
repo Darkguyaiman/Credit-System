@@ -7,6 +7,7 @@
     <title>Credit Management</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
     <style>
         :root {
@@ -122,7 +123,7 @@
             font-size: 14px;
             font-family: 'Inter', sans-serif;
             background: var(--white);
-            min-width: 150px;
+            cursor: pointer;
             transition: border-color 0.3s ease;
         }
 
@@ -131,45 +132,72 @@
             border-color: var(--light-teal);
         }
 
-        .date-filter-section {
-            background: var(--light-gray);
-            padding: 15px;
+        .btn {
+            padding: 10px 20px;
+            border: none;
             border-radius: 8px;
-            margin-bottom: 20px;
-            border: 2px solid var(--border-gray);
-        }
-
-        .date-filter-title {
             font-size: 14px;
-            font-weight: 600;
-            color: var(--text-dark);
-            margin-bottom: 10px;
-            display: flex;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
             align-items: center;
             gap: 8px;
-        }
-
-        .date-filter-controls {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .date-input {
-            padding: 10px 15px;
-            border: 2px solid var(--border-gray);
-            border-radius: 8px;
-            font-size: 14px;
             font-family: 'Inter', sans-serif;
-            background: var(--white);
-            min-width: 150px;
-            transition: border-color 0.3s ease;
         }
 
-        .date-input:focus {
-            outline: none;
-            border-color: var(--light-teal);
+        .btn-primary {
+            background: var(--light-teal);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: var(--medium-teal);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(77, 129, 140, 0.3);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: var(--white);
+        }
+
+        .btn-success:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--text-light);
+            color: var(--white);
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: var(--white);
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .btn-loading {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .btn-disabled {
+            pointer-events: none;
         }
 
         .stats {
@@ -187,6 +215,7 @@
             align-items: center;
             gap: 10px;
             min-width: 150px;
+            margin-top: 20px;
         }
 
         .stat-card i {
@@ -206,13 +235,13 @@
             margin-top: 2px;
         }
 
-      .table-container {
-          overflow-x: auto;
-          overflow-y: auto;
-          max-width: 170vh;
-          border-radius: 8px;
-          border: 1px solid var(--border-gray);
-      }
+        .table-container {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border-gray);
+            max-height: 600px;
+            overflow-y: auto;
+        }
 
         table {
             width: 100%;
@@ -251,9 +280,14 @@
         th:nth-child(5), td:nth-child(5) { width: 130px; }
         th:nth-child(6), td:nth-child(6) { width: 120px; }
         th:nth-child(7), td:nth-child(7) { width: 130px; }
-        th:nth-child(8), td:nth-child(8) { width: 140px; }
-        th:nth-child(9), td:nth-child(9) { width: 100px; }
-        th:nth-child(10), td:nth-child(10) { width: 100px; }
+        th:nth-child(8), td:nth-child(8) { width: 200px; }
+        th:nth-child(9), td:nth-child(9) { width: 180px; }
+        th:nth-child(10), td:nth-child(10) { width: 140px; }
+        th:nth-child(11), td:nth-child(11) { width: 150px; }
+        th:nth-child(12), td:nth-child(12) { width: 160px; }
+        th:nth-child(13), td:nth-child(13) { width: 140px; }
+        th:nth-child(14), td:nth-child(14) { width: 140px; }
+        th:nth-child(15), td:nth-child(15) { width: 100px; }
 
         .status-badge {
             padding: 4px 8px;
@@ -278,6 +312,51 @@
             color: var(--danger);
         }
 
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-light);
+        }
+
+        .loading i {
+            font-size: 48px;
+            animation: spin 1s linear infinite;
+            color: var(--light-teal);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading p {
+            margin-top: 15px;
+            font-size: 16px;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-light);
+        }
+
+        .no-data i {
+            font-size: 64px;
+            color: var(--border-gray);
+            margin-bottom: 20px;
+        }
+
+        .no-data h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -286,32 +365,66 @@
             top: 0;
             width: 100%;
             height: 100%;
+            overflow: auto;
             background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .modal-content {
             background-color: var(--white);
             margin: 5% auto;
-            padding: 0;
-            border-radius: 12px;
+            border-radius: 16px;
             width: 90%;
             max-width: 800px;
-            max-height: 90vh;
-            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .modal-header {
             background: var(--dark-navy);
             color: var(--white);
-            padding: 20px;
-            border-radius: 12px 12px 0 0;
+            padding: 20px 30px;
+            border-radius: 16px 16px 0 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
+        .modal-header h2 {
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .close {
+            color: var(--white);
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: var(--light-teal);
+        }
+
         .modal-body {
-            padding: 20px;
+            padding: 30px;
         }
 
         .form-group {
@@ -350,105 +463,82 @@
             flex: 1;
         }
 
-        .close {
+        .breakdown-builder {
+            border: 2px solid var(--border-gray);
+            border-radius: 8px;
+            padding: 15px;
+            background: var(--light-gray);
+        }
+
+        .breakdown-item {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .breakdown-item select {
+            flex: 1;
+            padding: 8px;
+            border: 2px solid var(--border-gray);
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .breakdown-item input {
+            flex: 1;
+            padding: 8px;
+            border: 2px solid var(--border-gray);
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .breakdown-item button {
+            padding: 8px 12px;
+            background: var(--danger);
             color: var(--white);
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .close:hover {
-            opacity: 0.7;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: var(--text-light);
-        }
-
-        .loading i {
-            font-size: 24px;
-            margin-bottom: 12px;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .no-data {
-            text-align: center;
-            padding: 40px;
-            color: var(--text-light);
-        }
-
-        .no-data i {
-            font-size: 48px;
-            margin-bottom: 15px;
-            opacity: 0.5;
-        }
-
-        .btn {
-            padding: 10px 16px;
             border: none;
             border-radius: 6px;
-            font-size: 13px;
-            font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
+            transition: background 0.3s ease;
+        }
+
+        .breakdown-item button:hover {
+            background: #c82333;
+        }
+
+        .breakdown-summary {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .breakdown-valid {
+            color: var(--success);
+        }
+
+        .breakdown-error {
+            color: var(--danger);
+        }
+
+        .breakdown-chips {
+            display: flex;
+            flex-wrap: wrap;
             gap: 6px;
-            text-decoration: none;
         }
 
-        .btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .btn-primary {
+        .breakdown-chip {
             background: var(--light-teal);
             color: var(--white);
-        }
-
-        .btn-success {
-            background: var(--success);
-            color: var(--white);
-        }
-
-        .btn-secondary {
-            background: var(--text-light);
-            color: var(--white);
-        }
-
-        .btn-export {
-            background: #28a745;
-            color: var(--white);
-        }
-
-        .btn-export:hover {
-            background: #218838;
-        }
-
-        .btn-sm {
-            padding: 6px 10px;
+            padding: 4px 10px;
+            border-radius: 12px;
             font-size: 11px;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 5px;
+            font-weight: 500;
         }
 
         .searchable-dropdown {
             position: relative;
-        }
-
-        .searchable-dropdown input {
-            cursor: pointer;
         }
 
         .dropdown-options {
@@ -456,12 +546,12 @@
             top: 100%;
             left: 0;
             right: 0;
+            max-height: 200px;
+            overflow-y: auto;
             background: var(--white);
             border: 2px solid var(--border-gray);
             border-top: none;
             border-radius: 0 0 6px 6px;
-            max-height: 200px;
-            overflow-y: auto;
             z-index: 100;
             display: none;
         }
@@ -469,64 +559,25 @@
         .dropdown-option {
             padding: 10px;
             cursor: pointer;
-            border-bottom: 1px solid var(--border-gray);
+            transition: background 0.2s ease;
         }
 
         .dropdown-option:hover {
             background: var(--light-gray);
         }
 
-        .dropdown-option:last-child {
-            border-bottom: none;
+        .dropdown-option strong {
+            display: block;
+            color: var(--text-dark);
         }
 
-        @media (max-width: 768px) {
-            .controls {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .search-box {
-                min-width: auto;
-            }
-
-            .filter-group {
-                justify-content: center;
-            }
-
-            .stats {
-                justify-content: center;
-            }
-
-            .stat-card {
-                min-width: auto;
-                flex: 1;
-            }
-
-            .form-row {
-                flex-direction: column;
-            }
-
-            .modal-content {
-                width: 95%;
-                margin: 2% auto;
-            }
+        .dropdown-option small {
+            color: var(--text-light);
         }
 
-        .alert-success {
-            background: var(--success) !important;
-        }
-
-        .alert-error {
-            background: var(--danger) !important;
-        }
-
-        .alert-warning {
-            background: var(--warning) !important;
-        }
-
-        .alert-info {
-            background: var(--light-teal) !important;
+        .form-loading {
+            pointer-events: none;
+            opacity: 0.6;
         }
 
         .alert-modal-icon-success {
@@ -545,53 +596,42 @@
             color: var(--light-teal);
         }
 
-        .btn-loading {
-            position: relative;
-            color: transparent !important;
-            pointer-events: none;
+        .alert-success {
+            background: var(--success);
         }
 
-        .btn-loading::after {
-            content: '';
-            position: absolute;
-            width: 16px;
-            height: 16px;
-            top: 50%;
-            left: 50%;
-            margin-left: -8px;
-            margin-top: -8px;
-            border: 2px solid transparent;
-            border-top: 2px solid currentColor;
-            border-radius: 50%;
-            animation: button-spinner 0.8s linear infinite;
+        .alert-error {
+            background: var(--danger);
         }
 
-        @keyframes button-spinner {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        .alert-warning {
+            background: var(--warning);
         }
 
-        .btn-disabled {
-            opacity: 0.6;
-            pointer-events: none;
+        .alert-info {
+            background: var(--light-teal);
+        }
+
+        .date-filter-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .date-filter-group select,
+        .date-filter-group input {
+            padding: 10px 15px;
+            border: 2px solid var(--border-gray);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            background: var(--white);
+        }
+
+        .date-filter-group input:disabled {
+            background: var(--light-gray);
             cursor: not-allowed;
-        }
-
-        .form-loading {
-            pointer-events: none;
-            opacity: 0.7;
-        }
-
-        .btn-success.btn-loading::after {
-            border-top-color: var(--white);
-        }
-
-        .btn-primary.btn-loading::after {
-            border-top-color: var(--white);
-        }
-
-        .btn-secondary.btn-loading::after {
-            border-top-color: var(--white);
         }
 
         .sidebar {
@@ -739,6 +779,12 @@
           background: rgba(0, 0, 0, 0.1);
         }
 
+        .submenu.always-open {
+          max-height: none;
+          overflow: visible;
+        }
+
+
         .menu-section.expanded .submenu {
           max-height: 300px;
         }
@@ -796,69 +842,51 @@
 
         .sidebar.collapsed .submenu-icon {
           margin-right: 0;
-          font-size: 16px;
         }
 
         .main-content {
-            flex: 1;
             margin-left: 260px;
             transition: margin-left 0.3s ease;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
         }
 
         .main-content.expanded {
             margin-left: 70px;
         }
 
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
         .mobile-toggle {
             display: none;
-            background: var(--white);
-            border: 2px solid var(--border-gray);
-            border-radius: 50%;
-            font-size: 20px;
-            color: var(--text-dark);
-            cursor: pointer;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: all 0.2s ease-in-out;
-        }
-
-        .mobile-toggle:hover {
-            background: var(--light-teal);
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 998;
+            background: var(--dark-navy);
             color: var(--white);
-            border-color: var(--medium-teal);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        }
-
-        .page-title {
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-
-        .content-area {
-            flex: 1;
-            padding: 24px;
-            background: var(--light-gray);
-        }
-
-        .content-card {
-            background: var(--white);
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: none;
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
         }
 
         @media (max-width: 768px) {
             .sidebar {
                 transform: translateX(-100%);
-                width: 260px;
             }
 
             .sidebar.mobile-open {
@@ -867,29 +895,50 @@
 
             .main-content {
                 margin-left: 0;
-                width: 100%;
+            }
+
+            .main-content.expanded {
+                margin-left: 0;
             }
 
             .mobile-toggle {
                 display: block;
             }
 
-            .overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.5);
-                z-index: 999;
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.3s ease;
+            body {
+                padding: 10px;
             }
 
-            .overlay.active {
-                opacity: 1;
-                visibility: visible;
+            .stats {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .filter-group {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .filter-select {
+                width: 100%;
+            }
+
+            .date-filter-group {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .date-filter-group select,
+            .date-filter-group input,
+            .date-filter-group button {
+                width: 100%;
             }
         }
     </style>
@@ -919,7 +968,7 @@
               </div>
                 <div class="submenu" id="creditManagementSubmenu">
                     <div class="menu-section">
-                      <a href="<?= baseUrl ?>?page=prepaid" class="menu-item active" target="_top">
+                      <a href="<?= baseUrl ?>?page=prepaid" class="menu-item" target="_top">
                         <i class="fas fa-money-bill-wave menu-icon"></i>
                         <span class="menu-text">Prepaid</span>
                       </a>
@@ -930,7 +979,7 @@
                         <span class="menu-text">Postpaid</span>
                       </div>
                       <div class="submenu always-open">
-                        <a href="<?= baseUrl ?>?page=postpaid-monthly" class="submenu-item" target="_top">
+                        <a href="<?= baseUrl ?>?page=postpaid-monthly" class="submenu-item active" target="_top">
                           <i class="fas fa-calendar-alt submenu-icon"></i>
                           <span class="submenu-text">Monthly Report</span>
                         </a>
@@ -983,8 +1032,8 @@
     <div class="container">
         <div class="header">
                 <h1>
-                    <i class="fas fa-money-bill-wave"></i>
-                    Prepaid
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    Postpaid (Monthly Report)
                 </h1>
         </div>
 
@@ -1004,46 +1053,42 @@
                         <option value="">All Devices</option>
                     </select>
 
-                    <select id="paymentStatusFilter" class="filter-select">
+                    <select id="paymentStatusFilter" class="filter-select" style="display: none;">
                         <option value="">All Status</option>
                     </select>
 
-                    <button class="btn btn-primary btn-sm" onclick="clearFilters()">
-                        <i class="fas fa-times"></i>
-                        Clear
-                    </button>
-
-                    <button class="btn btn-export btn-sm" onclick="exportToExcel()">
-                        <i class="fas fa-file-excel"></i>
-                        Export to Excel
-                    </button>
-
-                    <button class="btn btn-success btn-sm" onclick="openAddModal()">
+                    <button class="btn btn-primary" onclick="openAddModal()">
                         <i class="fas fa-plus"></i>
-                        Add New
+                        Add Record
+                    </button>
+
+                    <button class="btn btn-success" onclick="exportToExcel()">
+                        <i class="fas fa-file-excel"></i>
+                        Export
+                    </button>
+
+                    <button class="btn btn-secondary" onclick="clearFilters()">
+                        <i class="fas fa-times"></i>
+                        Clear Filters
                     </button>
                 </div>
             </div>
 
-            <div class="date-filter-section">
-                <div class="date-filter-title">
-                    <i class="fas fa-calendar-alt"></i>
-                    Date Filter
-                </div>
-                <div class="date-filter-controls">
-                    <select id="dateFieldFilter" class="filter-select">
-                        <option value="">No Date Filter</option>
-                        <option value="timestamp">Timestamp</option>
-                        <option value="paymentDate">Payment Date</option>
-                    </select>
-                    <input type="date" id="startDate" class="date-input" placeholder="Start Date" disabled>
-                    <input type="date" id="endDate" class="date-input" placeholder="End Date" disabled>
-                    <button class="btn btn-primary btn-sm" onclick="applyDateFilter()" id="applyDateBtn" disabled>
-                        <i class="fas fa-filter"></i>
+            <div class="date-filter-group">
+                <select id="dateFieldFilter" class="filter-select">
+                    <option value="">Select Date Field</option>
+                    <option value="timestamp">Timestamp</option>
+                    <option value="paymentDate">Payment Date</option>
+                </select>
+
+                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                    <input type="date" id="startDate" disabled>
+                    <span>to</span>
+                    <input type="date" id="endDate" disabled>
+                    <button class="btn btn-primary btn-sm" id="applyDateBtn" onclick="applyDateFilter()" disabled>
                         Apply Date Filter
                     </button>
-                    <button class="btn btn-secondary btn-sm" onclick="clearDateFilter()" id="clearDateBtn" disabled>
-                        <i class="fas fa-times"></i>
+                    <button class="btn btn-secondary btn-sm" id="clearDateBtn" onclick="clearDateFilter()" disabled>
                         Clear Date
                     </button>
                 </div>
@@ -1064,21 +1109,21 @@
                         <p>Visible Records</p>
                     </div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" style="display:none;">
                     <i class="fas fa-check-circle"></i>
                     <div class="stat-info">
                         <h3 id="paidCount">0</h3>
                         <p>Paid</p>
                     </div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" style="display:none;">
                     <i class="fas fa-clock"></i>
                     <div class="stat-info">
                         <h3 id="pendingCount">0</h3>
                         <p>Pending</p>
                     </div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" style="display:none;">
                     <i class="fas fa-times-circle"></i>
                     <div class="stat-info">
                         <h3 id="unpaidCount">0</h3>
@@ -1100,9 +1145,11 @@
                             <th>Client Name</th>
                             <th>Device Serial Number</th>
                             <th>Balance from K-Laser System</th>
-                            <th>Top Up Amount</th>
-                            <th>Payment Date</th>
-                            <th>Payment Status</th>
+                            <th>Credit Utilised by Client Report</th>
+                            <th>Usage Breakdown</th>
+                            <!-- <th>Missing Credit</th> -->
+                            <th>Credit to be charged</th>
+                            <th>Charges per Credit (RM)</th>
                             <th>Total Charges (RM)</th>
                             <th>Current Balance</th>
                             <th>Actions</th>
@@ -1164,15 +1211,13 @@
                             <label for="balance">Balance from K-Laser System *</label>
                             <input type="number" id="balance" step="0.01" min="0" required>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" style="display:none;">
                             <label for="topUp">Top Up Amount</label>
-                            <select id="topUp">
-                                <option value="">Select Top Up Amount</option>
-                            </select>
+                            <input type="number" id="topUp" step="0.01" min="0">
                         </div>
                     </div>
 
-                    <div class="form-row">
+                    <div class="form-row" style="display:none;">
                         <div class="form-group">
                             <label for="paymentDate">Payment Date</label>
                             <input type="date" id="paymentDate" onchange="handlePaymentDateChange()">
@@ -1185,6 +1230,29 @@
                                 <option value="Paid">Paid</option>
                                 <option value="Unpaid">Unpaid</option>
                             </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="creditUsed">Credit Utilised by Client Report *</label>
+                        <input type="number" id="creditUsed" step="1" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Credit Utilised Breakdown *</label>
+                        <div class="breakdown-builder">
+                            <div id="breakdownItems"></div>
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="addBreakdownItem()">
+                                <i class="fas fa-plus"></i> Add Breakdown Item
+                            </button>
+                            <div id="breakdownSummary" class="breakdown-summary"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="creditToCharge">Credit to be charged *</label>
+                            <input type="number" id="creditToCharge" step="1" min="0" required>
                         </div>
                     </div>
 
@@ -1208,8 +1276,7 @@
         let allData = [];
         let filteredData = [];
         let devicesList = [];
-        let selectedDevice = null;
-        let isSubmitting = false;
+        let breakdownItems = [];
 
         window.onload = function() {
             loadData();
@@ -1277,18 +1344,30 @@
           });
         });
 
+        function handlePaymentDateChange() {
+            const paymentDate = document.getElementById('paymentDate').value;
+            const paymentStatus = document.getElementById('paymentStatus');
+            
+            if (paymentDate) {
+                paymentStatus.value = 'Paid';
+                paymentStatus.disabled = true;
+            } else {
+                paymentStatus.disabled = false;
+            }
+        }
+
         function loadData() {
             google.script.run
                 .withSuccessHandler(onDataLoaded)
                 .withFailureHandler(onError)
-                .getPrepaidCreditData();
+                .getCreditDataPostpaidMonthly();
         }
 
         function loadDevices() {
             google.script.run
                 .withSuccessHandler(onDevicesLoaded)
                 .withFailureHandler(onError)
-                .getPrepaidDevices();
+                .getDevicesPostpaid();
         }
 
         function onDataLoaded(data) {
@@ -1445,7 +1524,7 @@
         function populateFilters() {
             const clientNames = [...new Set(allData.map(row => row[2]).filter(Boolean))].sort();
             const deviceSerials = [...new Set(allData.map(row => row[4]).filter(Boolean))].sort();
-            const paymentStatuses = [...new Set(allData.map(row => row[8]).filter(Boolean))].sort();
+            const paymentStatuses = [...new Set(allData.map(row => row[11]).filter(Boolean))].sort();
 
             populateSelect('clientNameFilter', clientNames);
             populateSelect('deviceSerialFilter', deviceSerials);
@@ -1470,6 +1549,8 @@
             select.value = currentValue;
         }
 
+        let isSubmitting = false;
+
         function setButtonLoading(buttonId, isLoading, loadingText = 'Saving...') {
             const button = document.getElementById(buttonId);
             const buttonText = document.getElementById(buttonId + 'Text');
@@ -1480,19 +1561,42 @@
                 if (buttonText) buttonText.textContent = loadingText;
                 if (buttonSpinner) buttonSpinner.style.display = 'inline-block';
                 isSubmitting = true;
+
                 document.getElementById('recordForm').classList.add('form-loading');
             } else {
                 button.classList.remove('btn-loading', 'btn-disabled');
                 if (buttonText) buttonText.textContent = 'Save Record';
                 if (buttonSpinner) buttonSpinner.style.display = 'none';
                 isSubmitting = false;
+
                 document.getElementById('recordForm').classList.remove('form-loading');
             }
+        }
+
+        function disableForm() {
+            const inputs = document.querySelectorAll('#recordForm input, #recordForm select, #recordForm button');
+            inputs.forEach(input => {
+                input.disabled = true;
+            });
+            isSubmitting = true;
+        }
+
+        function enableForm() {
+            const inputs = document.querySelectorAll('#recordForm input, #recordForm select, #recordForm button');
+            inputs.forEach(input => {
+                input.disabled = false;
+            });
+            isSubmitting = false;
         }
 
         function validateForm() {
             if (isSubmitting) {
                 showWarning('Please wait while we process your request...', 'Processing');
+                return false;
+            }
+
+            if (!validateBreakdown()) {
+                showError('Please ensure the breakdown total matches the Credit Used amount.', 'Validation Error');
                 return false;
             }
 
@@ -1503,7 +1607,9 @@
 
             const requiredFields = [
                 { id: 'deviceSerial', name: 'Device Serial Number' },
-                { id: 'balance', name: 'Balance' }
+                { id: 'balance', name: 'Balance' },
+                { id: 'creditUsed', name: 'Credit Used' },
+                { id: 'creditToCharge', name: 'Credit to Charge' },
             ];
 
             for (const field of requiredFields) {
@@ -1525,37 +1631,12 @@
             devicesList.forEach(device => {
                 const option = document.createElement('div');
                 option.className = 'dropdown-option';
-                option.innerHTML = `<strong>${device.serial}</strong>`;
+                option.innerHTML = `
+                    <strong>${device.serial}</strong>
+                `;
                 option.onclick = () => selectDevice(device);
                 dropdown.appendChild(option);
             });
-        }
-
-        function populateTopUpOptions(device) {
-            const topUpSelect = document.getElementById('topUp');
-            topUpSelect.innerHTML = '<option value="">Select Top Up Amount</option>';
-
-            if (!device.creditPurchaseOptions) {
-                return;
-            }
-
-            try {
-                let options = device.creditPurchaseOptions;
-                if (typeof options === 'string') {
-                    options = JSON.parse(options);
-                }
-
-                if (Array.isArray(options) && options.length > 0) {
-                    options.forEach(option => {
-                        const optionElement = document.createElement('option');
-                        optionElement.value = option.creditAmount;
-                        optionElement.textContent = `${option.creditAmount} credits - RM ${option.priceAfterDiscount.toFixed(2)}`;
-                        topUpSelect.appendChild(optionElement);
-                    });
-                }
-            } catch (e) {
-                console.error('Error parsing credit purchase options:', e);
-            }
         }
 
         function selectDevice(device) {
@@ -1564,8 +1645,6 @@
             deviceInput.value = device.serial;
             deviceInput.dataset.deviceId = device.id;
             deviceInput.dataset.clientId = device.clientId || ''; 
-
-            populateTopUpOptions(device);
 
             document.getElementById('deviceOptions').style.display = 'none';
             document.getElementById('deviceError').style.display = 'none';
@@ -1592,11 +1671,13 @@
                     <td><strong>${row[2] || ''}</strong></td>
                     <td><code>${row[4] || ''}</code></td>
                     <td>${formatNumber(row[5], true)}</td>
-                    <td>${formatTopUp(row[6])}</td>
-                    <td>${formatDate(row[7])}</td>
-                    <td>${formatStatus(row[8])}</td>
-                    <td><strong>${formatCurrency(row[9], true)}</strong></td>
-                    <td>${formatNumber(row[10], true)}</td>
+                    <td>${formatNumber(row[6], true)}</td>
+                    <td>${formatBreakdown(row[7])}</td>
+                    <!-- <td>${formatNumber(row[8], true)}</td> -->
+                    <td>${formatNumber(row[12], true)}</td>
+                    <td>${formatCurrency(row[13], true)}</td>
+                    <td><strong>${formatCurrency(row[14], true)}</strong></td>
+                    <td><strong>${formatNumber(row[15], true)}</strong></td>
                     <td>
                         <div class="action-buttons">
                             <button class="btn btn-primary btn-sm" onclick="editRecord(${allData.indexOf(row)})">
@@ -1608,6 +1689,28 @@
 
                 tbody.appendChild(tr);
             });
+        }
+
+        function formatBreakdown(breakdown) {
+            if (!breakdown || breakdown === '{}' || breakdown === '[]') {
+                return '<div class="breakdown-chips"><span class="breakdown-chip">No breakdown</span></div>';
+            }
+
+            try {
+                const parsed = JSON.parse(breakdown);
+                if (Object.keys(parsed).length === 0) {
+                    return '<div class="breakdown-chips"><span class="breakdown-chip">No breakdown</span></div>';
+                }
+
+                const chips = Object.entries(parsed).map(([type, amount]) => {
+                    const displayAmount = amount === 0 ? '0' : (amount || '0');
+                    return `<span class="breakdown-chip">${type}: ${displayAmount}</span>`;
+                }).join('');
+
+                return `<div class="breakdown-chips">${chips}</div>`;
+            } catch (e) {
+                return breakdown || 'Invalid breakdown';
+            }
         }
 
         function formatCurrency(value, showZero = false) {
@@ -1640,29 +1743,7 @@
             return numValue.toString();
         }
 
-        function formatTopUp(value) {
-          if (!value) return '';
-          let data;
-          try {
-            data = typeof value === 'string' ? JSON.parse(value) : value;
-          } catch {
-            return `<span class="status-badge status-info">${value}</span>`;
-          }
-          if (typeof data === 'number') {
-            return `<span class="status-badge status-info">${data}</span>`;
-          }
-          const credit = data.creditAmount ?? data.amount ?? value;
-          const price = data.priceAfterDiscount ?? data.price ?? null;
-          if (!price) {
-            return `<span class="status-badge status-info">${credit} credits</span>`;
-          }
-          return `
-            <div style="display:flex;gap:6px;flex-wrap:wrap;">
-              <span class="status-badge status-info">${credit} credits</span>
-              <span class="status-badge status-success">RM ${parseFloat(price).toFixed(2)}</span>
-            </div>
-          `;
-        }
+        let selectedDevice = null;
 
         function filterDevices(searchTerm) {
             const dropdown = document.getElementById('deviceOptions');
@@ -1686,7 +1767,9 @@
                 filteredDevices.forEach(device => {
                     const option = document.createElement('div');
                     option.className = 'dropdown-option';
-                    option.innerHTML = `<strong>${device.serial}</strong>`;
+                    option.innerHTML = `
+                        <strong>${device.serial}</strong>
+                    `;
                     option.onclick = () => selectDevice(device);
                     dropdown.appendChild(option);
                 });
@@ -1697,6 +1780,13 @@
                 selectedDevice = null;
                 errorElement.style.display = 'block';
             }
+        }
+
+        function selectDevice(device) {
+            selectedDevice = device;
+            document.getElementById('deviceSerial').value = device.serial;
+            document.getElementById('deviceOptions').style.display = 'none';
+            document.getElementById('deviceError').style.display = 'none';
         }
 
         function validateDeviceSelection() {
@@ -1712,7 +1802,6 @@
                     selectedDevice = devicesList.find(device => device.serial === deviceInput.value);
                     deviceInput.dataset.deviceId = selectedDevice.id;
                     deviceInput.dataset.clientId = selectedDevice.clientId || ''; 
-                    populateTopUpOptions(selectedDevice);
                 }
             }
 
@@ -1745,9 +1834,9 @@
             const total = allData.length;
             const visible = filteredData.length;
 
-            const paid = filteredData.filter(row => row[8] && row[8].toLowerCase() === 'paid').length;
-            const pending = filteredData.filter(row => row[8] && row[8].toLowerCase() === 'pending').length;
-            const unpaid = filteredData.filter(row => row[8] && row[8].toLowerCase() === 'unpaid').length;
+            const paid = filteredData.filter(row => row[11] && row[11].toLowerCase() === 'paid').length;
+            const pending = filteredData.filter(row => row[11] && row[11].toLowerCase() === 'pending').length;
+            const unpaid = filteredData.filter(row => row[11] && row[11].toLowerCase() === 'unpaid').length;
 
             document.getElementById('totalRecords').textContent = total;
             document.getElementById('visibleRecords').textContent = visible;
@@ -1772,7 +1861,7 @@
 
                 if (clientNameFilter && row[2] !== clientNameFilter) return false;
                 if (deviceSerialFilter && row[4] !== deviceSerialFilter) return false;
-                if (paymentStatusFilter && row[8] !== paymentStatusFilter) return false;
+                if (paymentStatusFilter && row[11] !== paymentStatusFilter) return false;
 
                 return true;
             });
@@ -1832,7 +1921,7 @@
                 return;
             }
 
-            const columnIndex = dateField === 'timestamp' ? 0 : 7;
+            const columnIndex = dateField === 'timestamp' ? 0 : 10;
 
             filteredData = filteredData.filter(row => {
                 const dateValue = row[columnIndex];
@@ -1884,27 +1973,34 @@
                     'Device ID': row[3] || '',
                     'Device Serial Number': row[4] || '',
                     'Balance from K-Laser System': row[5] || 0,
-                    'Top Up Amount': row[6] || 0,
-                    'Payment Date': formatDate(row[7]),
-                    'Payment Status': row[8] || '',
-                    'Total Charges (RM)': row[9] || 0,
-                    'Current Balance': row[10] || 0
+                    'Credit Utilised by Client Report': row[6] || 0,
+                    'Credit Utilised Breakdown': row[7] || '',
+                    'Credit to be charged': row[12] || 0,
+                    'Charges per Credit (RM)': row[13] || 0,
+                    'Total Charges (RM)': row[14] || 0,
+                    'Current Balance': row[15] || 0
                 }));
 
                 const wb = XLSX.utils.book_new();
                 const ws = XLSX.utils.json_to_sheet(exportData);
 
                 const colWidths = [
+                    { wch: 20 }, 
+                    { wch: 15 }, 
+                    { wch: 20 }, 
+                    { wch: 15 }, 
+                    { wch: 20 }, 
+                    { wch: 25 }, 
+                    { wch: 30 }, 
+                    { wch: 30 }, 
+                    { wch: 15 }, 
+                    { wch: 15 }, 
+                    { wch: 15 }, 
+                    { wch: 15 }, 
+                    { wch: 20 }, 
+                    { wch: 20 }, 
                     { wch: 20 },
-                    { wch: 15 },
-                    { wch: 20 },
-                    { wch: 15 },
-                    { wch: 20 },
-                    { wch: 25 },
-                    { wch: 15 },
-                    { wch: 15 },
-                    { wch: 15 },
-                    { wch: 20 }
+                    { wch: 20 }  
                 ];
                 ws['!cols'] = colWidths;
 
@@ -1912,7 +2008,7 @@
 
                 const today = new Date();
                 const dateStr = today.toISOString().split('T')[0];
-                const filename = `Credit_Management_Prepaid_${dateStr}.xlsx`;
+                const filename = `Credit_Management_${dateStr}.xlsx`;
 
                 XLSX.writeFile(wb, filename);
 
@@ -1927,6 +2023,7 @@
             document.getElementById('modalTitle').textContent = 'Add New Record';
             document.getElementById('editRowIndex').value = '';
             document.getElementById('recordForm').reset();
+            breakdownItems = [];
             selectedDevice = null;
 
             setButtonLoading('saveButton', false);
@@ -1934,9 +2031,7 @@
             populateDeviceDropdown();
             document.getElementById('deviceOptions').style.display = 'block';
 
-            const topUpSelect = document.getElementById('topUp');
-            topUpSelect.innerHTML = '<option value="">Select Top Up Amount</option>';
-
+            updateBreakdownDisplay();
             document.getElementById('recordModal').style.display = 'block';
         }
 
@@ -1951,18 +2046,25 @@
 
             document.getElementById('deviceSerial').value = row[4];
             document.getElementById('balance').value = row[5];
-            
-            if (selectedDevice) {
-                populateTopUpOptions(selectedDevice);
-            }
-            
-            document.getElementById('topUp').value = row[6];
-            document.getElementById('paymentDate').value = formatDateForInput(row[7]);
-            document.getElementById('paymentStatus').value = row[8] || 'Pending';
+            document.getElementById('topUp').value = row[9];
+            document.getElementById('paymentDate').value = formatDateForInput(row[10]);
+            document.getElementById('paymentStatus').value = row[11] || 'Pending';
+            document.getElementById('creditUsed').value = row[6];
+            document.getElementById('creditToCharge').value = row[12];
+
+            handlePaymentDateChange();
 
             document.getElementById('deviceOptions').style.display = 'none';
             document.getElementById('deviceError').style.display = 'none';
 
+            try {
+                const breakdown = JSON.parse(row[7] || '{}');
+                breakdownItems = Object.entries(breakdown).map(([type, amount]) => ({type, amount}));
+            } catch (e) {
+                breakdownItems = [];
+            }
+
+            updateBreakdownDisplay();
             document.getElementById('recordModal').style.display = 'block';
         }
 
@@ -2016,15 +2118,63 @@
             return date.toISOString().split('T')[0];
         }
 
-        function handlePaymentDateChange() {
-            const paymentDate = document.getElementById('paymentDate').value;
-            const paymentStatus = document.getElementById('paymentStatus');
-            
-            if (paymentDate) {
-                paymentStatus.value = 'Paid';
-                paymentStatus.disabled = true; 
+        function addBreakdownItem() {
+            breakdownItems.push({type: 'Patient', amount: 0});
+            updateBreakdownDisplay();
+        }
+
+        function removeBreakdownItem(index) {
+            breakdownItems.splice(index, 1);
+            updateBreakdownDisplay();
+        }
+
+        function updateBreakdownDisplay() {
+            const container = document.getElementById('breakdownItems');
+            container.innerHTML = '';
+
+            const breakdownOptions = ['Patient', 'Staff', 'Marketing', 'Training', 'Others'];
+
+            breakdownItems.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'breakdown-item';
+                div.innerHTML = `
+                    <select onchange="breakdownItems[${index}].type = this.value; validateBreakdown()">
+                        ${breakdownOptions.map(option =>
+                            `<option value="${option}" ${item.type === option ? 'selected' : ''}>${option}</option>`
+                        ).join('')}
+                    </select>
+                    <input type="number" placeholder="Amount" value="${item.amount}" min="0" step="1"
+                          onchange="breakdownItems[${index}].amount = parseInt(this.value) || 0; validateBreakdown()">
+                    <button type="button" onclick="removeBreakdownItem(${index})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+                container.appendChild(div);
+            });
+
+            validateBreakdown();
+        }
+
+        function validateBreakdown() {
+            const creditUsed = parseInt(document.getElementById('creditUsed').value) || 0;
+            const breakdownTotal = breakdownItems.reduce((sum, item) => sum + (parseInt(item.amount) || 0), 0);
+            const summary = document.getElementById('breakdownSummary');
+
+            const types = breakdownItems.map(item => item.type);
+            const hasDuplicates = new Set(types).size !== types.length;
+
+            if (breakdownTotal === creditUsed && !hasDuplicates) {
+                summary.innerHTML = `<span class="breakdown-valid">✓ Breakdown total matches Credit Used: ${breakdownTotal}</span>`;
+                return true;
             } else {
-                paymentStatus.disabled = false; 
+                let errorMessage = '';
+                if (hasDuplicates) {
+                    errorMessage = `✗ Duplicate breakdown types found. Each type must be unique.`;
+                } else {
+                    errorMessage = `✗ Breakdown total (${breakdownTotal}) must equal Credit Used (${creditUsed})`;
+                }
+                summary.innerHTML = `<span class="breakdown-error">${errorMessage}</span>`;
+                return false;
             }
         }
 
@@ -2032,12 +2182,23 @@
         document.getElementById('clientNameFilter').addEventListener('change', applyFilters);
         document.getElementById('deviceSerialFilter').addEventListener('change', applyFilters);
         document.getElementById('paymentStatusFilter').addEventListener('change', applyFilters);
+        document.getElementById('creditUsed').addEventListener('input', validateBreakdown);
 
         document.getElementById('deviceSerial').addEventListener('click', function() {
             if (this.value === '') {
                 populateDeviceDropdown();
                 document.getElementById('deviceOptions').style.display = 'block';
             }
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.searchable-dropdown')) {
+                document.getElementById('deviceOptions').style.display = 'none';
+            }
+        });
+
+        document.getElementById('deviceSerial').addEventListener('click', function() {
+            document.getElementById('deviceOptions').style.display = 'block';
         });
 
         document.addEventListener('click', function(e) {
@@ -2062,24 +2223,25 @@
 
             try {
                 const clientId = selectedDevice ? (selectedDevice.clientId || '') : '';
-
-                const topUpSelect = document.getElementById('topUp');
-                const selectedOption = selectedDevice?.creditPurchaseOptions
-                  ? JSON.parse(selectedDevice.creditPurchaseOptions).find(o => o.creditAmount == topUpSelect.value)
-                  : null;
+                const paymentDate = document.getElementById('paymentDate').value;
+                let paymentStatus = document.getElementById('paymentStatus').value || 'Pending';
+                
+                if (paymentDate) {
+                    paymentStatus = 'Paid';
+                }
 
                 const formData = {
-                  clientId: clientId,
-                  deviceId: selectedDevice.id,
-                  deviceSerial: selectedDevice.serial,
-                  balance: parseFloat(document.getElementById('balance').value) || 0,
-                  topUp: selectedOption
-                    ? { creditAmount: selectedOption.creditAmount, priceAfterDiscount: selectedOption.priceAfterDiscount }
-                    : null,
-                  paymentDate: document.getElementById('paymentDate').value,
-                  paymentStatus: document.getElementById('paymentStatus').value || 'Pending'
+                    clientId: clientId,
+                    deviceId: selectedDevice.id,
+                    deviceSerial: selectedDevice.serial,
+                    balance: parseFloat(document.getElementById('balance').value) || 0,
+                    topUp: parseFloat(document.getElementById('topUp').value) || 0,
+                    paymentDate: paymentDate,
+                    paymentStatus: paymentStatus,
+                    creditUsed: parseInt(document.getElementById('creditUsed').value) || 0,
+                    breakdown: JSON.stringify(Object.fromEntries(breakdownItems.map(item => [item.type, parseInt(item.amount) || 0]))),
+                    creditToCharge: parseInt(document.getElementById('creditToCharge').value) || 0,
                 };
-
 
                 const editIndex = document.getElementById('editRowIndex').value;
 
@@ -2092,7 +2254,7 @@
                             .withFailureHandler((error) => {
                                 reject(error);
                             })
-                            .updatePrepaidRecord(parseInt(editIndex), formData);
+                            .updateRecordPostpaid(parseInt(editIndex), formData);
                     });
 
                     showSuccess('Record updated successfully!', 'Update Successful');
@@ -2108,7 +2270,7 @@
                             .withFailureHandler((error) => {
                                 reject(error);
                             })
-                            .addPrepaidRecord(formData);
+                            .addRecordPostpaid(formData);
                     });
 
                     showSuccess('Record added successfully!', 'Record Added');

@@ -6,24 +6,55 @@ function doGet() {
     .addMetaTag('viewport', 'width=device-width, initial-scale=1');
 }
 
-
-function getCreditDataPostpaid() {
+function getCreditDataPostpaidMonthly() {
   try {
-    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    const sheet = spreadsheet.getSheetByName('(CM) Postpaid');
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('(CM) Postpaid');
     if (!sheet) return JSON.stringify([]);
+
     const lastRow = sheet.getLastRow();
-    const lastCol = 16; 
+    const lastCol = 16;
     if (lastRow < 2) return JSON.stringify([]);
-    const dataRange = sheet.getRange(2, 1, lastRow - 1, lastCol);
-    const values = dataRange.getValues();
-    const filteredData = values.filter(row => row.some(cell => cell !== null && cell !== undefined && cell !== ''));
-    return JSON.stringify(filteredData);
-  } catch (error) {
+
+    const values = sheet.getRange(2, 1, lastRow - 1, lastCol).getValues();
+
+    const filtered = values.filter(r => {
+      const timestamp = r[0];
+      const topUp = parseFloat(r[9]) || 0;
+      return timestamp && topUp === 0;
+    });
+
+    return JSON.stringify(filtered);
+  } catch (err) {
+    console.error('Error in getCreditDataPostpaidMonthly:', err);
     return JSON.stringify([]);
   }
 }
 
+function getCreditDataPostpaidTopUp() {
+  try {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('(CM) Postpaid');
+    if (!sheet) return JSON.stringify([]);
+
+    const lastRow = sheet.getLastRow();
+    const lastCol = 16;
+    if (lastRow < 2) return JSON.stringify([]);
+
+    const values = sheet.getRange(2, 1, lastRow - 1, lastCol).getValues();
+
+    const filtered = values.filter(r => {
+      const timestamp = r[0];
+      const topUp = parseFloat(r[9]) || 0;
+      return timestamp && topUp !== 0;
+    });
+
+    console.log(filtered)
+
+    return JSON.stringify(filtered);
+  } catch (err) {
+    console.error('Error in getCreditDataPostpaidTopUp:', err);
+    return JSON.stringify([]);
+  }
+}
 
 function getDevicesPostpaid() {
   try {
