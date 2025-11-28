@@ -12,7 +12,7 @@ function getPrepaidCreditData() {
     const sheet = spreadsheet.getSheetByName('(CM) Prepaid');
     if (!sheet) return JSON.stringify([]);
     const lastRow = sheet.getLastRow();
-    const lastCol = 11;
+    const lastCol = 14;
     if (lastRow < 2) return JSON.stringify([]);
     const dataRange = sheet.getRange(2, 1, lastRow - 1, lastCol);
     const values = dataRange.getValues();
@@ -71,6 +71,7 @@ function addPrepaidRecord(data) {
     const topUpJSON = Object.keys(topUp).length ? JSON.stringify(topUp) : '';
 
     const newBalance = Number(data.balance || 0) + creditAmount;
+    const userEmail = Session.getActiveUser().getEmail();
 
     sheet.getRange(nextRow, 1).setValue(new Date());
     sheet.getRange(nextRow, 2).setValue(data.clientId);
@@ -79,10 +80,14 @@ function addPrepaidRecord(data) {
     sheet.getRange(nextRow, 7).setValue(topUpJSON);
     sheet.getRange(nextRow, 10).setValue(priceAfterDiscount); 
     sheet.getRange(nextRow, 11).setValue(newBalance); 
+    sheet.getRange(nextRow, 12).setValue(userEmail);
 
     const paymentDate = data.paymentDate ? new Date(data.paymentDate) : '';
     const paymentStatus = paymentDate ? 'Paid' : (data.paymentStatus || '');
     sheet.getRange(nextRow, 8, 1, 2).setValues([[paymentDate, paymentStatus]]);
+    
+    const status = data.status || '';
+    sheet.getRange(nextRow, 14).setValue(status);
 
     return { success: true, message: 'Record added successfully' };
   } catch (error) {
@@ -103,6 +108,7 @@ function updatePrepaidRecord(rowIndex, data) {
     const topUpJSON = Object.keys(topUp).length ? JSON.stringify(topUp) : '';
 
     const newBalance = Number(data.balance || 0) + creditAmount;
+    const userEmail = Session.getActiveUser().getEmail();
 
     sheet.getRange(sheetRow, 2).setValue(data.clientId);
     sheet.getRange(sheetRow, 4).setValue(data.deviceId);
@@ -110,11 +116,15 @@ function updatePrepaidRecord(rowIndex, data) {
     sheet.getRange(sheetRow, 7).setValue(topUpJSON);
     sheet.getRange(sheetRow, 10).setValue(priceAfterDiscount);
     sheet.getRange(sheetRow, 11).setValue(newBalance);
+    sheet.getRange(sheetRow, 12).setValue(userEmail);
 
     const paymentDate = data.paymentDate ? new Date(data.paymentDate) : '';
     const paymentStatus = paymentDate ? 'Paid' : (data.paymentStatus || '');
     sheet.getRange(sheetRow, 8).setValue(paymentDate);
     sheet.getRange(sheetRow, 9).setValue(paymentStatus);
+    
+    const status = data.status || '';
+    sheet.getRange(sheetRow, 14).setValue(status);
 
     return { success: true, message: 'Record updated successfully' };
   } catch (error) {

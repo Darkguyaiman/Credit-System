@@ -12,7 +12,7 @@ function getRevenueSharingDataMonthly() {
     if (!sheet) return JSON.stringify([]);
 
     const lastRow = sheet.getLastRow();
-    const lastCol = 9;
+    const lastCol = 11;
     if (lastRow < 2) return JSON.stringify([]);
 
     const dataRange = sheet.getRange(2, 1, lastRow - 1, lastCol);
@@ -31,14 +31,13 @@ function getRevenueSharingDataMonthly() {
   }
 }
 
-
 function getRevenueSharingDataTopUp() {
   try {
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('(CM) Revenue Sharing');
     if (!sheet) return JSON.stringify([]);
 
     const lastRow = sheet.getLastRow();
-    const lastCol = 9;
+    const lastCol = 12;
     if (lastRow < 2) return JSON.stringify([]);
 
     const dataRange = sheet.getRange(2, 1, lastRow - 1, lastCol);
@@ -55,6 +54,7 @@ function getRevenueSharingDataTopUp() {
     return JSON.stringify([]);
   }
 }
+
 
 function getRevenueSharingDevices() {
   try {
@@ -100,6 +100,7 @@ function addRevenueSharingRecord(data) {
     if (nextRow < 2) nextRow = sheet.getLastRow() + 1;
 
 
+    const userEmail = Session.getActiveUser().getEmail();
 
     sheet.getRange(nextRow, 1).setValue(new Date());
     
@@ -115,14 +116,14 @@ function addRevenueSharingRecord(data) {
     
 
     sheet.getRange(nextRow, 6).setValue(data.balance);
-    
-
-    sheet.getRange(nextRow, 7).setValue(data.creditUsed);
-    
+       
 
     sheet.getRange(nextRow, 8).setValue(data.topUp);
     
-
+    
+    sheet.getRange(nextRow, 10).setValue(userEmail);
+    
+    sheet.getRange(nextRow, 12).setValue(data.status || '');
 
     return { success: true, message: 'Revenue sharing record added successfully' };
   } catch (error) {
@@ -141,6 +142,7 @@ function updateRevenueSharingRecord(rowIndex, data) {
     const sheetRow = rowIndex + 2;
 
 
+    const userEmail = Session.getActiveUser().getEmail();
 
     sheet.getRange(sheetRow, 2).setValue(data.clientId);
     
@@ -153,14 +155,14 @@ function updateRevenueSharingRecord(rowIndex, data) {
     
 
     sheet.getRange(sheetRow, 6).setValue(data.balance);
-    
-
-    sheet.getRange(sheetRow, 7).setValue(data.creditUsed);
-    
+        
 
     sheet.getRange(sheetRow, 8).setValue(data.topUp);
     
-
+    
+    sheet.getRange(sheetRow, 10).setValue(userEmail);
+    
+    sheet.getRange(sheetRow, 12).setValue(data.status || '');
 
     return { success: true, message: 'Revenue sharing record updated successfully' };
   } catch (error) {

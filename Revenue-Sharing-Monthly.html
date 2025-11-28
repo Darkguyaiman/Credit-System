@@ -130,6 +130,136 @@
             border-color: var(--light-teal);
         }
 
+        .multi-select-container {
+            position: relative;
+            min-width: 200px;
+        }
+
+        .multi-select-input {
+            padding: 10px 15px;
+            border: 2px solid var(--border-gray);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            background: var(--white);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 42px;
+        }
+
+        .multi-select-input:hover {
+            border-color: var(--light-teal);
+        }
+
+        .multi-select-placeholder {
+            color: var(--text-light);
+        }
+
+        .multi-select-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--white);
+            border: 2px solid var(--border-gray);
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            max-height: 250px;
+            overflow-y: auto;
+            z-index: 100;
+            display: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .multi-select-dropdown.active {
+            display: block;
+        }
+
+        .multi-select-option {
+            padding: 10px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.2s;
+        }
+
+        .multi-select-option:hover {
+            background: var(--light-gray);
+        }
+
+        .multi-select-option input[type="checkbox"] {
+            cursor: pointer;
+        }
+
+        .multi-select-search {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border-gray);
+            position: sticky;
+            top: 0;
+            background: var(--white);
+            z-index: 1;
+        }
+
+        .multi-select-search-container {
+            position: relative;
+        }
+
+        .multi-select-search input {
+            width: 100%;
+            padding: 8px 30px 8px 12px;
+            border: 1px solid var(--border-gray);
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .multi-select-search input:focus {
+            outline: none;
+            border-color: var(--light-teal);
+        }
+
+        .multi-select-search-container i {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-size: 12px;
+            pointer-events: none;
+        }
+
+        .selected-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .filter-chip {
+            background: var(--light-teal);
+            color: var(--white);
+            padding: 4px 10px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .filter-chip .remove-chip {
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            line-height: 1;
+        }
+
+        .filter-chip .remove-chip:hover {
+            opacity: 0.7;
+        }
+
         .btn {
             padding: 10px 20px;
             border: none;
@@ -164,6 +294,17 @@
             background: #218838;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-whatsapp {
+            background: #25d366;
+            color: var(--white);
+        }
+
+        .btn-whatsapp:hover {
+            background: #1ebe5d;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
         }
 
         .btn-secondary {
@@ -268,11 +409,9 @@
         th:nth-child(2), td:nth-child(2) { width: 150px; }
         th:nth-child(3), td:nth-child(3) { width: 140px; }
         th:nth-child(4), td:nth-child(4) { width: 130px; }
-        th:nth-child(5), td:nth-child(5) { width: 180px; }
-        th:nth-child(6), td:nth-child(6) { width: 130px; }
-        th:nth-child(7), td:nth-child(7) { width: 200px; }
-        th:nth-child(8), td:nth-child(8) { width: 140px; }
-        th:nth-child(9), td:nth-child(9) { width: 100px; }
+        th:nth-child(5), td:nth-child(5) { width: 130px; }
+        th:nth-child(6), td:nth-child(6) { width: 150px; }
+        th:nth-child(7), td:nth-child(7) { width: 100px; }
 
         .status-badge {
             padding: 4px 8px;
@@ -921,7 +1060,7 @@
                       <div class="submenu always-open">
                         <a href="<?= baseUrl ?>?page=postpaid-monthly" class="submenu-item" target="_top">
                           <i class="fas fa-calendar-alt submenu-icon"></i>
-                          <span class="submenu-text">Monthly Report</span>
+                          <span class="submenu-text">Report</span>
                         </a>
                         <a href="<?= baseUrl ?>?page=postpaid-topup" class="submenu-item" target="_top">
                           <i class="fas fa-coins submenu-icon"></i>
@@ -937,7 +1076,7 @@
                       <div class="submenu always-open">
                         <a href="<?= baseUrl ?>?page=revenue-sharing-monthly" class="submenu-item active" target="_top">
                           <i class="fas fa-calendar-alt submenu-icon"></i>
-                          <span class="submenu-text">Monthly Report</span>
+                          <span class="submenu-text">Report</span>
                         </a>
                         <a href="<?= baseUrl ?>?page=revenue-sharing-topup" class="submenu-item" target="_top">
                           <i class="fas fa-coins submenu-icon"></i>
@@ -973,7 +1112,7 @@
             <div class="header">
                 <h1>
                     <i class="fas fa-chart-pie"></i>
-                    Revenue Sharing (Monthly Report)
+                    Revenue Sharing (Report)
                 </h1>
             </div>
 
@@ -985,13 +1124,39 @@
                     </div>
 
                     <div class="filter-group">
-                        <select id="clientNameFilter" class="filter-select">
-                            <option value="">All Clients</option>
-                        </select>
+                        <div class="multi-select-container" id="clientFilterContainer">
+                            <div class="multi-select-input" onclick="toggleMultiSelect('clientFilter')">
+                                <div id="clientFilterDisplay">
+                                    <span class="multi-select-placeholder">All Clients</span>
+                                </div>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="multi-select-dropdown" id="clientFilterDropdown">
+                                <div class="multi-select-search">
+                                    <div class="multi-select-search-container">
+                                        <input type="text" id="clientFilterSearch" placeholder="Search clients..." oninput="filterMultiSelectOptions('clientFilter', this.value)">
+                                        <i class="fas fa-search"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                        <select id="deviceSerialFilter" class="filter-select">
-                            <option value="">All Devices</option>
-                        </select>
+                        <div class="multi-select-container" id="deviceFilterContainer">
+                            <div class="multi-select-input" onclick="toggleMultiSelect('deviceFilter')">
+                                <div id="deviceFilterDisplay">
+                                    <span class="multi-select-placeholder">All Devices</span>
+                                </div>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="multi-select-dropdown" id="deviceFilterDropdown">
+                                <div class="multi-select-search">
+                                    <div class="multi-select-search-container">
+                                        <input type="text" id="deviceFilterSearch" placeholder="Search devices..." oninput="filterMultiSelectOptions('deviceFilter', this.value)">
+                                        <i class="fas fa-search"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <button class="btn btn-secondary btn-sm" onclick="clearFilters()">
                             <i class="fas fa-times"></i>
@@ -1057,8 +1222,8 @@
                                 <th>Client Name</th>
                                 <th>Device Serial Number</th>
                                 <th>Balance from K-Laser System</th>
-                                <th>Credit Utilised by Client Report</th>
                                 <th>Current Balance</th>
+                                <th>Last Edited By</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -1121,11 +1286,6 @@
                             <input type="hidden" id="topUp" value="0">
                         </div>
 
-                        <div class="form-group">
-                            <label for="creditUsed">Credit Utilised by Client Report *</label>
-                            <input type="number" id="creditUsed" step="1" min="0" required>
-                        </div>
-
                         <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
                             <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
                             <button type="submit" class="btn btn-success" id="saveButton">
@@ -1148,6 +1308,11 @@
         let devicesList = [];
         let selectedDevice = null;
         let isSubmitting = false;
+        let selectedClients = [];
+        let selectedDevices = [];
+        let allClients = [];
+        let allDeviceSerials = [];
+        const userRole = '<?= userInfo.role ?>';
 
         window.onload = function() {
             loadData();
@@ -1155,64 +1320,81 @@
         };
 
         document.addEventListener('DOMContentLoaded', function() {
-            const sidebar = document.getElementById('sidebar');
-            const mainContent = document.getElementById('mainContent');
-            const toggleBtn = document.getElementById('toggleSidebar');
-            const mobileToggle = document.getElementById('mobileToggle');
-            const overlay = document.getElementById('overlay');
+          const sidebar = document.getElementById('sidebar');
+          const mainContent = document.getElementById('mainContent');
+          const toggleBtn = document.getElementById('toggleSidebar');
+          const mobileToggle = document.getElementById('mobileToggle');
+          const overlay = document.getElementById('overlay');
+          
+          const creditManagementToggle = document.getElementById('creditManagementToggle');
+          const creditManagementSubmenu = document.getElementById('creditManagementSubmenu');
+          const menuSection = creditManagementToggle?.closest('.menu-section');
+
+
+          if (["Guest", "Product Specialist"].includes(userRole)) {
+
+            const addButton = document.querySelector('.btn-success');
+            if (addButton) {
+              addButton.style.display = 'none';
+            }
+
+
+            const actionHeader = document.querySelector('th:nth-child(7)'); 
+            const actionCells = document.querySelectorAll('td:nth-child(7)'); 
             
-            const creditManagementToggle = document.getElementById('creditManagementToggle');
-            const creditManagementSubmenu = document.getElementById('creditManagementSubmenu');
-            const menuSection = creditManagementToggle.closest('.menu-section');
-
-            creditManagementToggle.addEventListener('click', function(e) {
-                if (sidebar.classList.contains('collapsed')) return;
-                
-                menuSection.classList.toggle('expanded');
-                
-                const isExpanded = menuSection.classList.contains('expanded');
-                localStorage.setItem('creditManagementExpanded', isExpanded);
-            });
-
-            const creditManagementExpanded = localStorage.getItem('creditManagementExpanded') === 'true';
-            if (creditManagementExpanded && !sidebar.classList.contains('collapsed')) {
-                menuSection.classList.add('expanded');
+            if (actionHeader) {
+              actionHeader.style.display = 'none';
             }
-
-            toggleBtn.addEventListener('click', function() {
-                sidebar.classList.toggle('collapsed');
-                mainContent.classList.toggle('expanded');
-
-                const isCollapsed = sidebar.classList.contains('collapsed');
-                localStorage.setItem('sidebarCollapsed', isCollapsed);
-                
-                if (isCollapsed) {
-                    menuSection.classList.remove('expanded');
-                }
+            
+            actionCells.forEach(cell => {
+              cell.style.display = 'none';
             });
+          }
 
-            mobileToggle.addEventListener('click', function() {
-                sidebar.classList.add('mobile-open');
-                overlay.classList.add('active');
-            });
+          creditManagementToggle.addEventListener('click', function(e) {
+            if (sidebar.classList.contains('collapsed')) return;
+            menuSection.classList.toggle('expanded');
+            const isExpanded = menuSection.classList.contains('expanded');
+            localStorage.setItem('creditManagementExpanded', isExpanded);
+          });
 
-            overlay.addEventListener('click', function() {
-                sidebar.classList.remove('mobile-open');
-                overlay.classList.remove('active');
-            });
+          const creditManagementExpanded = localStorage.getItem('creditManagementExpanded') === 'true';
+          if (creditManagementExpanded && !sidebar.classList.contains('collapsed')) {
+            menuSection.classList.add('expanded');
+          }
 
-            const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-            if (sidebarCollapsed) {
-                sidebar.classList.add('collapsed');
-                mainContent.classList.add('expanded');
+          toggleBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
+            const isCollapsed = sidebar.classList.contains('collapsed');
+            localStorage.setItem('sidebarCollapsed', isCollapsed);
+            if (isCollapsed) {
+              menuSection.classList.remove('expanded');
             }
+          });
 
-            window.addEventListener('resize', function() {
-                if (window.innerWidth > 768) {
-                    sidebar.classList.remove('mobile-open');
-                    overlay.classList.remove('active');
-                }
-            });
+          mobileToggle.addEventListener('click', function() {
+            sidebar.classList.add('mobile-open');
+            overlay.classList.add('active');
+          });
+
+          overlay.addEventListener('click', function() {
+            sidebar.classList.remove('mobile-open');
+            overlay.classList.remove('active');
+          });
+
+          const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+          if (sidebarCollapsed) {
+            sidebar.classList.add('collapsed');
+            mainContent.classList.add('expanded');
+          }
+
+          window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+              sidebar.classList.remove('mobile-open');
+              overlay.classList.remove('active');
+            }
+          });
         });
 
         function loadData() {
@@ -1232,10 +1414,14 @@
         function onDataLoaded(data) {
             try {
                 const parsedData = typeof data === 'string' ? JSON.parse(data) : data;
-                allData = Array.isArray(parsedData) ? parsedData : [];
+                allData = Array.isArray(parsedData) ? parsedData.reverse() : []; 
                 filteredData = [...allData];
 
                 populateFilters();
+
+                if (devicesList.length > 0) {
+                    populateDeviceDropdown();
+                }
                 displayData();
                 updateStats();
 
@@ -1365,30 +1551,296 @@
             showAlert(message, 'warning', title);
         }
 
-        function populateFilters() {
-            const clientNames = [...new Set(allData.map(row => row[2]).filter(Boolean))].sort();
-            const deviceSerials = [...new Set(allData.map(row => row[4]).filter(Boolean))].sort();
+        function toggleMultiSelect(filterId) {
+            const dropdown = document.getElementById(filterId + 'Dropdown');
+            const isActive = dropdown.classList.contains('active');
+            
 
-            populateSelect('clientNameFilter', clientNames);
-            populateSelect('deviceSerialFilter', deviceSerials);
+            document.querySelectorAll('.multi-select-dropdown').forEach(d => d.classList.remove('active'));
+            
+
+            if (!isActive) {
+                dropdown.classList.add('active');
+
+                const searchInput = document.getElementById(filterId + 'Search');
+                if (searchInput) {
+                    searchInput.value = '';
+                    filterMultiSelectOptions(filterId, '');
+                }
+            }
         }
 
-        function populateSelect(selectId, options) {
-            const select = document.getElementById(selectId);
-            const currentValue = select.value;
+        function toggleFilterOption(filterId, value) {
+            if (filterId === 'clientFilter') {
+                const index = selectedClients.indexOf(value);
+                if (index > -1) {
+                    selectedClients.splice(index, 1);
+                } else {
+                    selectedClients.push(value);
+                }
+                updateFilterDisplay('clientFilter', selectedClients);
+                
 
-            while (select.children.length > 1) {
-                select.removeChild(select.lastChild);
+                if (index > -1) {
+                    const clientDevices = clientDeviceMap[value] || [];
+                    selectedDevices = selectedDevices.filter(device => {
+                        if (clientDevices.includes(device)) {
+
+                            return selectedClients.some(client => {
+                                const devices = clientDeviceMap[client] || [];
+                                return devices.includes(device);
+                            });
+                        }
+                        return true;
+                    });
+                    updateFilterDisplay('deviceFilter', selectedDevices);
+                }
+            } else if (filterId === 'deviceFilter') {
+                const index = selectedDevices.indexOf(value);
+                if (index > -1) {
+                    selectedDevices.splice(index, 1);
+                } else {
+                    selectedDevices.push(value);
+                }
+                updateFilterDisplay('deviceFilter', selectedDevices);
+                
+
+                if (index > -1) {
+                    const deviceClient = deviceClientMap[value];
+                    if (deviceClient) {
+                        const clientDevices = clientDeviceMap[deviceClient] || [];
+                        const hasOtherSelectedDevices = clientDevices.some(device => 
+                            device !== value && selectedDevices.includes(device)
+                        );
+                        if (!hasOtherSelectedDevices) {
+                            const clientIndex = selectedClients.indexOf(deviceClient);
+                            if (clientIndex > -1) {
+                                selectedClients.splice(clientIndex, 1);
+                                updateFilterDisplay('clientFilter', selectedClients);
+                            }
+                        }
+                    }
+                }
+            }
+            
+
+            updateAvailableFilters();
+            
+
+            const clientSearchInput = document.getElementById('clientFilterSearch');
+            const deviceSearchInput = document.getElementById('deviceFilterSearch');
+            if (clientSearchInput) {
+                clientSearchInput.value = '';
+                filterMultiSelectOptions('clientFilter', '');
+            }
+            if (deviceSearchInput) {
+                deviceSearchInput.value = '';
+                filterMultiSelectOptions('deviceFilter', '');
+            }
+            
+            applyFilters();
+        }
+
+        function removeFilterChip(filterId, value) {
+            if (filterId === 'clientFilter') {
+                const index = selectedClients.indexOf(value);
+                if (index > -1) {
+                    selectedClients.splice(index, 1);
+                }
+                updateFilterDisplay('clientFilter', selectedClients);
+                
+
+                const clientDevices = clientDeviceMap[value] || [];
+                selectedDevices = selectedDevices.filter(device => {
+                    if (clientDevices.includes(device)) {
+                        return selectedClients.some(client => {
+                            const devices = clientDeviceMap[client] || [];
+                            return devices.includes(device);
+                        });
+                    }
+                    return true;
+                });
+                updateFilterDisplay('deviceFilter', selectedDevices);
+            } else if (filterId === 'deviceFilter') {
+                const index = selectedDevices.indexOf(value);
+                if (index > -1) {
+                    selectedDevices.splice(index, 1);
+                }
+                updateFilterDisplay('deviceFilter', selectedDevices);
+                
+
+                const deviceClient = deviceClientMap[value];
+                if (deviceClient) {
+                    const clientDevices = clientDeviceMap[deviceClient] || [];
+                    const hasOtherSelectedDevices = clientDevices.some(device => 
+                        device !== value && selectedDevices.includes(device)
+                    );
+                    if (!hasOtherSelectedDevices) {
+                        const clientIndex = selectedClients.indexOf(deviceClient);
+                        if (clientIndex > -1) {
+                            selectedClients.splice(clientIndex, 1);
+                            updateFilterDisplay('clientFilter', selectedClients);
+                        }
+                    }
+                }
+            }
+            
+
+            updateAvailableFilters();
+            applyFilters();
+        }
+
+        function updateFilterDisplay(filterId, selectedValues) {
+            const display = document.getElementById(filterId + 'Display');
+            
+            if (selectedValues.length === 0) {
+                const placeholder = filterId === 'clientFilter' ? 'All Clients' : 'All Devices';
+                display.innerHTML = `<span class="multi-select-placeholder">${placeholder}</span>`;
+            } else {
+                const chips = selectedValues.map(value => 
+                    `<span class="filter-chip">${value} <span class="remove-chip" onclick="event.stopPropagation(); removeFilterChip('${filterId}', '${value}')">&times;</span></span>`
+                ).join('');
+                display.innerHTML = `<div class="selected-chips">${chips}</div>`;
+            }
+        }
+
+        function updateMultiSelectCheckboxes(filterId) {
+            const dropdown = document.getElementById(filterId + 'Dropdown');
+            const checkboxes = dropdown.querySelectorAll('input[type="checkbox"]');
+            const selectedValues = filterId === 'clientFilter' ? selectedClients : selectedDevices;
+            
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectedValues.includes(checkbox.value);
+            });
+        }
+
+
+        let clientDeviceMap = {}; 
+        let deviceClientMap = {}; 
+
+        function buildClientDeviceMaps() {
+            clientDeviceMap = {};
+            deviceClientMap = {};
+            
+            allData.forEach(row => {
+                const clientName = row[2];
+                const deviceSerial = row[4];
+                
+                if (clientName && deviceSerial) {
+
+                    if (!clientDeviceMap[clientName]) {
+                        clientDeviceMap[clientName] = [];
+                    }
+                    if (!clientDeviceMap[clientName].includes(deviceSerial)) {
+                        clientDeviceMap[clientName].push(deviceSerial);
+                    }
+                    
+
+                    deviceClientMap[deviceSerial] = clientName;
+                }
+            });
+        }
+
+        function populateFilters() {
+            buildClientDeviceMaps();
+            allClients = [...new Set(allData.map(row => row[2]).filter(Boolean))].sort();
+            allDeviceSerials = [...new Set(allData.map(row => row[4]).filter(Boolean))].sort();
+
+            updateAvailableFilters();
+        }
+
+        function getAvailableClients() {
+            if (selectedDevices.length === 0) {
+                return allClients;
             }
 
-            options.forEach(option => {
-                const optionElement = document.createElement('option');
-                optionElement.value = option;
-                optionElement.textContent = option;
-                select.appendChild(optionElement);
+            const availableClients = new Set();
+            selectedDevices.forEach(deviceSerial => {
+                const client = deviceClientMap[deviceSerial];
+                if (client) {
+                    availableClients.add(client);
+                }
             });
 
-            select.value = currentValue;
+            selectedClients.forEach(client => availableClients.add(client));
+            return Array.from(availableClients).sort();
+        }
+
+        function getAvailableDevices() {
+            if (selectedClients.length === 0) {
+                return allDeviceSerials;
+            }
+
+            const availableDevices = new Set();
+            selectedClients.forEach(clientName => {
+                const devices = clientDeviceMap[clientName] || [];
+                devices.forEach(deviceSerial => availableDevices.add(deviceSerial));
+            });
+
+            selectedDevices.forEach(device => availableDevices.add(device));
+            return Array.from(availableDevices).sort();
+        }
+
+        function updateAvailableFilters() {
+            const availableClients = getAvailableClients();
+            const availableDevices = getAvailableDevices();
+            
+            populateMultiSelect('clientFilter', availableClients);
+            populateMultiSelect('deviceFilter', availableDevices);
+        }
+
+        function filterMultiSelectOptions(filterId, searchTerm) {
+            const dropdown = document.getElementById(filterId + 'Dropdown');
+            const options = dropdown.querySelectorAll('.multi-select-option');
+            const searchLower = searchTerm.toLowerCase();
+            
+            options.forEach(option => {
+                const label = option.querySelector('label');
+                const text = label ? label.textContent.toLowerCase() : '';
+                if (text.includes(searchLower)) {
+                    option.style.display = 'flex';
+                } else {
+                    option.style.display = 'none';
+                }
+            });
+        }
+
+        function populateMultiSelect(filterId, options) {
+            const dropdown = document.getElementById(filterId + 'Dropdown');
+            const selectedValues = filterId === 'clientFilter' ? selectedClients : selectedDevices;
+            
+
+            const searchBar = dropdown.querySelector('.multi-select-search');
+            const existingOptions = dropdown.querySelectorAll('.multi-select-option');
+            
+
+            existingOptions.forEach(option => option.remove());
+            
+
+            if (!searchBar) {
+                const searchDiv = document.createElement('div');
+                searchDiv.className = 'multi-select-search';
+                searchDiv.innerHTML = `
+                    <div class="multi-select-search-container">
+                        <input type="text" id="${filterId}Search" placeholder="Search ${filterId === 'clientFilter' ? 'clients' : 'devices'}..." oninput="filterMultiSelectOptions('${filterId}', this.value)">
+                        <i class="fas fa-search"></i>
+                    </div>
+                `;
+                dropdown.insertBefore(searchDiv, dropdown.firstChild);
+            }
+            
+
+            options.forEach(option => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'multi-select-option';
+                const isChecked = selectedValues.includes(option);
+                optionDiv.innerHTML = `
+                    <input type="checkbox" value="${option}" ${isChecked ? 'checked' : ''} 
+                           onchange="toggleFilterOption('${filterId}', this.value)">
+                    <label>${option}</label>
+                `;
+                dropdown.appendChild(optionDiv);
+            });
         }
 
         function validateForm() {
@@ -1405,7 +1857,6 @@
             const requiredFields = [
                 { id: 'deviceSerial', name: 'Device Serial Number' },
                 { id: 'balance', name: 'Balance' },
-                { id: 'creditUsed', name: 'Credit Used' },
             ];
 
             for (const field of requiredFields) {
@@ -1420,6 +1871,16 @@
             return true;
         }
 
+        function getClientNameForDevice(deviceSerial) {
+
+            if (deviceClientMap && deviceClientMap[deviceSerial]) {
+                return deviceClientMap[deviceSerial];
+            }
+
+            const deviceRow = allData.find(row => row[4] === deviceSerial);
+            return deviceRow ? deviceRow[2] : '';
+        }
+
         function populateDeviceDropdown() {
             const dropdown = document.getElementById('deviceOptions');
             dropdown.innerHTML = '';
@@ -1427,8 +1888,12 @@
             devicesList.forEach(device => {
                 const option = document.createElement('div');
                 option.className = 'dropdown-option';
+                const clientName = device.clientName || getClientNameForDevice(device.serial);
                 option.innerHTML = `
-                    <strong>${device.serial}</strong>
+                    <div>
+                        <strong>${device.serial}</strong>
+                        ${clientName ? `<div style="font-size: 11px; color: var(--text-light); margin-top: 2px;">${clientName}</div>` : ''}
+                    </div>
                 `;
                 option.onclick = () => selectDevice(device);
                 dropdown.appendChild(option);
@@ -1454,6 +1919,44 @@
             return true;
         }
 
+        async function copyWhatsappInfo(rowIndex) {
+            const row = allData[rowIndex];
+
+            if (!row) {
+                showError('Unable to find record details.', 'Copy Failed');
+                return;
+            }
+
+            const clientName = row[2] || 'N/A';
+            const deviceSerial = row[4] || 'N/A';
+            const balanceRaw = row[5];
+            const balance = (balanceRaw !== undefined && balanceRaw !== null && balanceRaw !== '') 
+                ? formatNumber(balanceRaw, true) 
+                : 'N/A';
+
+            const message = `Client Name: ${clientName}\nDevice Serial Number: ${deviceSerial}\nBalance from K-Laser System: ${balance}`;
+
+            try {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    await navigator.clipboard.writeText(message);
+                } else {
+                    const tempTextArea = document.createElement('textarea');
+                    tempTextArea.value = message;
+                    tempTextArea.style.position = 'fixed';
+                    tempTextArea.style.opacity = '0';
+                    document.body.appendChild(tempTextArea);
+                    tempTextArea.focus();
+                    tempTextArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(tempTextArea);
+                }
+                showSuccess('Details copied. Paste into WhatsApp to send.', 'Copied');
+            } catch (error) {
+                console.error('Clipboard copy failed:', error);
+                showError('Could not copy details. Please copy manually.', 'Copy Failed');
+            }
+        }
+
         function displayData() {
             const tbody = document.getElementById('dataTableBody');
             tbody.innerHTML = '';
@@ -1467,23 +1970,32 @@
             document.getElementById('tableContainer').style.display = 'block';
             document.getElementById('noDataDiv').style.display = 'none';
 
+            const isRestrictedUser = ["Guest", "Product Specialist"].includes(userRole);
+
             filteredData.forEach((row, index) => {
                 const tr = document.createElement('tr');
+
+                const actionButtons = isRestrictedUser ? '' : `
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-whatsapp btn-sm" onclick="copyWhatsappInfo(${allData.indexOf(row)})" title="Copy details for WhatsApp">
+                                <i class="fab fa-whatsapp"></i>
+                            </button>
+                            <button class="btn btn-primary btn-sm" onclick="editRecord(${allData.indexOf(row)})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
 
                 tr.innerHTML = `
                     <td>${formatDateTime(row[0])}</td>
                     <td><strong>${row[2] || ''}</strong></td>
                     <td><code>${row[4] || ''}</code></td>
                     <td>${row[5] || ''}</td>
-                    <td>${formatNumber(row[6], true)}</td>
                     <td><strong>${formatNumber(row[8], true)}</strong></td>
-                    <td>
-                        <div class="action-buttons">
-                            <button class="btn btn-primary btn-sm" onclick="editRecord(${allData.indexOf(row)})">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                        </div>
-                    </td>
+                    <td>${row[10] || '-'}</td>
+                    ${actionButtons}
                 `;
 
                 tbody.appendChild(tr);
@@ -1502,9 +2014,12 @@
                 return;
             }
 
-            const filteredDevices = devicesList.filter(device =>
-                device.serial.toLowerCase().includes(searchTerm.toLowerCase())
-            );
+            const filteredDevices = devicesList.filter(device => {
+                const serialMatch = device.serial.toLowerCase().includes(searchTerm.toLowerCase());
+                const clientName = device.clientName || getClientNameForDevice(device.serial);
+                const clientMatch = clientName && clientName.toLowerCase().includes(searchTerm.toLowerCase());
+                return serialMatch || clientMatch;
+            });
 
             dropdown.innerHTML = '';
 
@@ -1512,8 +2027,12 @@
                 filteredDevices.forEach(device => {
                     const option = document.createElement('div');
                     option.className = 'dropdown-option';
+                    const clientName = device.clientName || getClientNameForDevice(device.serial);
                     option.innerHTML = `
-                        <strong>${device.serial}</strong>
+                        <div>
+                            <strong>${device.serial}</strong>
+                            ${clientName ? `<div style="font-size: 11px; color: var(--text-light); margin-top: 2px;">${clientName}</div>` : ''}
+                        </div>
                     `;
                     option.onclick = () => selectDevice(device);
                     dropdown.appendChild(option);
@@ -1537,8 +2056,6 @@
 
         function applyFilters() {
             const globalSearch = document.getElementById('globalSearch').value.toLowerCase();
-            const clientNameFilter = document.getElementById('clientNameFilter').value;
-            const deviceSerialFilter = document.getElementById('deviceSerialFilter').value;
 
             filteredData = allData.filter(row => {
                 if (globalSearch) {
@@ -1548,8 +2065,8 @@
                     if (!searchMatch) return false;
                 }
 
-                if (clientNameFilter && row[2] !== clientNameFilter) return false;
-                if (deviceSerialFilter && row[4] !== deviceSerialFilter) return false;
+                if (selectedClients.length > 0 && !selectedClients.includes(row[2])) return false;
+                if (selectedDevices.length > 0 && !selectedDevices.includes(row[4])) return false;
 
                 return true;
             });
@@ -1562,10 +2079,28 @@
 
         function clearFilters() {
             document.getElementById('globalSearch').value = '';
-            document.getElementById('clientNameFilter').value = '';
-            document.getElementById('deviceSerialFilter').value = '';
+            selectedClients = [];
+            selectedDevices = [];
+            
+
+            const clientSearchInput = document.getElementById('clientFilterSearch');
+            const deviceSearchInput = document.getElementById('deviceFilterSearch');
+            if (clientSearchInput) {
+                clientSearchInput.value = '';
+                filterMultiSelectOptions('clientFilter', '');
+            }
+            if (deviceSearchInput) {
+                deviceSearchInput.value = '';
+                filterMultiSelectOptions('deviceFilter', '');
+            }
+            
+            updateFilterDisplay('clientFilter', selectedClients);
+            updateFilterDisplay('deviceFilter', selectedDevices);
 
             clearDateFilter();
+
+
+            updateAvailableFilters();
 
             filteredData = [...allData];
             displayData();
@@ -1654,13 +2189,11 @@
             try {
                 const exportData = filteredData.map(row => ({
                     'Timestamp': formatDateTime(row[0]),
-                    'Client ID': row[1] || '',
                     'Client Name': row[2] || '',
-                    'Device ID': row[3] || '',
                     'Device Serial Number': row[4] || '',
                     'Balance from K-Laser System': row[5] || 0,
-                    'Credit Utilised by Client Report': row[6] || 0,
-                    'Current Balance': row[8] || 0
+                    'Current Balance': row[8] || 0,
+                    'Last Edited By': row[10] || ''
                 }));
 
                 const wb = XLSX.utils.book_new();
@@ -1704,7 +2237,6 @@
             document.getElementById('deviceSerial').value = row[4];
             document.getElementById('balance').value = row[5];
             document.getElementById('topUp').value = row[7];
-            document.getElementById('creditUsed').value = row[6];
 
             document.getElementById('deviceOptions').style.display = 'none';
             document.getElementById('deviceError').style.display = 'none';
@@ -1805,12 +2337,20 @@
         }
 
         document.getElementById('globalSearch').addEventListener('input', applyFilters);
-        document.getElementById('clientNameFilter').addEventListener('change', applyFilters);
-        document.getElementById('deviceSerialFilter').addEventListener('change', applyFilters);
 
         document.addEventListener('click', function(e) {
             if (!e.target.closest('.searchable-dropdown')) {
                 document.getElementById('deviceOptions').style.display = 'none';
+            }
+            
+
+            if (!e.target.closest('.multi-select-container')) {
+                document.querySelectorAll('.multi-select-dropdown').forEach(d => d.classList.remove('active'));
+            }
+            
+
+            if (e.target.closest('.multi-select-search')) {
+                e.stopPropagation();
             }
         });
 
@@ -1841,7 +2381,6 @@
                     deviceSerial: selectedDevice.serial,
                     balance: parseFloat(document.getElementById('balance').value) || 0,
                     topUp: parseFloat(document.getElementById('topUp').value) || 0,
-                    creditUsed: parseInt(document.getElementById('creditUsed').value) || 0,
                 };
 
                 const editIndex = document.getElementById('editRowIndex').value;

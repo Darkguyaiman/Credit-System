@@ -6,6 +6,45 @@ function doGet() {
     .addMetaTag('viewport', 'width=device-width, initial-scale=1');
 }
 
+function getCurrentUserRole() {
+  try {
+    const userEmail = Session.getActiveUser().getEmail();
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = ss.getSheetByName('Settings');
+    
+    if (!sheet) {
+      return 'Guest';
+    }
+    
+    const lastRow = sheet.getLastRow();
+    if (lastRow < 2) {
+      return 'Guest';
+    }
+    
+    const data = sheet.getRange(2, 2, lastRow - 1, 3).getValues();
+    
+    for (let i = 0; i < data.length; i++) {
+      const email = data[i][1];
+      const role = data[i][2];
+      
+      if (email && email.toString().toLowerCase() === userEmail.toLowerCase()) {
+        return role ? role.toString() : 'Guest';
+      }
+    }
+    
+    return 'Guest';
+  } catch (error) {
+    return 'Guest';
+  }
+}
+
+function getCurrentUserInfo() {
+  return {
+    email: Session.getActiveUser().getEmail(),
+    role: getCurrentUserRole()
+  };
+}
+
 function getAllUsers() {
   try {
     const ss = SpreadsheetApp.getActiveSpreadsheet();

@@ -167,6 +167,156 @@
             border-color: var(--light-teal);
         }
 
+        .multi-select-container {
+            position: relative;
+            min-width: 250px;
+        }
+
+        .multi-select-input {
+            width: 100%;
+            min-height: 45px;
+            padding: 8px 40px 8px 12px;
+            border: 2px solid var(--border-gray);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            background: var(--white);
+            cursor: pointer;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
+            transition: border-color 0.3s ease;
+        }
+
+        .multi-select-input:hover {
+            border-color: var(--light-teal);
+        }
+
+        .multi-select-input.open {
+            border-color: var(--light-teal);
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        .multi-select-placeholder {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .multi-select-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--light-teal);
+            color: var(--white);
+            padding: 4px 8px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .multi-select-chip-remove {
+            background: none;
+            border: none;
+            color: var(--white);
+            cursor: pointer;
+            font-size: 14px;
+            padding: 0;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .multi-select-chip-remove:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .multi-select-arrow {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            pointer-events: none;
+            transition: transform 0.3s ease;
+        }
+
+        .multi-select-input.open + .multi-select-arrow {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        .multi-select-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--white);
+            border: 2px solid var(--light-teal);
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            max-height: 250px;
+            overflow-y: auto;
+            z-index: 1001;
+            display: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .multi-select-dropdown.show {
+            display: block;
+        }
+
+        .multi-select-option {
+            padding: 10px 12px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .multi-select-option:hover {
+            background: var(--light-gray);
+        }
+
+        .multi-select-option.selected {
+            background: rgba(77, 129, 140, 0.1);
+            color: var(--light-teal);
+            font-weight: 500;
+        }
+
+        .multi-select-option input[type="checkbox"] {
+            cursor: pointer;
+        }
+
+        .multi-select-search {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border-gray);
+            position: sticky;
+            top: 0;
+            background: var(--white);
+            z-index: 1;
+        }
+
+        .multi-select-search input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border-gray);
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .multi-select-search input:focus {
+            outline: none;
+            border-color: var(--light-teal);
+        }
+
         .btn {
             padding: 12px 20px;
             border: none;
@@ -586,6 +736,13 @@
 
             .filter-group {
                 justify-content: space-between;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .multi-select-container {
+                min-width: auto;
+                width: 100%;
             }
 
             .stats {
@@ -1053,7 +1210,7 @@
                       <div class="submenu always-open">
                         <a href="<?= baseUrl ?>?page=postpaid-monthly" class="submenu-item" target="_top">
                           <i class="fas fa-calendar-alt submenu-icon"></i>
-                          <span class="submenu-text">Monthly Report</span>
+                          <span class="submenu-text">Report</span>
                         </a>
                         <a href="<?= baseUrl ?>?page=postpaid-topup" class="submenu-item" target="_top">
                           <i class="fas fa-coins submenu-icon"></i>
@@ -1069,7 +1226,7 @@
                       <div class="submenu always-open">
                         <a href="<?= baseUrl ?>?page=revenue-sharing-monthly" class="submenu-item" target="_top">
                           <i class="fas fa-calendar-alt submenu-icon"></i>
-                          <span class="submenu-text">Monthly Report</span>
+                          <span class="submenu-text">Report</span>
                         </a>
                         <a href="<?= baseUrl ?>?page=revenue-sharing-topup" class="submenu-item" target="_top">
                           <i class="fas fa-coins submenu-icon"></i>
@@ -1129,10 +1286,17 @@
                 </div>
                 
                 <div class="filter-group">
-                    <div class="filter-select">
-                        <select id="clientFilter">
-                            <option value="">All Clients</option>
-                        </select>
+                    <div class="multi-select-container">
+                        <div class="multi-select-input" id="clientFilterInput">
+                            <span class="multi-select-placeholder">Select Clients...</span>
+                        </div>
+                        <i class="fas fa-chevron-down multi-select-arrow"></i>
+                        <div class="multi-select-dropdown" id="clientFilterDropdown">
+                            <div class="multi-select-search">
+                                <input type="text" id="clientFilterSearch" placeholder="Search clients...">
+                            </div>
+                            <div id="clientFilterOptions"></div>
+                        </div>
                     </div>
                     
                     <button class="btn btn-secondary btn-sm" onclick="clearAllFilters()">
@@ -1264,6 +1428,7 @@
         let currentEditingDevice = null;
         let selectedClientId = null;
         let currentBusinessType = 'Prepaid';
+        let selectedClients = [];
 
         document.addEventListener('DOMContentLoaded', function() {
             loadInitialData();
@@ -1342,9 +1507,7 @@
                 applyFilters();
             });
 
-            document.getElementById('clientFilter').addEventListener('change', function() {
-                applyFilters();
-            });
+            setupMultiSelectFilter();
 
             document.getElementById('deviceForm').addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -1363,6 +1526,148 @@
                 if (e.target === this) {
                     closeConfirmModal();
                 }
+            });
+        }
+
+        function setupMultiSelectFilter() {
+            const input = document.getElementById('clientFilterInput');
+            const dropdown = document.getElementById('clientFilterDropdown');
+            const searchInput = document.getElementById('clientFilterSearch');
+
+
+            input.addEventListener('click', function(e) {
+                if (e.target.classList.contains('multi-select-chip-remove')) {
+                    return; 
+                }
+                const isOpen = dropdown.classList.contains('show');
+                if (isOpen) {
+                    closeMultiSelectDropdown();
+                } else {
+                    openMultiSelectDropdown();
+                }
+            });
+
+
+            searchInput.addEventListener('input', function() {
+                renderClientFilterOptions(this.value);
+            });
+
+
+            searchInput.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+
+
+            document.addEventListener('click', function(e) {
+                if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+                    closeMultiSelectDropdown();
+                }
+            });
+        }
+
+        function openMultiSelectDropdown() {
+            const input = document.getElementById('clientFilterInput');
+            const dropdown = document.getElementById('clientFilterDropdown');
+            const searchInput = document.getElementById('clientFilterSearch');
+            
+            input.classList.add('open');
+            dropdown.classList.add('show');
+            searchInput.value = '';
+            renderClientFilterOptions();
+            searchInput.focus();
+        }
+
+        function closeMultiSelectDropdown() {
+            const input = document.getElementById('clientFilterInput');
+            const dropdown = document.getElementById('clientFilterDropdown');
+            
+            input.classList.remove('open');
+            dropdown.classList.remove('show');
+        }
+
+        function toggleClientSelection(clientName) {
+            const index = selectedClients.indexOf(clientName);
+            if (index > -1) {
+                selectedClients.splice(index, 1);
+            } else {
+                selectedClients.push(clientName);
+            }
+            updateClientFilterDisplay();
+            renderClientFilterOptions(document.getElementById('clientFilterSearch').value);
+            applyFilters();
+        }
+
+        function removeClientChip(clientName, event) {
+            event.stopPropagation();
+            const index = selectedClients.indexOf(clientName);
+            if (index > -1) {
+                selectedClients.splice(index, 1);
+            }
+            updateClientFilterDisplay();
+            renderClientFilterOptions(document.getElementById('clientFilterSearch').value);
+            applyFilters();
+        }
+
+        function updateClientFilterDisplay() {
+            const input = document.getElementById('clientFilterInput');
+            
+
+            input.innerHTML = '';
+            
+            if (selectedClients.length === 0) {
+                const placeholder = document.createElement('span');
+                placeholder.className = 'multi-select-placeholder';
+                placeholder.textContent = 'Select Clients...';
+                input.appendChild(placeholder);
+            } else {
+                selectedClients.forEach(clientName => {
+                    const chip = document.createElement('div');
+                    chip.className = 'multi-select-chip';
+                    chip.innerHTML = `
+                        <span>${escapeHtml(clientName)}</span>
+                        <button class="multi-select-chip-remove" onclick="removeClientChip('${escapeHtml(clientName)}', event)">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                    input.appendChild(chip);
+                });
+            }
+        }
+
+        function renderClientFilterOptions(searchTerm = '') {
+            const optionsContainer = document.getElementById('clientFilterOptions');
+            optionsContainer.innerHTML = '';
+            
+            const filteredOptions = clientOptions.filter(client => 
+                client.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            
+            if (filteredOptions.length === 0) {
+                const noResults = document.createElement('div');
+                noResults.className = 'multi-select-option';
+                noResults.style.color = 'var(--text-light)';
+                noResults.style.fontStyle = 'italic';
+                noResults.textContent = 'No clients found';
+                optionsContainer.appendChild(noResults);
+                return;
+            }
+            
+            filteredOptions.forEach(client => {
+                const isSelected = selectedClients.includes(client.name);
+                const option = document.createElement('div');
+                option.className = 'multi-select-option' + (isSelected ? ' selected' : '');
+                option.innerHTML = `
+                    <input type="checkbox" ${isSelected ? 'checked' : ''} onchange="toggleClientSelection('${escapeHtml(client.name)}')">
+                    <span>${escapeHtml(client.name)}</span>
+                `;
+                
+                option.addEventListener('click', function(e) {
+                    if (e.target.tagName !== 'INPUT') {
+                        toggleClientSelection(client.name);
+                    }
+                });
+                
+                optionsContainer.appendChild(option);
             });
         }
 
@@ -1426,26 +1731,20 @@
         }
 
         function populateClientFilter() {
-            const clientFilter = document.getElementById('clientFilter');
-            clientFilter.innerHTML = '<option value="">All Clients</option>';
-            clientOptions.forEach(client => {
-                const option = document.createElement('option');
-                option.value = client.name;
-                option.textContent = client.name;
-                clientFilter.appendChild(option);
-            });
+
+            updateClientFilterDisplay();
+            renderClientFilterOptions();
         }
 
         function applyFilters() {
             const searchTerm = document.getElementById('globalSearch').value.toLowerCase();
-            const clientFilter = document.getElementById('clientFilter').value;
 
             filteredDevices = allDevices.filter(device => {
                 const matchesSearch = !searchTerm || 
                     device.serialNumber.toLowerCase().includes(searchTerm) ||
                     device.clientName.toLowerCase().includes(searchTerm);
 
-                const matchesClient = !clientFilter || device.clientName === clientFilter;
+                const matchesClient = selectedClients.length === 0 || selectedClients.includes(device.clientName);
 
                 return matchesSearch && matchesClient;
             });
@@ -1474,7 +1773,8 @@
                 <tr>
                   <th><i class="fas fa-barcode"></i> Device Serial Number</th>
                   <th><i class="fas fa-user"></i> Client Name</th>
-                  <th><i class="fas fa-coins"></i> Total Device Balance</th>
+                  <th><i class="fas fa-coins"></i> Current Device Balance</th>
+                  <th><i class="fas fa-user-edit"></i> Last Edited By</th>
                   <th><i class="fas fa-cogs"></i> Actions</th>
                 </tr>
               `;
@@ -1484,7 +1784,8 @@
                         <th><i class="fas fa-barcode"></i> Device Serial Number</th>
                         <th><i class="fas fa-user"></i> Client Name</th>
                         <th><i class="fas fa-money-bill"></i> Charges per Credit (RM)</th>
-                        <th><i class="fas fa-coins"></i> Total Device Balance</th>
+                        <th><i class="fas fa-coins"></i> Current Device Balance</th>
+                        <th><i class="fas fa-user-edit"></i> Last Edited By</th>
                         <th><i class="fas fa-cogs"></i> Actions</th>
                     </tr>
                 `;
@@ -1494,7 +1795,8 @@
                         <th><i class="fas fa-barcode"></i> Device Serial Number</th>
                         <th><i class="fas fa-user"></i> Client Name</th>
                         <th><i class="fas fa-tags"></i> Credit Purchase Options</th>
-                        <th><i class="fas fa-coins"></i> Total Device Balance</th>
+                        <th><i class="fas fa-coins"></i> Current Device Balance</th>
+                        <th><i class="fas fa-user-edit"></i> Last Edited By</th>
                         <th><i class="fas fa-cogs"></i> Actions</th>
                     </tr>
                 `;
@@ -1502,6 +1804,7 @@
         }
 
         function renderTable() {
+            filteredDevices = [...filteredDevices].reverse();
             const tbody = document.getElementById('deviceTableBody');
             const tableContainer = document.getElementById('tableContainer');
             const noResults = document.getElementById('noResults');
@@ -1525,6 +1828,7 @@
                         <td><span class="serial-number">${escapeHtml(device.serialNumber)}</span></td>
                         <td><span class="client-name">${escapeHtml(device.clientName)}</span></td>
                         <td><span class="text">${device.totalBalance || 0}</span></td>
+                        <td><span class="text">${escapeHtml(device.lastEditedBy || 'N/A')}</span></td>
                         <td class="actions">
                             <button class="btn btn-primary btn-sm" onclick='editDevice(${JSON.stringify(device)})'>
                                 <i class="fas fa-edit"></i> Edit
@@ -1540,6 +1844,7 @@
                         <td><span class="client-name">${escapeHtml(device.clientName)}</span></td>
                         <td><span class="charges">RM ${formatCurrency(device.chargesPerCredit || 0)}</span></td>
                         <td><span class="text">${device.totalBalance || 0}</span></td>
+                        <td><span class="text">${escapeHtml(device.lastEditedBy || 'N/A')}</span></td>
                         <td class="actions">
                             <button class="btn btn-primary btn-sm" onclick='editDevice(${JSON.stringify(device)})'>
                                 <i class="fas fa-edit"></i> Edit
@@ -1559,6 +1864,7 @@
                         <td><span class="client-name">${escapeHtml(device.clientName)}</span></td>
                         <td><div class="credit-options-list">${optionsHtml || '<em>No options</em>'}</div></td>
                         <td><span class="text">${device.totalBalance || 0}</span></td>
+                        <td><span class="text">${escapeHtml(device.lastEditedBy || 'N/A')}</span></td>
                         <td class="actions">
                             <button class="btn btn-primary btn-sm" onclick='editDevice(${JSON.stringify(device)})'>
                                 <i class="fas fa-edit"></i> Edit
@@ -1576,7 +1882,9 @@
 
         function clearAllFilters() {
             document.getElementById('globalSearch').value = '';
-            document.getElementById('clientFilter').value = '';
+            selectedClients = [];
+            updateClientFilterDisplay();
+            renderClientFilterOptions();
             applyFilters();
         }
 

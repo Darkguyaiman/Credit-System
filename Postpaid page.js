@@ -12,7 +12,7 @@ function getCreditDataPostpaidMonthly() {
     if (!sheet) return JSON.stringify([]);
 
     const lastRow = sheet.getLastRow();
-    const lastCol = 16;
+    const lastCol = 18;
     if (lastRow < 2) return JSON.stringify([]);
 
     const values = sheet.getRange(2, 1, lastRow - 1, lastCol).getValues();
@@ -36,7 +36,7 @@ function getCreditDataPostpaidTopUp() {
     if (!sheet) return JSON.stringify([]);
 
     const lastRow = sheet.getLastRow();
-    const lastCol = 16;
+    const lastCol = 19;
     if (lastRow < 2) return JSON.stringify([]);
 
     const values = sheet.getRange(2, 1, lastRow - 1, lastCol).getValues();
@@ -102,6 +102,8 @@ function addRecordPostpaid(data) {
     }
 
 
+    const userEmail = Session.getActiveUser().getEmail();
+
     sheet.getRange(nextRow, 1).setValue(new Date());
 
     sheet.getRange(nextRow, 2).setValue(data.clientId); 
@@ -126,8 +128,10 @@ function addRecordPostpaid(data) {
 
     sheet.getRange(nextRow, 13).setValue(data.creditToCharge);
 
-
-
+    sheet.getRange(nextRow, 17).setValue(userEmail);
+    
+    const status = data.status || '';
+    sheet.getRange(nextRow, 19).setValue(status);
 
     return { success: true, message: 'Record added successfully' };
   } catch (error) {
@@ -144,31 +148,29 @@ function updateRecordPostpaid(rowIndex, data) {
 
     const sheetRow = rowIndex + 2;
 
-
     let paymentStatus = data.paymentStatus || 'Pending';
     if (data.paymentDate) {
       paymentStatus = 'Paid';
     }
 
+    const userEmail = Session.getActiveUser().getEmail();
 
     sheet.getRange(sheetRow, 2).setValue(data.clientId);
-
     sheet.getRange(sheetRow, 4).setValue(data.deviceId);
-
     sheet.getRange(sheetRow, 6).setValue(data.balance);
-
     sheet.getRange(sheetRow, 7).setValue(data.creditUsed);
-
     sheet.getRange(sheetRow, 8).setValue(data.breakdown);
-
     sheet.getRange(sheetRow, 10).setValue(data.topUp);
 
     const paymentDate = data.paymentDate ? new Date(data.paymentDate) : '';
     sheet.getRange(sheetRow, 11).setValue(paymentDate);
-
     sheet.getRange(sheetRow, 12).setValue(paymentStatus);
-
     sheet.getRange(sheetRow, 13).setValue(data.creditToCharge);
+
+    sheet.getRange(sheetRow, 17).setValue(userEmail);
+    
+    const status = data.status || '';
+    sheet.getRange(sheetRow, 19).setValue(status);
 
     return { success: true, message: 'Record updated successfully' };
   } catch (error) {

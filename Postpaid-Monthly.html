@@ -132,6 +132,137 @@
             border-color: var(--light-teal);
         }
 
+        .multi-select-container {
+            position: relative;
+            min-width: 200px;
+        }
+
+        .multi-select-input {
+            padding: 10px 15px;
+            border: 2px solid var(--border-gray);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            background: var(--white);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 42px;
+            transition: border-color 0.3s ease;
+        }
+
+        .multi-select-input:hover {
+            border-color: var(--light-teal);
+        }
+
+        .multi-select-placeholder {
+            color: var(--text-light);
+        }
+
+        .multi-select-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--white);
+            border: 2px solid var(--border-gray);
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            max-height: 250px;
+            overflow-y: auto;
+            z-index: 100;
+            display: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .multi-select-dropdown.active {
+            display: block;
+        }
+
+        .multi-select-option {
+            padding: 10px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.2s;
+        }
+
+        .multi-select-option:hover {
+            background: var(--light-gray);
+        }
+
+        .multi-select-option input[type="checkbox"] {
+            cursor: pointer;
+        }
+
+        .multi-select-search {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border-gray);
+            position: sticky;
+            top: 0;
+            background: var(--white);
+            z-index: 1;
+        }
+
+        .multi-select-search-container {
+            position: relative;
+        }
+
+        .multi-select-search input {
+            width: 100%;
+            padding: 8px 30px 8px 12px;
+            border: 1px solid var(--border-gray);
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .multi-select-search input:focus {
+            outline: none;
+            border-color: var(--light-teal);
+        }
+
+        .multi-select-search-container i {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-size: 12px;
+            pointer-events: none;
+        }
+
+        .selected-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .filter-chip {
+            background: var(--light-teal);
+            color: var(--white);
+            padding: 4px 10px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .filter-chip .remove-chip {
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            line-height: 1;
+        }
+
+        .filter-chip .remove-chip:hover {
+            opacity: 0.7;
+        }
+
         .btn {
             padding: 10px 20px;
             border: none;
@@ -155,6 +286,17 @@
             background: var(--medium-teal);
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(77, 129, 140, 0.3);
+        }
+
+        .btn-whatsapp {
+            background: #25d366;
+            color: var(--white);
+        }
+
+        .btn-whatsapp:hover {
+            background: #1ebe57;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
         }
 
         .btn-success {
@@ -288,6 +430,7 @@
         th:nth-child(13), td:nth-child(13) { width: 140px; }
         th:nth-child(14), td:nth-child(14) { width: 140px; }
         th:nth-child(15), td:nth-child(15) { width: 100px; }
+        th:nth-child(16), td:nth-child(16) { width: 100px; }
 
         .status-badge {
             padding: 4px 8px;
@@ -981,7 +1124,7 @@
                       <div class="submenu always-open">
                         <a href="<?= baseUrl ?>?page=postpaid-monthly" class="submenu-item active" target="_top">
                           <i class="fas fa-calendar-alt submenu-icon"></i>
-                          <span class="submenu-text">Monthly Report</span>
+                          <span class="submenu-text">Report</span>
                         </a>
                         <a href="<?= baseUrl ?>?page=postpaid-topup" class="submenu-item" target="_top">
                           <i class="fas fa-coins submenu-icon"></i>
@@ -997,7 +1140,7 @@
                       <div class="submenu always-open">
                         <a href="<?= baseUrl ?>?page=revenue-sharing-monthly" class="submenu-item" target="_top">
                           <i class="fas fa-calendar-alt submenu-icon"></i>
-                          <span class="submenu-text">Monthly Report</span>
+                          <span class="submenu-text">Report</span>
                         </a>
                         <a href="<?= baseUrl ?>?page=revenue-sharing-topup" class="submenu-item" target="_top">
                           <i class="fas fa-coins submenu-icon"></i>
@@ -1033,7 +1176,7 @@
         <div class="header">
                 <h1>
                     <i class="fas fa-file-invoice-dollar"></i>
-                    Postpaid (Monthly Report)
+                    Postpaid (Report)
                 </h1>
         </div>
 
@@ -1045,13 +1188,39 @@
                 </div>
 
                 <div class="filter-group">
-                    <select id="clientNameFilter" class="filter-select">
-                        <option value="">All Clients</option>
-                    </select>
+                    <div class="multi-select-container" id="clientFilterContainer">
+                        <div class="multi-select-input" onclick="toggleMultiSelect('clientFilter')">
+                            <div id="clientFilterDisplay">
+                                <span class="multi-select-placeholder">All Clients</span>
+                            </div>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="multi-select-dropdown" id="clientFilterDropdown">
+                            <div class="multi-select-search">
+                                <div class="multi-select-search-container">
+                                    <input type="text" id="clientFilterSearch" placeholder="Search clients..." oninput="filterMultiSelectOptions('clientFilter', this.value)">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                    <select id="deviceSerialFilter" class="filter-select">
-                        <option value="">All Devices</option>
-                    </select>
+                    <div class="multi-select-container" id="deviceFilterContainer">
+                        <div class="multi-select-input" onclick="toggleMultiSelect('deviceFilter')">
+                            <div id="deviceFilterDisplay">
+                                <span class="multi-select-placeholder">All Devices</span>
+                            </div>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="multi-select-dropdown" id="deviceFilterDropdown">
+                            <div class="multi-select-search">
+                                <div class="multi-select-search-container">
+                                    <input type="text" id="deviceFilterSearch" placeholder="Search devices..." oninput="filterMultiSelectOptions('deviceFilter', this.value)">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <select id="paymentStatusFilter" class="filter-select" style="display: none;">
                         <option value="">All Status</option>
@@ -1152,6 +1321,7 @@
                             <th>Charges per Credit (RM)</th>
                             <th>Total Charges (RM)</th>
                             <th>Current Balance</th>
+                            <th>Last Edited By</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -1204,6 +1374,11 @@
                             <div id="deviceOptions" class="dropdown-options"></div>
                         </div>
                         <small id="deviceError" style="color: var(--danger); display: none;">Please select a valid device from the list</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="clientName">Client Name</label>
+                        <input type="text" id="clientName" readonly style="background-color: var(--light-gray); cursor: not-allowed;">
                     </div>
 
                     <div class="form-row">
@@ -1277,6 +1452,7 @@
         let filteredData = [];
         let devicesList = [];
         let breakdownItems = [];
+        const userRole = '<?= userInfo.role ?>';
 
         window.onload = function() {
             loadData();
@@ -1293,6 +1469,21 @@
           const creditManagementToggle = document.getElementById('creditManagementToggle');
           const creditManagementSubmenu = document.getElementById('creditManagementSubmenu');
           const menuSection = creditManagementToggle.closest('.menu-section');
+
+
+          if (["Guest", "Product Specialist"].includes(userRole)) {
+
+            const addButton = document.querySelector('.btn-primary[onclick="openAddModal()"]');
+            if (addButton) {
+              addButton.style.display = 'none';
+            }
+
+
+            const actionHeader = document.querySelector('th:nth-child(12)');
+            if (actionHeader) {
+              actionHeader.style.display = 'none';
+            }
+          }
 
           creditManagementToggle.addEventListener('click', function(e) {
             if (sidebar.classList.contains('collapsed')) return;
@@ -1373,7 +1564,7 @@
         function onDataLoaded(data) {
           try {
             const parsedData = typeof data === 'string' ? JSON.parse(data) : data;
-            allData = Array.isArray(parsedData) ? parsedData : [];
+            allData = Array.isArray(parsedData) ? parsedData.reverse() : []; 
             filteredData = [...allData];
 
             populateFilters();
@@ -1521,14 +1712,306 @@
             showAlert(message, 'warning', title, confirmCallback);
         }
 
+        let selectedClients = [];
+        let selectedDevices = [];
+
+        function toggleMultiSelect(filterId) {
+            const dropdown = document.getElementById(filterId + 'Dropdown');
+            const isActive = dropdown.classList.contains('active');
+            
+
+            document.querySelectorAll('.multi-select-dropdown').forEach(d => d.classList.remove('active'));
+            
+
+            if (!isActive) {
+                dropdown.classList.add('active');
+
+                const searchInput = document.getElementById(filterId + 'Search');
+                if (searchInput) {
+                    searchInput.value = '';
+                    filterMultiSelectOptions(filterId, '');
+                }
+            }
+        }
+
+        function toggleFilterOption(filterId, value) {
+            if (filterId === 'clientFilter') {
+                const index = selectedClients.indexOf(value);
+                if (index > -1) {
+                    selectedClients.splice(index, 1);
+                } else {
+                    selectedClients.push(value);
+                }
+                updateFilterDisplay('clientFilter', selectedClients);
+                
+
+                if (index > -1) {
+                    const clientDevices = clientDeviceMap[value] || [];
+                    selectedDevices = selectedDevices.filter(device => {
+                        if (clientDevices.includes(device)) {
+
+                            return selectedClients.some(client => {
+                                const devices = clientDeviceMap[client] || [];
+                                return devices.includes(device);
+                            });
+                        }
+                        return true;
+                    });
+                    updateFilterDisplay('deviceFilter', selectedDevices);
+                }
+            } else if (filterId === 'deviceFilter') {
+                const index = selectedDevices.indexOf(value);
+                if (index > -1) {
+                    selectedDevices.splice(index, 1);
+                } else {
+                    selectedDevices.push(value);
+                }
+                updateFilterDisplay('deviceFilter', selectedDevices);
+                
+
+                if (index > -1) {
+                    const deviceClient = deviceClientMap[value];
+                    if (deviceClient) {
+                        const clientDevices = clientDeviceMap[deviceClient] || [];
+                        const hasOtherSelectedDevices = clientDevices.some(device => 
+                            device !== value && selectedDevices.includes(device)
+                        );
+                        if (!hasOtherSelectedDevices) {
+                            const clientIndex = selectedClients.indexOf(deviceClient);
+                            if (clientIndex > -1) {
+                                selectedClients.splice(clientIndex, 1);
+                                updateFilterDisplay('clientFilter', selectedClients);
+                            }
+                        }
+                    }
+                }
+            }
+            
+
+            updateAvailableFilters();
+            
+
+            const clientSearchInput = document.getElementById('clientFilterSearch');
+            const deviceSearchInput = document.getElementById('deviceFilterSearch');
+            if (clientSearchInput) {
+                clientSearchInput.value = '';
+                filterMultiSelectOptions('clientFilter', '');
+            }
+            if (deviceSearchInput) {
+                deviceSearchInput.value = '';
+                filterMultiSelectOptions('deviceFilter', '');
+            }
+            
+            applyFilters();
+        }
+
+        function removeFilterChip(filterId, value) {
+            if (filterId === 'clientFilter') {
+                const index = selectedClients.indexOf(value);
+                if (index > -1) {
+                    selectedClients.splice(index, 1);
+                }
+                updateFilterDisplay('clientFilter', selectedClients);
+                
+
+                const clientDevices = clientDeviceMap[value] || [];
+                selectedDevices = selectedDevices.filter(device => {
+                    if (clientDevices.includes(device)) {
+                        return selectedClients.some(client => {
+                            const devices = clientDeviceMap[client] || [];
+                            return devices.includes(device);
+                        });
+                    }
+                    return true;
+                });
+                updateFilterDisplay('deviceFilter', selectedDevices);
+            } else if (filterId === 'deviceFilter') {
+                const index = selectedDevices.indexOf(value);
+                if (index > -1) {
+                    selectedDevices.splice(index, 1);
+                }
+                updateFilterDisplay('deviceFilter', selectedDevices);
+                
+
+                const deviceClient = deviceClientMap[value];
+                if (deviceClient) {
+                    const clientDevices = clientDeviceMap[deviceClient] || [];
+                    const hasOtherSelectedDevices = clientDevices.some(device => 
+                        device !== value && selectedDevices.includes(device)
+                    );
+                    if (!hasOtherSelectedDevices) {
+                        const clientIndex = selectedClients.indexOf(deviceClient);
+                        if (clientIndex > -1) {
+                            selectedClients.splice(clientIndex, 1);
+                            updateFilterDisplay('clientFilter', selectedClients);
+                        }
+                    }
+                }
+            }
+            
+
+            updateAvailableFilters();
+            applyFilters();
+        }
+
+        function updateFilterDisplay(filterId, selectedValues) {
+            const display = document.getElementById(filterId + 'Display');
+            
+            if (selectedValues.length === 0) {
+                const placeholder = filterId === 'clientFilter' ? 'All Clients' : 'All Devices';
+                display.innerHTML = `<span class="multi-select-placeholder">${placeholder}</span>`;
+            } else {
+                const chips = selectedValues.map(value => 
+                    `<span class="filter-chip">${value} <span class="remove-chip" onclick="event.stopPropagation(); removeFilterChip('${filterId}', '${value}')">&times;</span></span>`
+                ).join('');
+                display.innerHTML = `<div class="selected-chips">${chips}</div>`;
+            }
+        }
+
+        function updateMultiSelectCheckboxes(filterId) {
+            const dropdown = document.getElementById(filterId + 'Dropdown');
+            const checkboxes = dropdown.querySelectorAll('input[type="checkbox"]');
+            const selectedValues = filterId === 'clientFilter' ? selectedClients : selectedDevices;
+            
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectedValues.includes(checkbox.value);
+            });
+        }
+
+
+        let clientDeviceMap = {}; 
+        let deviceClientMap = {}; 
+
+        function buildClientDeviceMaps() {
+            clientDeviceMap = {};
+            deviceClientMap = {};
+            
+            allData.forEach(row => {
+                const clientName = row[2];
+                const deviceSerial = row[4];
+                
+                if (clientName && deviceSerial) {
+
+                    if (!clientDeviceMap[clientName]) {
+                        clientDeviceMap[clientName] = [];
+                    }
+                    if (!clientDeviceMap[clientName].includes(deviceSerial)) {
+                        clientDeviceMap[clientName].push(deviceSerial);
+                    }
+                    
+
+                    deviceClientMap[deviceSerial] = clientName;
+                }
+            });
+        }
+
         function populateFilters() {
+            buildClientDeviceMaps();
             const clientNames = [...new Set(allData.map(row => row[2]).filter(Boolean))].sort();
             const deviceSerials = [...new Set(allData.map(row => row[4]).filter(Boolean))].sort();
             const paymentStatuses = [...new Set(allData.map(row => row[11]).filter(Boolean))].sort();
 
-            populateSelect('clientNameFilter', clientNames);
-            populateSelect('deviceSerialFilter', deviceSerials);
+            populateMultiSelect('clientFilter', clientNames);
+            populateMultiSelect('deviceFilter', deviceSerials);
             populateSelect('paymentStatusFilter', paymentStatuses);
+            
+            updateAvailableFilters();
+        }
+
+        function getAvailableClients() {
+            if (selectedDevices.length === 0) {
+                const allClients = [...new Set(allData.map(row => row[2]).filter(Boolean))].sort();
+                return allClients;
+            }
+
+            const availableClients = new Set();
+            selectedDevices.forEach(deviceSerial => {
+                const client = deviceClientMap[deviceSerial];
+                if (client) {
+                    availableClients.add(client);
+                }
+            });
+
+            selectedClients.forEach(client => availableClients.add(client));
+            return Array.from(availableClients).sort();
+        }
+
+        function getAvailableDevices() {
+            if (selectedClients.length === 0) {
+                const allDevices = [...new Set(allData.map(row => row[4]).filter(Boolean))].sort();
+                return allDevices;
+            }
+
+            const availableDevices = new Set();
+            selectedClients.forEach(clientName => {
+                const devices = clientDeviceMap[clientName] || [];
+                devices.forEach(deviceSerial => availableDevices.add(deviceSerial));
+            });
+
+            selectedDevices.forEach(device => availableDevices.add(device));
+            return Array.from(availableDevices).sort();
+        }
+
+        function updateAvailableFilters() {
+            const availableClients = getAvailableClients();
+            const availableDevices = getAvailableDevices();
+            
+            populateMultiSelect('clientFilter', availableClients);
+            populateMultiSelect('deviceFilter', availableDevices);
+        }
+
+        function filterMultiSelectOptions(filterId, searchTerm) {
+            const dropdown = document.getElementById(filterId + 'Dropdown');
+            const options = dropdown.querySelectorAll('.multi-select-option');
+            const searchLower = searchTerm.toLowerCase();
+            
+            options.forEach(option => {
+                const label = option.querySelector('label');
+                const text = label ? label.textContent.toLowerCase() : '';
+                if (text.includes(searchLower)) {
+                    option.style.display = 'flex';
+                } else {
+                    option.style.display = 'none';
+                }
+            });
+        }
+
+        function populateMultiSelect(filterId, options) {
+            const dropdown = document.getElementById(filterId + 'Dropdown');
+            const selectedValues = filterId === 'clientFilter' ? selectedClients : selectedDevices;
+            
+
+            const searchBar = dropdown.querySelector('.multi-select-search');
+            const existingOptions = dropdown.querySelectorAll('.multi-select-option');
+            
+
+            existingOptions.forEach(option => option.remove());
+            
+
+            if (!searchBar) {
+                const searchDiv = document.createElement('div');
+                searchDiv.className = 'multi-select-search';
+                searchDiv.innerHTML = `
+                    <div class="multi-select-search-container">
+                        <input type="text" id="${filterId}Search" placeholder="Search ${filterId === 'clientFilter' ? 'clients' : 'devices'}..." oninput="filterMultiSelectOptions('${filterId}', this.value)">
+                        <i class="fas fa-search"></i>
+                    </div>
+                `;
+                dropdown.insertBefore(searchDiv, dropdown.firstChild);
+            }
+            
+
+            options.forEach(option => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'multi-select-option';
+                const isChecked = selectedValues.includes(option);
+                optionDiv.innerHTML = `
+                    <input type="checkbox" value="${option}" ${isChecked ? 'checked' : ''} 
+                           onchange="toggleFilterOption('${filterId}', this.value)">
+                    <label>${option}</label>
+                `;
+                dropdown.appendChild(optionDiv);
+            });
         }
 
         function populateSelect(selectId, options) {
@@ -1624,6 +2107,16 @@
             return true;
         }
 
+        function getClientNameForDevice(deviceSerial) {
+
+            if (deviceClientMap && deviceClientMap[deviceSerial]) {
+                return deviceClientMap[deviceSerial];
+            }
+
+            const deviceRow = allData.find(row => row[4] === deviceSerial);
+            return deviceRow ? deviceRow[2] : '';
+        }
+
         function populateDeviceDropdown() {
             const dropdown = document.getElementById('deviceOptions');
             dropdown.innerHTML = '';
@@ -1631,8 +2124,12 @@
             devicesList.forEach(device => {
                 const option = document.createElement('div');
                 option.className = 'dropdown-option';
+                const clientName = device.clientName || getClientNameForDevice(device.serial);
                 option.innerHTML = `
-                    <strong>${device.serial}</strong>
+                    <div>
+                        <strong>${device.serial}</strong>
+                        ${clientName ? `<div style="font-size: 11px; color: var(--text-light); margin-top: 2px;">${clientName}</div>` : ''}
+                    </div>
                 `;
                 option.onclick = () => selectDevice(device);
                 dropdown.appendChild(option);
@@ -1645,6 +2142,10 @@
             deviceInput.value = device.serial;
             deviceInput.dataset.deviceId = device.id;
             deviceInput.dataset.clientId = device.clientId || ''; 
+
+
+            const clientName = device.clientName || getClientNameForDevice(device.serial);
+            document.getElementById('clientName').value = clientName || '';
 
             document.getElementById('deviceOptions').style.display = 'none';
             document.getElementById('deviceError').style.display = 'none';
@@ -1663,8 +2164,24 @@
             document.getElementById('tableContainer').style.display = 'block';
             document.getElementById('noDataDiv').style.display = 'none';
 
+            const isRestrictedUser = ["Guest", "Product Specialist"].includes(userRole);
+
             filteredData.forEach((row, index) => {
                 const tr = document.createElement('tr');
+
+                const originalIndex = allData.indexOf(row);
+                const actionButtons = isRestrictedUser ? '' : `
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-whatsapp btn-sm" title="Copy WhatsApp details" onclick="copyWhatsappDetails(${originalIndex})">
+                                <i class="fab fa-whatsapp"></i>
+                            </button>
+                            <button class="btn btn-primary btn-sm" onclick="editRecord(${originalIndex})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
 
                 tr.innerHTML = `
                     <td>${formatDateTime(row[0])}</td>
@@ -1678,13 +2195,8 @@
                     <td>${formatCurrency(row[13], true)}</td>
                     <td><strong>${formatCurrency(row[14], true)}</strong></td>
                     <td><strong>${formatNumber(row[15], true)}</strong></td>
-                    <td>
-                        <div class="action-buttons">
-                            <button class="btn btn-primary btn-sm" onclick="editRecord(${allData.indexOf(row)})">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                        </div>
-                    </td>
+                    <td><strong>${row[17] || ''}</strong></td>
+                    ${actionButtons}
                 `;
 
                 tbody.appendChild(tr);
@@ -1710,6 +2222,78 @@
                 return `<div class="breakdown-chips">${chips}</div>`;
             } catch (e) {
                 return breakdown || 'Invalid breakdown';
+            }
+        }
+
+        function getBreakdownText(breakdown) {
+            if (!breakdown || breakdown === '{}' || breakdown === '[]') {
+                return 'No breakdown provided';
+            }
+
+            try {
+                const parsed = JSON.parse(breakdown);
+                const entries = Object.entries(parsed);
+
+                if (entries.length === 0) {
+                    return 'No breakdown provided';
+                }
+
+                return entries.map(([type, amount]) => `${type}: ${amount}`).join(', ');
+            } catch (error) {
+                console.error('Breakdown parse error:', error);
+                return breakdown;
+            }
+        }
+
+        function copyWhatsappDetails(rowIndex) {
+            const row = allData[rowIndex];
+            if (!row) {
+                showError('Unable to locate the selected record.', 'Copy Failed');
+                return;
+            }
+
+            const messageLines = [
+                `Client Name: ${row[2] || '-'}`,
+                `Device Serial Number: ${row[4] || '-'}`,
+                `Balance from K-Laser System: ${formatNumber(row[5], true)}`,
+                `Credit Utilised by Client Report: ${formatNumber(row[6], true)}`,
+                `Usage Breakdown: ${getBreakdownText(row[7])}`,
+                `Credit to be charged: ${formatNumber(row[12], true)}`,
+                `Charges per Credit (RM): ${formatCurrency(row[13], true)}`,
+                `Total Charges (RM): ${formatCurrency(row[14], true)}`
+            ];
+
+            const message = messageLines.join('\n');
+
+            const handleSuccess = () => {
+                showSuccess('Details copied. You can now paste them into WhatsApp.', 'Copied to Clipboard');
+            };
+
+            const handleFailure = (error) => {
+                console.error('Clipboard error:', error);
+                showError('Could not copy the details automatically. Please try again.', 'Copy Failed');
+            };
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(message).then(handleSuccess).catch(handleFailure);
+            } else {
+                try {
+                    const tempTextarea = document.createElement('textarea');
+                    tempTextarea.value = message;
+                    tempTextarea.style.position = 'fixed';
+                    tempTextarea.style.opacity = '0';
+                    document.body.appendChild(tempTextarea);
+                    tempTextarea.select();
+                    const successful = document.execCommand('copy');
+                    document.body.removeChild(tempTextarea);
+                    if (successful) {
+                        handleSuccess();
+                    } else {
+                        handleFailure(new Error('execCommand copy failed'));
+                    }
+                } catch (error) {
+                    handleFailure(error);
+                }
             }
         }
 
@@ -1753,13 +2337,17 @@
                 populateDeviceDropdown();
                 dropdown.style.display = 'block';
                 selectedDevice = null;
+                document.getElementById('clientName').value = '';
                 errorElement.style.display = 'block';
                 return;
             }
 
-            const filteredDevices = devicesList.filter(device =>
-                device.serial.toLowerCase().includes(searchTerm.toLowerCase())
-            );
+            const filteredDevices = devicesList.filter(device => {
+                const serialMatch = device.serial.toLowerCase().includes(searchTerm.toLowerCase());
+                const clientName = device.clientName || getClientNameForDevice(device.serial);
+                const clientMatch = clientName && clientName.toLowerCase().includes(searchTerm.toLowerCase());
+                return serialMatch || clientMatch;
+            });
 
             dropdown.innerHTML = '';
 
@@ -1767,8 +2355,12 @@
                 filteredDevices.forEach(device => {
                     const option = document.createElement('div');
                     option.className = 'dropdown-option';
+                    const clientName = device.clientName || getClientNameForDevice(device.serial);
                     option.innerHTML = `
-                        <strong>${device.serial}</strong>
+                        <div>
+                            <strong>${device.serial}</strong>
+                            ${clientName ? `<div style="font-size: 11px; color: var(--text-light); margin-top: 2px;">${clientName}</div>` : ''}
+                        </div>
                     `;
                     option.onclick = () => selectDevice(device);
                     dropdown.appendChild(option);
@@ -1785,6 +2377,11 @@
         function selectDevice(device) {
             selectedDevice = device;
             document.getElementById('deviceSerial').value = device.serial;
+            
+
+            const clientName = device.clientName || getClientNameForDevice(device.serial);
+            document.getElementById('clientName').value = clientName || '';
+            
             document.getElementById('deviceOptions').style.display = 'none';
             document.getElementById('deviceError').style.display = 'none';
         }
@@ -1801,7 +2398,11 @@
                 } else {
                     selectedDevice = devicesList.find(device => device.serial === deviceInput.value);
                     deviceInput.dataset.deviceId = selectedDevice.id;
-                    deviceInput.dataset.clientId = selectedDevice.clientId || ''; 
+                    deviceInput.dataset.clientId = selectedDevice.clientId || '';
+                    
+
+                    const clientName = selectedDevice.clientName || getClientNameForDevice(selectedDevice.serial);
+                    document.getElementById('clientName').value = clientName || '';
                 }
             }
 
@@ -1847,8 +2448,6 @@
 
         function applyFilters() {
             const globalSearch = document.getElementById('globalSearch').value.toLowerCase();
-            const clientNameFilter = document.getElementById('clientNameFilter').value;
-            const deviceSerialFilter = document.getElementById('deviceSerialFilter').value;
             const paymentStatusFilter = document.getElementById('paymentStatusFilter').value;
 
             filteredData = allData.filter(row => {
@@ -1859,8 +2458,8 @@
                     if (!searchMatch) return false;
                 }
 
-                if (clientNameFilter && row[2] !== clientNameFilter) return false;
-                if (deviceSerialFilter && row[4] !== deviceSerialFilter) return false;
+                if (selectedClients.length > 0 && !selectedClients.includes(row[2])) return false;
+                if (selectedDevices.length > 0 && !selectedDevices.includes(row[4])) return false;
                 if (paymentStatusFilter && row[11] !== paymentStatusFilter) return false;
 
                 return true;
@@ -1874,11 +2473,30 @@
 
         function clearFilters() {
             document.getElementById('globalSearch').value = '';
-            document.getElementById('clientNameFilter').value = '';
-            document.getElementById('deviceSerialFilter').value = '';
             document.getElementById('paymentStatusFilter').value = '';
+            
+            selectedClients = [];
+            selectedDevices = [];
+            
+
+            const clientSearchInput = document.getElementById('clientFilterSearch');
+            const deviceSearchInput = document.getElementById('deviceFilterSearch');
+            if (clientSearchInput) {
+                clientSearchInput.value = '';
+                filterMultiSelectOptions('clientFilter', '');
+            }
+            if (deviceSearchInput) {
+                deviceSearchInput.value = '';
+                filterMultiSelectOptions('deviceFilter', '');
+            }
+            
+            updateFilterDisplay('clientFilter', selectedClients);
+            updateFilterDisplay('deviceFilter', selectedDevices);
 
             clearDateFilter();
+
+
+            updateAvailableFilters();
 
             filteredData = [...allData];
             displayData();
@@ -1966,49 +2584,71 @@
             }
 
             try {
-                const exportData = filteredData.map(row => ({
-                    'Timestamp': formatDateTime(row[0]),
-                    'Client ID': row[1] || '',
-                    'Client Name': row[2] || '',
-                    'Device ID': row[3] || '',
-                    'Device Serial Number': row[4] || '',
-                    'Balance from K-Laser System': row[5] || 0,
-                    'Credit Utilised by Client Report': row[6] || 0,
-                    'Credit Utilised Breakdown': row[7] || '',
-                    'Credit to be charged': row[12] || 0,
-                    'Charges per Credit (RM)': row[13] || 0,
-                    'Total Charges (RM)': row[14] || 0,
-                    'Current Balance': row[15] || 0
-                }));
+                const isRestrictedRole = ["Biomed", "Product Specialist"].includes(userRole);
+                
+                const exportData = filteredData.map(row => {
+                    const baseData = {
+                        'Timestamp': formatDateTime(row[0]),
+                        'Client Name': row[2] || '',
+                        'Device Serial Number': row[4] || '',
+                        'Balance from K-Laser System': row[5] || 0,
+                        'Credit Utilised by Client Report': row[6] || 0,
+                        'Credit Utilised Breakdown': row[7] || '',
+                        'Credit to be charged': row[12] || 0,
+                        'Current Balance': row[15] || 0,
+                        'Last Edited By': row[17] || ''
+                    };
+                    
+
+                    if (!isRestrictedRole) {
+                        baseData['Charges per Credit (RM)'] = row[13] || 0;
+                        baseData['Total Charges (RM)'] = row[14] || 0;
+                    }
+                    
+                    return baseData;
+                });
 
                 const wb = XLSX.utils.book_new();
                 const ws = XLSX.utils.json_to_sheet(exportData);
 
-                const colWidths = [
-                    { wch: 20 }, 
-                    { wch: 15 }, 
-                    { wch: 20 }, 
-                    { wch: 15 }, 
-                    { wch: 20 }, 
-                    { wch: 25 }, 
-                    { wch: 30 }, 
-                    { wch: 30 }, 
-                    { wch: 15 }, 
-                    { wch: 15 }, 
-                    { wch: 15 }, 
-                    { wch: 15 }, 
-                    { wch: 20 }, 
-                    { wch: 20 }, 
-                    { wch: 20 },
-                    { wch: 20 }  
-                ];
+
+                let colWidths;
+                if (isRestrictedRole) {
+                    colWidths = [
+                        { wch: 20 },
+                        { wch: 15 },
+                        { wch: 20 },
+                        { wch: 15 },
+                        { wch: 20 },
+                        { wch: 25 },
+                        { wch: 30 },
+                        { wch: 15 },
+                        { wch: 15 },
+                        { wch: 20 }
+                    ];
+                } else {
+                    colWidths = [
+                        { wch: 20 },
+                        { wch: 15 },
+                        { wch: 20 },
+                        { wch: 15 },
+                        { wch: 20 },
+                        { wch: 25 },
+                        { wch: 30 },
+                        { wch: 15 },
+                        { wch: 15 },
+                        { wch: 15 },
+                        { wch: 20 },
+                        { wch: 20 }
+                    ];
+                }
                 ws['!cols'] = colWidths;
 
                 XLSX.utils.book_append_sheet(wb, ws, 'Credit Management');
 
                 const today = new Date();
                 const dateStr = today.toISOString().split('T')[0];
-                const filename = `Credit_Management_${dateStr}.xlsx`;
+                const filename = `Credit_Management_Postpaid_Monthly_${dateStr}.xlsx`;
 
                 XLSX.writeFile(wb, filename);
 
@@ -2045,6 +2685,7 @@
             selectedDevice = devicesList.find(device => device.serial === deviceSerial);
 
             document.getElementById('deviceSerial').value = row[4];
+            document.getElementById('clientName').value = row[2] || '';
             document.getElementById('balance').value = row[5];
             document.getElementById('topUp').value = row[9];
             document.getElementById('paymentDate').value = formatDateForInput(row[10]);
@@ -2059,7 +2700,13 @@
 
             try {
                 const breakdown = JSON.parse(row[7] || '{}');
-                breakdownItems = Object.entries(breakdown).map(([type, amount]) => ({type, amount}));
+                const breakdownOptions = ['Patient', 'Staff', 'Marketing', 'Training'];
+                breakdownItems = Object.entries(breakdown).map(([type, amount]) => {
+                    if (breakdownOptions.includes(type)) {
+                        return {type, amount, custom: ''};
+                    }
+                    return {type: 'Others', amount, custom: type};
+                });
             } catch (e) {
                 breakdownItems = [];
             }
@@ -2119,12 +2766,33 @@
         }
 
         function addBreakdownItem() {
-            breakdownItems.push({type: 'Patient', amount: 0});
+            breakdownItems.push({type: 'Patient', amount: 0, custom: ''});
             updateBreakdownDisplay();
         }
 
         function removeBreakdownItem(index) {
             breakdownItems.splice(index, 1);
+            updateBreakdownDisplay();
+        }
+
+        function getBreakdownLabel(item) {
+            if (!item) return '';
+            if (item.type === 'Others') {
+                return (item.custom || '').trim() || 'Others';
+            }
+            return item.type;
+        }
+
+        function handleBreakdownTypeChange(index, value) {
+            if (!breakdownItems[index]) return;
+            breakdownItems[index].type = value;
+            if (value === 'Others') {
+                if (typeof breakdownItems[index].custom === 'undefined' || breakdownItems[index].custom === null) {
+                    breakdownItems[index].custom = '';
+                }
+            } else {
+                breakdownItems[index].custom = '';
+            }
             updateBreakdownDisplay();
         }
 
@@ -2138,11 +2806,15 @@
                 const div = document.createElement('div');
                 div.className = 'breakdown-item';
                 div.innerHTML = `
-                    <select onchange="breakdownItems[${index}].type = this.value; validateBreakdown()">
+                    <select onchange="handleBreakdownTypeChange(${index}, this.value)">
                         ${breakdownOptions.map(option =>
                             `<option value="${option}" ${item.type === option ? 'selected' : ''}>${option}</option>`
                         ).join('')}
                     </select>
+                    ${item.type === 'Others' ? `
+                        <input type="text" placeholder="Specify type" value="${item.custom || ''}"
+                               oninput="breakdownItems[${index}].custom = this.value; validateBreakdown()">
+                    ` : ''}
                     <input type="number" placeholder="Amount" value="${item.amount}" min="0" step="1"
                           onchange="breakdownItems[${index}].amount = parseInt(this.value) || 0; validateBreakdown()">
                     <button type="button" onclick="removeBreakdownItem(${index})">
@@ -2160,8 +2832,10 @@
             const breakdownTotal = breakdownItems.reduce((sum, item) => sum + (parseInt(item.amount) || 0), 0);
             const summary = document.getElementById('breakdownSummary');
 
-            const types = breakdownItems.map(item => item.type);
-            const hasDuplicates = new Set(types).size !== types.length;
+            const resolvedTypes = breakdownItems.map(item => {
+                return getBreakdownLabel(item);
+            });
+            const hasDuplicates = new Set(resolvedTypes).size !== resolvedTypes.length;
 
             if (breakdownTotal === creditUsed && !hasDuplicates) {
                 summary.innerHTML = `<span class="breakdown-valid">✓ Breakdown total matches Credit Used: ${breakdownTotal}</span>`;
@@ -2179,10 +2853,20 @@
         }
 
         document.getElementById('globalSearch').addEventListener('input', applyFilters);
-        document.getElementById('clientNameFilter').addEventListener('change', applyFilters);
-        document.getElementById('deviceSerialFilter').addEventListener('change', applyFilters);
         document.getElementById('paymentStatusFilter').addEventListener('change', applyFilters);
         document.getElementById('creditUsed').addEventListener('input', validateBreakdown);
+
+
+         document.addEventListener('click', function(e) {
+             if (!e.target.closest('.multi-select-container')) {
+                 document.querySelectorAll('.multi-select-dropdown').forEach(d => d.classList.remove('active'));
+             }
+             
+
+             if (e.target.closest('.multi-select-search')) {
+                 e.stopPropagation();
+             }
+         });
 
         document.getElementById('deviceSerial').addEventListener('click', function() {
             if (this.value === '') {
@@ -2239,7 +2923,7 @@
                     paymentDate: paymentDate,
                     paymentStatus: paymentStatus,
                     creditUsed: parseInt(document.getElementById('creditUsed').value) || 0,
-                    breakdown: JSON.stringify(Object.fromEntries(breakdownItems.map(item => [item.type, parseInt(item.amount) || 0]))),
+                    breakdown: JSON.stringify(Object.fromEntries(breakdownItems.map(item => [getBreakdownLabel(item), parseInt(item.amount) || 0]))),
                     creditToCharge: parseInt(document.getElementById('creditToCharge').value) || 0,
                 };
 

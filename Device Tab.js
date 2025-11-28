@@ -20,12 +20,17 @@ function getInitialData() {
 function getDeviceDataByType(businessType) {
   try {
     let sheetName = '';
+    let lastEditedColIndex;
+    
     if (businessType === 'Revenue Sharing') {
       sheetName = 'D Revenue Sharing';
+      lastEditedColIndex = 6; 
     } else if (businessType === 'Prepaid') {
       sheetName = 'D Prepaid';
+      lastEditedColIndex = 7; 
     } else if (businessType === 'Postpaid') {
       sheetName = 'D Postpaid';
+      lastEditedColIndex = 7; 
     } else {
       throw new Error('Invalid business type');
     }
@@ -40,10 +45,10 @@ function getDeviceDataByType(businessType) {
     let balanceColIndex;
 
     if (businessType === 'Prepaid' || businessType === 'Postpaid') {
-      lastCol = 6;
+      lastCol = 8; 
       balanceColIndex = 5;
     } else if (businessType === 'Revenue Sharing') {
-      lastCol = 5;
+      lastCol = 7; 
       balanceColIndex = 4;
     }
 
@@ -58,7 +63,8 @@ function getDeviceDataByType(businessType) {
           serialNumber: row[1] ? row[1].toString() : '',
           clientId: row[2] ? row[2].toString() : '',
           clientName: row[3] ? row[3].toString() : '',
-          totalBalance: row[balanceColIndex] ? parseFloat(row[balanceColIndex]) || 0 : 0
+          totalBalance: row[balanceColIndex] ? parseFloat(row[balanceColIndex]) || 0 : 0,
+          lastEditedBy: row[lastEditedColIndex] ? row[lastEditedColIndex].toString() : ''
         };
 
         if (businessType === 'Postpaid') {
@@ -118,12 +124,17 @@ function getClientData() {
 function addDevice(deviceData) {
   try {
     let sheetName = '';
+    let emailColumn;
+    
     if (deviceData.businessType === 'Revenue Sharing') {
       sheetName = 'D Revenue Sharing';
+      emailColumn = 6; 
     } else if (deviceData.businessType === 'Prepaid') {
       sheetName = 'D Prepaid';
+      emailColumn = 7; 
     } else if (deviceData.businessType === 'Postpaid') {
       sheetName = 'D Postpaid';
+      emailColumn = 7; 
     } else {
       throw new Error('Invalid business type');
     }
@@ -134,6 +145,7 @@ function addDevice(deviceData) {
     }
 
     const deviceId = Utilities.getUuid();
+    const userEmail = Session.getActiveUser().getEmail();
     const lastRow = sheet.getLastRow();
     const values = sheet.getRange(2, 1, Math.max(lastRow - 1, 1), 1).getValues();
 
@@ -149,11 +161,13 @@ function addDevice(deviceData) {
       targetRow = lastRow + 1;
     }
 
+
     sheet.getRange(targetRow, 1, 1, 3).setValues([[
       deviceId,
       deviceData.serialNumber,
       deviceData.clientId
     ]]);
+
 
     if (deviceData.businessType === 'Postpaid') {
       sheet.getRange(targetRow, 5).setValue(deviceData.chargesPerCredit || 0);
@@ -161,6 +175,9 @@ function addDevice(deviceData) {
       const jsonString = JSON.stringify(deviceData.creditPurchaseOptions || []);
       sheet.getRange(targetRow, 5).setValue(jsonString);
     }
+
+
+    sheet.getRange(targetRow, emailColumn).setValue(userEmail);
 
     return { success: true, deviceId: deviceId };
 
@@ -173,12 +190,17 @@ function addDevice(deviceData) {
 function updateDevice(deviceData) {
   try {
     let sheetName = '';
+    let emailColumn;
+    
     if (deviceData.businessType === 'Revenue Sharing') {
       sheetName = 'D Revenue Sharing';
+      emailColumn = 6; 
     } else if (deviceData.businessType === 'Prepaid') {
       sheetName = 'D Prepaid';
+      emailColumn = 7; 
     } else if (deviceData.businessType === 'Postpaid') {
       sheetName = 'D Postpaid';
+      emailColumn = 7; 
     } else {
       throw new Error('Invalid business type');
     }
@@ -188,8 +210,9 @@ function updateDevice(deviceData) {
       throw new Error('Sheet named "' + sheetName + '" not found');
     }
 
+    const userEmail = Session.getActiveUser().getEmail();
     const lastRow = sheet.getLastRow();
-    const lastCol = deviceData.businessType === 'Prepaid' || deviceData.businessType === 'Postpaid' ? 5 : 4;
+    const lastCol = deviceData.businessType === 'Prepaid' || deviceData.businessType === 'Postpaid' ? 8 : 7;
     const dataRange = sheet.getRange(2, 1, lastRow - 1, lastCol);
     const values = dataRange.getValues();
     
@@ -197,15 +220,20 @@ function updateDevice(deviceData) {
       if (values[i][0] === deviceData.deviceId) {
         const rowNumber = i + 2;
 
+
         sheet.getRange(rowNumber, 2).setValue(deviceData.serialNumber);
         sheet.getRange(rowNumber, 3).setValue(deviceData.clientId);
         
+
         if (deviceData.businessType === 'Postpaid') {
           sheet.getRange(rowNumber, 5).setValue(deviceData.chargesPerCredit || 0);
         } else if (deviceData.businessType === 'Prepaid') {
           const jsonString = JSON.stringify(deviceData.creditPurchaseOptions || []);
           sheet.getRange(rowNumber, 5).setValue(jsonString);
         }
+
+
+        sheet.getRange(rowNumber, emailColumn).setValue(userEmail);
 
         return { success: true };
       }
@@ -219,6 +247,7 @@ function updateDevice(deviceData) {
   }
 }
 
+/*
 function deleteDevice(deviceId, businessType) {
   try {
     let sheetName = '';
@@ -261,3 +290,5 @@ function deleteDevice(deviceId, businessType) {
     throw new Error('Failed to delete device: ' + error.message);
   }
 }
+
+*/
