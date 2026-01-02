@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <base target="_top">
     <meta charset="utf-8">
@@ -7,7 +8,7 @@
     <title>Credit Management</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
     <style>
         :root {
@@ -288,6 +289,17 @@
             box-shadow: 0 4px 12px rgba(77, 129, 140, 0.3);
         }
 
+        .btn-whatsapp {
+            background: #25d366;
+            color: var(--white);
+        }
+
+        .btn-whatsapp:hover {
+            background: #1ebe57;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+        }
+
         .btn-success {
             background: var(--success);
             color: var(--white);
@@ -404,22 +416,85 @@
             background: var(--light-gray);
         }
 
-        th:nth-child(1), td:nth-child(1) { width: 120px; }
-        th:nth-child(2), td:nth-child(2) { width: 150px; }
-        th:nth-child(3), td:nth-child(3) { width: 140px; }
-        th:nth-child(4), td:nth-child(4) { width: 180px; }
-        th:nth-child(5), td:nth-child(5) { width: 130px; }
-        th:nth-child(6), td:nth-child(6) { width: 120px; }
-        th:nth-child(7), td:nth-child(7) { width: 130px; }
-        th:nth-child(8), td:nth-child(8) { width: 200px; }
-        th:nth-child(9), td:nth-child(9) { width: 180px; }
-        th:nth-child(10), td:nth-child(10) { width: 140px; }
-        th:nth-child(11), td:nth-child(11) { width: 150px; }
-        th:nth-child(12), td:nth-child(12) { width: 160px; }
-        th:nth-child(13), td:nth-child(13) { width: 140px; }
-        th:nth-child(14), td:nth-child(14) { width: 140px; }
-        th:nth-child(15), td:nth-child(15) { width: 140px; }
-        th:nth-child(16), td:nth-child(16) { width: 100px; }
+        th:nth-child(1),
+        td:nth-child(1) {
+            width: 120px;
+        }
+
+        th:nth-child(2),
+        td:nth-child(2) {
+            width: 150px;
+        }
+
+        th:nth-child(3),
+        td:nth-child(3) {
+            width: 140px;
+        }
+
+        th:nth-child(4),
+        td:nth-child(4) {
+            width: 180px;
+        }
+
+        th:nth-child(5),
+        td:nth-child(5) {
+            width: 130px;
+        }
+
+        th:nth-child(6),
+        td:nth-child(6) {
+            width: 120px;
+        }
+
+        th:nth-child(7),
+        td:nth-child(7) {
+            width: 130px;
+        }
+
+        th:nth-child(8),
+        td:nth-child(8) {
+            width: 200px;
+        }
+
+        th:nth-child(9),
+        td:nth-child(9) {
+            width: 180px;
+        }
+
+        th:nth-child(10),
+        td:nth-child(10) {
+            width: 140px;
+        }
+
+        th:nth-child(11),
+        td:nth-child(11) {
+            width: 150px;
+        }
+
+        th:nth-child(12),
+        td:nth-child(12) {
+            width: 160px;
+        }
+
+        th:nth-child(13),
+        td:nth-child(13) {
+            width: 140px;
+        }
+
+        th:nth-child(14),
+        td:nth-child(14) {
+            width: 140px;
+        }
+
+        th:nth-child(15),
+        td:nth-child(15) {
+            width: 140px;
+        }
+
+        th:nth-child(16),
+        td:nth-child(16) {
+            width: 100px;
+        }
 
         .status-badge {
             padding: 4px 8px;
@@ -462,8 +537,13 @@
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         .loading p {
@@ -503,8 +583,13 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         .modal-content {
@@ -522,6 +607,7 @@
                 transform: translateY(-50px);
                 opacity: 0;
             }
+
             to {
                 transform: translateY(0);
                 opacity: 1;
@@ -885,95 +971,95 @@
         }
 
         .menu-section {
-          margin-bottom: 4px;
+            margin-bottom: 4px;
         }
 
         .menu-toggle {
-          cursor: pointer;
-          position: relative;
-          justify-content: space-between;
+            cursor: pointer;
+            position: relative;
+            justify-content: space-between;
         }
 
         .menu-toggle .toggle-arrow {
-          font-size: 12px;
-          transition: transform 0.3s ease;
-          margin-left: auto;
+            font-size: 12px;
+            transition: transform 0.3s ease;
+            margin-left: auto;
         }
 
         .menu-section.expanded .menu-toggle .toggle-arrow {
-          transform: rotate(180deg);
+            transform: rotate(180deg);
         }
 
         .submenu {
-          max-height: 0;
-          overflow: hidden;
-          transition: max-height 0.3s ease;
-          background: rgba(0, 0, 0, 0.1);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: rgba(0, 0, 0, 0.1);
         }
 
         .submenu.always-open {
-          max-height: none;
-          overflow: visible;
+            max-height: none;
+            overflow: visible;
         }
 
 
         .menu-section.expanded .submenu {
-          max-height: 300px;
+            max-height: 300px;
         }
 
         .submenu-item {
-          display: flex;
-          align-items: center;
-          padding: 10px 20px 10px 52px;
-          color: rgba(255, 255, 255, 0.7);
-          text-decoration: none;
-          transition: all 0.2s;
-          border-left: 3px solid transparent;
-          font-size: 14px;
+            display: flex;
+            align-items: center;
+            padding: 10px 20px 10px 52px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+            font-size: 14px;
         }
 
         .submenu-item:hover {
-          background: rgba(255, 255, 255, 0.05);
-          color: var(--white);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--white);
         }
 
         .submenu-item.active {
-          background: rgba(77, 129, 140, 0.2);
-          color: var(--white);
-          border-left-color: var(--light-teal);
+            background: rgba(77, 129, 140, 0.2);
+            color: var(--white);
+            border-left-color: var(--light-teal);
         }
 
         .submenu-icon {
-          font-size: 14px;
-          width: 20px;
-          margin-right: 12px;
+            font-size: 14px;
+            width: 20px;
+            margin-right: 12px;
         }
 
         .submenu-text {
-          font-weight: 400;
-          white-space: nowrap;
-          overflow: hidden;
+            font-weight: 400;
+            white-space: nowrap;
+            overflow: hidden;
         }
 
         .sidebar.collapsed .submenu {
-          display: none;
+            display: none;
         }
 
         .sidebar.collapsed .menu-toggle .toggle-arrow {
-          display: none;
+            display: none;
         }
 
         .sidebar.collapsed .submenu-item {
-          padding: 12px 0;
-          justify-content: center;
+            padding: 12px 0;
+            justify-content: center;
         }
 
         .sidebar.collapsed .submenu-text {
-          display: none;
+            display: none;
         }
 
         .sidebar.collapsed .submenu-icon {
-          margin-right: 0;
+            margin-right: 0;
         }
 
         .main-content {
@@ -1075,6 +1161,7 @@
         }
     </style>
 </head>
+
 <body>
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
@@ -1093,49 +1180,49 @@
                 <span class="menu-text">Dashboard</span>
             </a>
             <div class="menu-section">
-              <div class="menu-item menu-toggle" id="creditManagementToggle">
-                <i class="fas fa-credit-card menu-icon"></i>
-                <span class="menu-text">Credit Management</span>
-                <i class="fas fa-chevron-down toggle-arrow"></i>
-              </div>
+                <div class="menu-item menu-toggle" id="creditManagementToggle">
+                    <i class="fas fa-credit-card menu-icon"></i>
+                    <span class="menu-text">Credit Management</span>
+                    <i class="fas fa-chevron-down toggle-arrow"></i>
+                </div>
                 <div class="submenu" id="creditManagementSubmenu">
                     <div class="menu-section">
-                      <a href="<?= baseUrl ?>?page=prepaid" class="menu-item" target="_top">
-                        <i class="fas fa-money-bill-wave menu-icon"></i>
-                        <span class="menu-text">Prepaid</span>
-                      </a>
+                        <a href="<?= baseUrl ?>?page=prepaid" class="menu-item" target="_top">
+                            <i class="fas fa-money-bill-wave menu-icon"></i>
+                            <span class="menu-text">Prepaid</span>
+                        </a>
                     </div>
                     <div class="menu-section">
-                      <div class="menu-item" style="cursor: default;">
-                        <i class="fas fa-file-invoice-dollar menu-icon"></i>
-                        <span class="menu-text">Postpaid</span>
-                      </div>
-                      <div class="submenu always-open">
-                        <a href="<?= baseUrl ?>?page=postpaid-monthly" class="submenu-item" target="_top">
-                          <i class="fas fa-calendar-alt submenu-icon"></i>
-                          <span class="submenu-text">Report</span>
-                        </a>
-                        <a href="<?= baseUrl ?>?page=postpaid-topup" class="submenu-item active" target="_top">
-                          <i class="fas fa-coins submenu-icon"></i>
-                          <span class="submenu-text">Top Up</span>
-                        </a>
-                      </div>
+                        <div class="menu-item" style="cursor: default;">
+                            <i class="fas fa-file-invoice-dollar menu-icon"></i>
+                            <span class="menu-text">Postpaid</span>
+                        </div>
+                        <div class="submenu always-open">
+                            <a href="<?= baseUrl ?>?page=postpaid-monthly" class="submenu-item" target="_top">
+                                <i class="fas fa-calendar-alt submenu-icon"></i>
+                                <span class="submenu-text">Report</span>
+                            </a>
+                            <a href="<?= baseUrl ?>?page=postpaid-topup" class="submenu-item active" target="_top">
+                                <i class="fas fa-coins submenu-icon"></i>
+                                <span class="submenu-text">Top Up</span>
+                            </a>
+                        </div>
                     </div>
                     <div class="menu-section">
-                      <div class="menu-item" style="cursor: default;">
-                        <i class="fas fa-chart-pie menu-icon"></i>
-                        <span class="menu-text">Revenue Sharing</span>
-                      </div>
-                      <div class="submenu always-open">
-                        <a href="<?= baseUrl ?>?page=revenue-sharing-monthly" class="submenu-item" target="_top">
-                          <i class="fas fa-calendar-alt submenu-icon"></i>
-                          <span class="submenu-text">Report</span>
-                        </a>
-                        <a href="<?= baseUrl ?>?page=revenue-sharing-topup" class="submenu-item" target="_top">
-                          <i class="fas fa-coins submenu-icon"></i>
-                          <span class="submenu-text">Top Up</span>
-                        </a>
-                      </div>
+                        <div class="menu-item" style="cursor: default;">
+                            <i class="fas fa-chart-pie menu-icon"></i>
+                            <span class="menu-text">Revenue Sharing</span>
+                        </div>
+                        <div class="submenu always-open">
+                            <a href="<?= baseUrl ?>?page=revenue-sharing-monthly" class="submenu-item" target="_top">
+                                <i class="fas fa-calendar-alt submenu-icon"></i>
+                                <span class="submenu-text">Report</span>
+                            </a>
+                            <a href="<?= baseUrl ?>?page=revenue-sharing-topup" class="submenu-item" target="_top">
+                                <i class="fas fa-coins submenu-icon"></i>
+                                <span class="submenu-text">Top Up</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1161,289 +1248,295 @@
     </button>
 
     <main class="main-content" id="mainContent">
-    <div class="container">
-        <div class="header">
+        <div class="container">
+            <div class="header">
                 <h1>
                     <i class="fas fa-file-invoice-dollar"></i>
                     Postpaid (Top Up)
                 </h1>
-        </div>
+            </div>
 
-        <div class="content">
-            <div class="controls">
-                <div class="search-box">
-                    <input type="text" id="globalSearch" placeholder="Search across all fields...">
-                    <i class="fas fa-search"></i>
-                </div>
+            <div class="content">
+                <div class="controls">
+                    <div class="search-box">
+                        <input type="text" id="globalSearch" placeholder="Search across all fields...">
+                        <i class="fas fa-search"></i>
+                    </div>
 
-                <div class="filter-group">
-                    <div class="multi-select-container" id="clientFilterContainer">
-                        <div class="multi-select-input" onclick="toggleMultiSelect('clientFilter')">
-                            <div id="clientFilterDisplay">
-                                <span class="multi-select-placeholder">All Clients</span>
+                    <div class="filter-group">
+                        <div class="multi-select-container" id="clientFilterContainer">
+                            <div class="multi-select-input" onclick="toggleMultiSelect('clientFilter')">
+                                <div id="clientFilterDisplay">
+                                    <span class="multi-select-placeholder">All Clients</span>
+                                </div>
+                                <i class="fas fa-chevron-down"></i>
                             </div>
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="multi-select-dropdown" id="clientFilterDropdown">
-                            <div class="multi-select-search">
-                                <div class="multi-select-search-container">
-                                    <input type="text" id="clientFilterSearch" placeholder="Search clients..." oninput="filterMultiSelectOptions('clientFilter', this.value)">
-                                    <i class="fas fa-search"></i>
+                            <div class="multi-select-dropdown" id="clientFilterDropdown">
+                                <div class="multi-select-search">
+                                    <div class="multi-select-search-container">
+                                        <input type="text" id="clientFilterSearch" placeholder="Search clients..."
+                                            oninput="filterMultiSelectOptions('clientFilter', this.value)">
+                                        <i class="fas fa-search"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="multi-select-container" id="deviceFilterContainer">
-                        <div class="multi-select-input" onclick="toggleMultiSelect('deviceFilter')">
-                            <div id="deviceFilterDisplay">
-                                <span class="multi-select-placeholder">All Devices</span>
+                        <div class="multi-select-container" id="deviceFilterContainer">
+                            <div class="multi-select-input" onclick="toggleMultiSelect('deviceFilter')">
+                                <div id="deviceFilterDisplay">
+                                    <span class="multi-select-placeholder">All Devices</span>
+                                </div>
+                                <i class="fas fa-chevron-down"></i>
                             </div>
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="multi-select-dropdown" id="deviceFilterDropdown">
-                            <div class="multi-select-search">
-                                <div class="multi-select-search-container">
-                                    <input type="text" id="deviceFilterSearch" placeholder="Search devices..." oninput="filterMultiSelectOptions('deviceFilter', this.value)">
-                                    <i class="fas fa-search"></i>
+                            <div class="multi-select-dropdown" id="deviceFilterDropdown">
+                                <div class="multi-select-search">
+                                    <div class="multi-select-search-container">
+                                        <input type="text" id="deviceFilterSearch" placeholder="Search devices..."
+                                            oninput="filterMultiSelectOptions('deviceFilter', this.value)">
+                                        <i class="fas fa-search"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <select id="paymentStatusFilter" class="filter-select">
-                        <option value="">All Status</option>
-                    </select>
-
-                    <button class="btn btn-primary" onclick="openAddModal()">
-                        <i class="fas fa-plus"></i>
-                        Add Record
-                    </button>
-
-                    <button class="btn btn-success" onclick="exportToExcel()">
-                        <i class="fas fa-file-excel"></i>
-                        Export
-                    </button>
-
-                    <button class="btn btn-secondary" onclick="clearFilters()">
-                        <i class="fas fa-times"></i>
-                        Clear Filters
-                    </button>
-                </div>
-            </div>
-
-            <div class="date-filter-group">
-                <select id="dateFieldFilter" class="filter-select">
-                    <option value="">Select Date Field</option>
-                    <option value="timestamp">Timestamp</option>
-                    <option value="paymentDate">Payment Date</option>
-                </select>
-
-                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-                    <input type="date" id="startDate" disabled>
-                    <span>to</span>
-                    <input type="date" id="endDate" disabled>
-                    <button class="btn btn-primary btn-sm" id="applyDateBtn" onclick="applyDateFilter()" disabled>
-                        Apply Date Filter
-                    </button>
-                    <button class="btn btn-secondary btn-sm" id="clearDateBtn" onclick="clearDateFilter()" disabled>
-                        Clear Date
-                    </button>
-                </div>
-            </div>
-
-            <div class="stats">
-                <div class="stat-card">
-                    <i class="fas fa-users"></i>
-                    <div class="stat-info">
-                        <h3 id="totalRecords">0</h3>
-                        <p>Total Records</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <i class="fas fa-eye"></i>
-                    <div class="stat-info">
-                        <h3 id="visibleRecords">0</h3>
-                        <p>Visible Records</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <i class="fas fa-check-circle"></i>
-                    <div class="stat-info">
-                        <h3 id="paidCount">0</h3>
-                        <p>Paid</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <i class="fas fa-clock"></i>
-                    <div class="stat-info">
-                        <h3 id="pendingCount">0</h3>
-                        <p>Pending</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <i class="fas fa-times-circle"></i>
-                    <div class="stat-info">
-                        <h3 id="unpaidCount">0</h3>
-                        <p>Unpaid</p>
-                    </div>
-                </div>
-            </div>
-
-            <div id="loadingDiv" class="loading">
-                <i class="fas fa-spinner"></i>
-                <p>Loading credit management data...</p>
-            </div>
-
-            <div id="tableContainer" class="table-container" style="display: none;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Timestamp</th>
-                            <th>Client Name</th>
-                            <th>Device Serial Number</th>
-                            <th>Balance before Top-Up</th>
-                            <th>Top Up Amount</th>
-                            <th>Payment Date</th>
-                            <th>Payment Status</th>
-                            <th>Current Balance</th>
-                            <th>Last Edited By</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="dataTableBody">
-                    </tbody>
-                </table>
-            </div>
-
-            <div id="noDataDiv" class="no-data" style="display: none;">
-                <i class="fas fa-inbox"></i>
-                <h3>No data found</h3>
-                <p>No records match your current search and filter criteria.</p>
-            </div>
-        </div>
-    </div>
-
-        <div id="alertModal" class="modal">
-        <div class="modal-content" style="max-width: 500px;">
-            <div class="modal-header" id="alertModalHeader">
-                <h2 id="alertModalTitle">Alert</h2>
-                <span class="close" onclick="closeAlertModal()">&times;</span>
-            </div>
-            <div class="modal-body">
-                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
-                    <i id="alertModalIcon" class="fas fa-info-circle" style="font-size: 24px;"></i>
-                    <p id="alertModalMessage" style="margin: 0; flex: 1;">This is an alert message.</p>
-                </div>
-                <div style="display: flex; justify-content: flex-end; gap: 10px;">
-                    <button id="alertModalCancel" class="btn btn-secondary" onclick="closeAlertModal()" style="display: none;">Cancel</button>
-                    <button id="alertModalConfirm" class="btn btn-primary" onclick="confirmAlertModal()">OK</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-        <div id="recordModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modalTitle">Add New Record</h2>
-                <span class="close" onclick="closeModal()">&times;</span>
-            </div>
-            <div class="modal-body">
-                <form id="recordForm">
-                    <input type="hidden" id="editRowIndex" value="">
-
-                    <div class="form-group">
-                        <label for="deviceSerial">Device Serial Number *</label>
-                        <div class="searchable-dropdown">
-                            <input type="text" id="deviceSerial" placeholder="Type to search devices..." oninput="filterDevices(this.value)">
-                            <div id="deviceOptions" class="dropdown-options"></div>
-                        </div>
-                        <small id="deviceError" style="color: var(--danger); display: none;">Please select a valid device from the list</small>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="clientName">Client Name</label>
-                        <input type="text" id="clientName" readonly style="background-color: var(--light-gray); cursor: not-allowed;">
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="balance">Balance before Top-Up *</label>
-                            <input type="number" id="balance" step="0.01" min="0" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="topUp">Top Up Amount *</label>
-                            <input type="number" id="topUp" step="0.01" min="0" required>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="paymentDate">Payment Date</label>
-                            <input type="date" id="paymentDate" onchange="handlePaymentDateChange()">
-                        </div>
-                        <div class="form-group">
-                            <label for="paymentStatus">Payment Status *</label>
-                            <select id="paymentStatus" required>
-                                <option value="">Select Status</option>
-                                <option value="Pending">Pending</option>
-                                <option value="Paid">Paid</option>
-                                <option value="Unpaid">Unpaid</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="status">Status</label>
-                        <select id="status">
-                            <option value="">Select Status</option>
-                            <option value="Completed">Completed</option>
-                            <option value="Pending">Pending</option>
-                            <option value="Cancelled">Cancelled</option>
+                        <select id="paymentStatusFilter" class="filter-select">
+                            <option value="">All Status</option>
                         </select>
-                    </div>
 
-                    <div class="form-group" style="display:none;">
-                        <label for="creditUsed">Credit Utilised by Client Report *</label>
-                        <input type="number" id="creditUsed" step="1" min="0">
-                    </div>
+                        <button class="btn btn-primary" onclick="openAddModal()">
+                            <i class="fas fa-plus"></i>
+                            Add Record
+                        </button>
 
-                    <div class="form-group" style="display:none;">
-                        <label>Credit Utilised Breakdown *</label>
-                        <div class="breakdown-builder">
-                            <div id="breakdownItems"></div>
-                            <button type="button" class="btn btn-secondary btn-sm" onclick="addBreakdownItem()">
-                                <i class="fas fa-plus"></i> Add Breakdown Item
-                            </button>
-                            <div id="breakdownSummary" class="breakdown-summary"></div>
-                        </div>
-                    </div>
+                        <button class="btn btn-success" onclick="exportToExcel()">
+                            <i class="fas fa-file-excel"></i>
+                            Export
+                        </button>
 
-                    <div class="form-row" style="display:none;">
-                        <div class="form-group">
-                            <label for="creditToCharge">Credit to be charged *</label>
-                            <input type="number" id="creditToCharge" step="1" min="0">
-                        </div>
-                    </div>
-
-
-                    <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
-                        <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-                        <button type="submit" class="btn btn-success" id="saveButton">
-                            <i class="fas fa-save"></i>
-                            <span id="saveButtonText">Save Record</span>
-                            <div id="saveButtonSpinner" style="display: none; margin-left: 8px;">
-                                <i class="fas fa-spinner fa-spin"></i>
-                            </div>
+                        <button class="btn btn-secondary" onclick="clearFilters()">
+                            <i class="fas fa-times"></i>
+                            Clear Filters
                         </button>
                     </div>
-                </form>
+                </div>
+
+                <div class="date-filter-group">
+                    <select id="dateFieldFilter" class="filter-select">
+                        <option value="">Select Date Field</option>
+                        <option value="timestamp">Timestamp</option>
+                        <option value="paymentDate">Payment Date</option>
+                    </select>
+
+                    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                        <input type="date" id="startDate" disabled>
+                        <span>to</span>
+                        <input type="date" id="endDate" disabled>
+                        <button class="btn btn-primary btn-sm" id="applyDateBtn" onclick="applyDateFilter()" disabled>
+                            Apply Date Filter
+                        </button>
+                        <button class="btn btn-secondary btn-sm" id="clearDateBtn" onclick="clearDateFilter()" disabled>
+                            Clear Date
+                        </button>
+                    </div>
+                </div>
+
+                <div class="stats">
+                    <div class="stat-card">
+                        <i class="fas fa-users"></i>
+                        <div class="stat-info">
+                            <h3 id="totalRecords">0</h3>
+                            <p>Total Records</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-eye"></i>
+                        <div class="stat-info">
+                            <h3 id="visibleRecords">0</h3>
+                            <p>Visible Records</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-check-circle"></i>
+                        <div class="stat-info">
+                            <h3 id="paidCount">0</h3>
+                            <p>Paid</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-clock"></i>
+                        <div class="stat-info">
+                            <h3 id="pendingCount">0</h3>
+                            <p>Pending</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-times-circle"></i>
+                        <div class="stat-info">
+                            <h3 id="unpaidCount">0</h3>
+                            <p>Unpaid</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="loadingDiv" class="loading">
+                    <i class="fas fa-spinner"></i>
+                    <p>Loading credit management data...</p>
+                </div>
+
+                <div id="tableContainer" class="table-container" style="display: none;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Client Name</th>
+                                <th>Device Serial Number</th>
+                                <th>Balance before Top-Up</th>
+                                <th>Top Up Amount</th>
+                                <th>Payment Date</th>
+                                <th>Payment Status</th>
+                                <th>Current Balance</th>
+                                <th>Last Edited By</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dataTableBody">
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="noDataDiv" class="no-data" style="display: none;">
+                    <i class="fas fa-inbox"></i>
+                    <h3>No data found</h3>
+                    <p>No records match your current search and filter criteria.</p>
+                </div>
             </div>
         </div>
-    </div>
-</main>
+
+        <div id="alertModal" class="modal">
+            <div class="modal-content" style="max-width: 500px;">
+                <div class="modal-header" id="alertModalHeader">
+                    <h2 id="alertModalTitle">Alert</h2>
+                    <span class="close" onclick="closeAlertModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                        <i id="alertModalIcon" class="fas fa-info-circle" style="font-size: 24px;"></i>
+                        <p id="alertModalMessage" style="margin: 0; flex: 1;">This is an alert message.</p>
+                    </div>
+                    <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                        <button id="alertModalCancel" class="btn btn-secondary" onclick="closeAlertModal()"
+                            style="display: none;">Cancel</button>
+                        <button id="alertModalConfirm" class="btn btn-primary" onclick="confirmAlertModal()">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="recordModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="modalTitle">Add New Record</h2>
+                    <span class="close" onclick="closeModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <form id="recordForm">
+                        <input type="hidden" id="editRowIndex" value="">
+
+                        <div class="form-group">
+                            <label for="deviceSerial">Device Serial Number *</label>
+                            <div class="searchable-dropdown">
+                                <input type="text" id="deviceSerial" placeholder="Type to search devices..."
+                                    oninput="filterDevices(this.value)">
+                                <div id="deviceOptions" class="dropdown-options"></div>
+                            </div>
+                            <small id="deviceError" style="color: var(--danger); display: none;">Please select a valid
+                                device from the list</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="clientName">Client Name</label>
+                            <input type="text" id="clientName" readonly
+                                style="background-color: var(--light-gray); cursor: not-allowed;">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="balance">Balance before Top-Up *</label>
+                                <input type="number" id="balance" step="0.01" min="0" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="topUp">Top Up Amount *</label>
+                                <input type="number" id="topUp" step="0.01" min="0" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="paymentDate">Payment Date</label>
+                                <input type="date" id="paymentDate" onchange="handlePaymentDateChange()">
+                            </div>
+                            <div class="form-group">
+                                <label for="paymentStatus">Payment Status *</label>
+                                <select id="paymentStatus" required>
+                                    <option value="">Select Status</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Paid">Paid</option>
+                                    <option value="Unpaid">Unpaid</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <select id="status">
+                                <option value="">Select Status</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" style="display:none;">
+                            <label for="creditUsed">Credit Utilised by Client Report *</label>
+                            <input type="number" id="creditUsed" step="1" min="0">
+                        </div>
+
+                        <div class="form-group" style="display:none;">
+                            <label>Credit Utilised Breakdown *</label>
+                            <div class="breakdown-builder">
+                                <div id="breakdownItems"></div>
+                                <button type="button" class="btn btn-secondary btn-sm" onclick="addBreakdownItem()">
+                                    <i class="fas fa-plus"></i> Add Breakdown Item
+                                </button>
+                                <div id="breakdownSummary" class="breakdown-summary"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-row" style="display:none;">
+                            <div class="form-group">
+                                <label for="creditToCharge">Credit to be charged *</label>
+                                <input type="number" id="creditToCharge" step="1" min="0">
+                            </div>
+                        </div>
+
+
+                        <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+                            <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                            <button type="submit" class="btn btn-success" id="saveButton">
+                                <i class="fas fa-save"></i>
+                                <span id="saveButtonText">Save Record</span>
+                                <div id="saveButtonSpinner" style="display: none; margin-left: 8px;">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                </div>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
 
     <script>
         let allData = [];
@@ -1452,91 +1545,91 @@
         let breakdownItems = [];
         const userRole = '<?= userInfo.role ?>';
 
-        window.onload = function() {
+        window.onload = function () {
             loadData();
             loadDevices();
         };
 
-        document.addEventListener('DOMContentLoaded', function() {
-          const sidebar = document.getElementById('sidebar');
-          const mainContent = document.getElementById('mainContent');
-          const toggleBtn = document.getElementById('toggleSidebar');
-          const mobileToggle = document.getElementById('mobileToggle');
-          const overlay = document.getElementById('overlay');
-          
-          const creditManagementToggle = document.getElementById('creditManagementToggle');
-          const creditManagementSubmenu = document.getElementById('creditManagementSubmenu');
-          const menuSection = creditManagementToggle.closest('.menu-section');
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            const toggleBtn = document.getElementById('toggleSidebar');
+            const mobileToggle = document.getElementById('mobileToggle');
+            const overlay = document.getElementById('overlay');
+
+            const creditManagementToggle = document.getElementById('creditManagementToggle');
+            const creditManagementSubmenu = document.getElementById('creditManagementSubmenu');
+            const menuSection = creditManagementToggle.closest('.menu-section');
 
 
-          if (["Guest", "Product Specialist"].includes(userRole)) {
+            if (["Guest", "Product Specialist"].includes(userRole)) {
 
-            const addButton = document.querySelector('.btn-primary[onclick="openAddModal()"]');
-            if (addButton) {
-              addButton.style.display = 'none';
+                const addButton = document.querySelector('.btn-primary[onclick="openAddModal()"]');
+                if (addButton) {
+                    addButton.style.display = 'none';
+                }
+
+
+                const actionHeader = document.querySelector('th:nth-child(11)');
+                if (actionHeader) {
+                    actionHeader.style.display = 'none';
+                }
             }
 
+            creditManagementToggle.addEventListener('click', function (e) {
+                if (sidebar.classList.contains('collapsed')) return;
 
-            const actionHeader = document.querySelector('th:nth-child(11)');
-            if (actionHeader) {
-              actionHeader.style.display = 'none';
+                menuSection.classList.toggle('expanded');
+
+                const isExpanded = menuSection.classList.contains('expanded');
+                localStorage.setItem('creditManagementExpanded', isExpanded);
+            });
+
+            const creditManagementExpanded = localStorage.getItem('creditManagementExpanded') === 'true';
+            if (creditManagementExpanded && !sidebar.classList.contains('collapsed')) {
+                menuSection.classList.add('expanded');
             }
-          }
 
-          creditManagementToggle.addEventListener('click', function(e) {
-            if (sidebar.classList.contains('collapsed')) return;
-            
-            menuSection.classList.toggle('expanded');
-            
-            const isExpanded = menuSection.classList.contains('expanded');
-            localStorage.setItem('creditManagementExpanded', isExpanded);
-          });
+            toggleBtn.addEventListener('click', function () {
+                sidebar.classList.toggle('collapsed');
+                mainContent.classList.toggle('expanded');
 
-          const creditManagementExpanded = localStorage.getItem('creditManagementExpanded') === 'true';
-          if (creditManagementExpanded && !sidebar.classList.contains('collapsed')) {
-            menuSection.classList.add('expanded');
-          }
+                const isCollapsed = sidebar.classList.contains('collapsed');
+                localStorage.setItem('sidebarCollapsed', isCollapsed);
 
-          toggleBtn.addEventListener('click', function() {
-            sidebar.classList.toggle('collapsed');
-            mainContent.classList.toggle('expanded');
+                if (isCollapsed) {
+                    menuSection.classList.remove('expanded');
+                }
+            });
 
-            const isCollapsed = sidebar.classList.contains('collapsed');
-            localStorage.setItem('sidebarCollapsed', isCollapsed);
-            
-            if (isCollapsed) {
-              menuSection.classList.remove('expanded');
+            mobileToggle.addEventListener('click', function () {
+                sidebar.classList.add('mobile-open');
+                overlay.classList.add('active');
+            });
+
+            overlay.addEventListener('click', function () {
+                sidebar.classList.remove('mobile-open');
+                overlay.classList.remove('active');
+            });
+
+            const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+            if (sidebarCollapsed) {
+                sidebar.classList.add('collapsed');
+                mainContent.classList.add('expanded');
             }
-          });
 
-          mobileToggle.addEventListener('click', function() {
-            sidebar.classList.add('mobile-open');
-            overlay.classList.add('active');
-          });
-
-          overlay.addEventListener('click', function() {
-            sidebar.classList.remove('mobile-open');
-            overlay.classList.remove('active');
-          });
-
-          const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-          if (sidebarCollapsed) {
-            sidebar.classList.add('collapsed');
-            mainContent.classList.add('expanded');
-          }
-
-          window.addEventListener('resize', function() {
-            if (window.innerWidth > 768) {
-              sidebar.classList.remove('mobile-open');
-              overlay.classList.remove('active');
-            }
-          });
+            window.addEventListener('resize', function () {
+                if (window.innerWidth > 768) {
+                    sidebar.classList.remove('mobile-open');
+                    overlay.classList.remove('active');
+                }
+            });
         });
 
         function handlePaymentDateChange() {
             const paymentDate = document.getElementById('paymentDate').value;
             const paymentStatus = document.getElementById('paymentStatus');
-            
+
             if (paymentDate) {
                 paymentStatus.value = 'Paid';
                 paymentStatus.disabled = true;
@@ -1560,32 +1653,32 @@
         }
 
         function onDataLoaded(data) {
-          try {
-            const parsedData = typeof data === 'string' ? JSON.parse(data) : data;
-            allData = Array.isArray(parsedData) ? parsedData.reverse() : []; 
-            filteredData = [...allData];
+            try {
+                const parsedData = typeof data === 'string' ? JSON.parse(data) : data;
+                allData = Array.isArray(parsedData) ? parsedData.reverse() : [];
+                filteredData = [...allData];
 
-            populateFilters();
-            displayData();
-            updateStats();
+                populateFilters();
+                displayData();
+                updateStats();
 
-            document.getElementById('loadingDiv').style.display = 'none';
+                document.getElementById('loadingDiv').style.display = 'none';
 
-            if (allData.length > 0) {
-              document.getElementById('tableContainer').style.display = 'block';
-              document.getElementById('noDataDiv').style.display = 'none';
-            } else {
-              document.getElementById('tableContainer').style.display = 'none';
-              document.getElementById('noDataDiv').style.display = 'block';
+                if (allData.length > 0) {
+                    document.getElementById('tableContainer').style.display = 'block';
+                    document.getElementById('noDataDiv').style.display = 'none';
+                } else {
+                    document.getElementById('tableContainer').style.display = 'none';
+                    document.getElementById('noDataDiv').style.display = 'block';
+                }
+            } catch (e) {
+                console.error('Error parsing data:', e);
+                allData = [];
+                filteredData = [];
+                document.getElementById('loadingDiv').style.display = 'none';
+                document.getElementById('tableContainer').style.display = 'none';
+                document.getElementById('noDataDiv').style.display = 'block';
             }
-          } catch (e) {
-            console.error('Error parsing data:', e);
-            allData = [];
-            filteredData = [];
-            document.getElementById('loadingDiv').style.display = 'none';
-            document.getElementById('tableContainer').style.display = 'none';
-            document.getElementById('noDataDiv').style.display = 'block';
-          }
         }
 
         function onDevicesLoaded(devices) {
@@ -1683,7 +1776,7 @@
             closeAlertModal();
         }
 
-        window.addEventListener('click', function(event) {
+        window.addEventListener('click', function (event) {
             const modal = document.getElementById('alertModal');
             if (event.target === modal) {
                 closeAlertModal();
@@ -1716,10 +1809,10 @@
         function toggleMultiSelect(filterId) {
             const dropdown = document.getElementById(filterId + 'Dropdown');
             const isActive = dropdown.classList.contains('active');
-            
+
 
             document.querySelectorAll('.multi-select-dropdown').forEach(d => d.classList.remove('active'));
-            
+
 
             if (!isActive) {
                 dropdown.classList.add('active');
@@ -1741,7 +1834,7 @@
                     selectedClients.push(value);
                 }
                 updateFilterDisplay('clientFilter', selectedClients);
-                
+
 
                 if (index > -1) {
                     const clientDevices = clientDeviceMap[value] || [];
@@ -1765,13 +1858,13 @@
                     selectedDevices.push(value);
                 }
                 updateFilterDisplay('deviceFilter', selectedDevices);
-                
+
 
                 if (index > -1) {
                     const deviceClient = deviceClientMap[value];
                     if (deviceClient) {
                         const clientDevices = clientDeviceMap[deviceClient] || [];
-                        const hasOtherSelectedDevices = clientDevices.some(device => 
+                        const hasOtherSelectedDevices = clientDevices.some(device =>
                             device !== value && selectedDevices.includes(device)
                         );
                         if (!hasOtherSelectedDevices) {
@@ -1784,10 +1877,10 @@
                     }
                 }
             }
-            
+
 
             updateAvailableFilters();
-            
+
 
             const clientSearchInput = document.getElementById('clientFilterSearch');
             const deviceSearchInput = document.getElementById('deviceFilterSearch');
@@ -1799,7 +1892,7 @@
                 deviceSearchInput.value = '';
                 filterMultiSelectOptions('deviceFilter', '');
             }
-            
+
             applyFilters();
         }
 
@@ -1810,7 +1903,7 @@
                     selectedClients.splice(index, 1);
                 }
                 updateFilterDisplay('clientFilter', selectedClients);
-                
+
 
                 const clientDevices = clientDeviceMap[value] || [];
                 selectedDevices = selectedDevices.filter(device => {
@@ -1829,12 +1922,12 @@
                     selectedDevices.splice(index, 1);
                 }
                 updateFilterDisplay('deviceFilter', selectedDevices);
-                
+
 
                 const deviceClient = deviceClientMap[value];
                 if (deviceClient) {
                     const clientDevices = clientDeviceMap[deviceClient] || [];
-                    const hasOtherSelectedDevices = clientDevices.some(device => 
+                    const hasOtherSelectedDevices = clientDevices.some(device =>
                         device !== value && selectedDevices.includes(device)
                     );
                     if (!hasOtherSelectedDevices) {
@@ -1846,7 +1939,7 @@
                     }
                 }
             }
-            
+
 
             updateAvailableFilters();
             applyFilters();
@@ -1854,12 +1947,12 @@
 
         function updateFilterDisplay(filterId, selectedValues) {
             const display = document.getElementById(filterId + 'Display');
-            
+
             if (selectedValues.length === 0) {
                 const placeholder = filterId === 'clientFilter' ? 'All Clients' : 'All Devices';
                 display.innerHTML = `<span class="multi-select-placeholder">${placeholder}</span>`;
             } else {
-                const chips = selectedValues.map(value => 
+                const chips = selectedValues.map(value =>
                     `<span class="filter-chip">${value} <span class="remove-chip" onclick="event.stopPropagation(); removeFilterChip('${filterId}', '${value}')">&times;</span></span>`
                 ).join('');
                 display.innerHTML = `<div class="selected-chips">${chips}</div>`;
@@ -1870,24 +1963,24 @@
             const dropdown = document.getElementById(filterId + 'Dropdown');
             const checkboxes = dropdown.querySelectorAll('input[type="checkbox"]');
             const selectedValues = filterId === 'clientFilter' ? selectedClients : selectedDevices;
-            
+
             checkboxes.forEach(checkbox => {
                 checkbox.checked = selectedValues.includes(checkbox.value);
             });
         }
 
 
-        let clientDeviceMap = {}; 
-        let deviceClientMap = {}; 
+        let clientDeviceMap = {};
+        let deviceClientMap = {};
 
         function buildClientDeviceMaps() {
             clientDeviceMap = {};
             deviceClientMap = {};
-            
+
             allData.forEach(row => {
                 const clientName = row[2];
                 const deviceSerial = row[4];
-                
+
                 if (clientName && deviceSerial) {
 
                     if (!clientDeviceMap[clientName]) {
@@ -1896,7 +1989,7 @@
                     if (!clientDeviceMap[clientName].includes(deviceSerial)) {
                         clientDeviceMap[clientName].push(deviceSerial);
                     }
-                    
+
 
                     deviceClientMap[deviceSerial] = clientName;
                 }
@@ -1912,7 +2005,7 @@
             populateMultiSelect('clientFilter', clientNames);
             populateMultiSelect('deviceFilter', deviceSerials);
             populateSelect('paymentStatusFilter', paymentStatuses);
-            
+
             updateAvailableFilters();
         }
 
@@ -1953,7 +2046,7 @@
         function updateAvailableFilters() {
             const availableClients = getAvailableClients();
             const availableDevices = getAvailableDevices();
-            
+
             populateMultiSelect('clientFilter', availableClients);
             populateMultiSelect('deviceFilter', availableDevices);
         }
@@ -1962,7 +2055,7 @@
             const dropdown = document.getElementById(filterId + 'Dropdown');
             const options = dropdown.querySelectorAll('.multi-select-option');
             const searchLower = searchTerm.toLowerCase();
-            
+
             options.forEach(option => {
                 const label = option.querySelector('label');
                 const text = label ? label.textContent.toLowerCase() : '';
@@ -1977,14 +2070,14 @@
         function populateMultiSelect(filterId, options) {
             const dropdown = document.getElementById(filterId + 'Dropdown');
             const selectedValues = filterId === 'clientFilter' ? selectedClients : selectedDevices;
-            
+
 
             const searchBar = dropdown.querySelector('.multi-select-search');
             const existingOptions = dropdown.querySelectorAll('.multi-select-option');
-            
+
 
             existingOptions.forEach(option => option.remove());
-            
+
 
             if (!searchBar) {
                 const searchDiv = document.createElement('div');
@@ -1997,7 +2090,7 @@
                 `;
                 dropdown.insertBefore(searchDiv, dropdown.firstChild);
             }
-            
+
 
             options.forEach(option => {
                 const optionDiv = document.createElement('div');
@@ -2137,7 +2230,7 @@
             const deviceInput = document.getElementById('deviceSerial');
             deviceInput.value = device.serial;
             deviceInput.dataset.deviceId = device.id;
-            deviceInput.dataset.clientId = device.clientId || ''; 
+            deviceInput.dataset.clientId = device.clientId || '';
 
 
             const clientName = device.clientName || getClientNameForDevice(device.serial);
@@ -2168,6 +2261,9 @@
                 const actionButtons = isRestrictedUser ? '' : `
                     <td>
                         <div class="action-buttons">
+                            <button class="btn btn-whatsapp btn-sm" title="Copy WhatsApp details" onclick="copyWhatsappDetails(${allData.indexOf(row)})">
+                                <i class="fab fa-whatsapp"></i>
+                            </button>
                             <button class="btn btn-primary btn-sm" onclick="editRecord(${allData.indexOf(row)})">
                                 <i class="fas fa-edit"></i>
                             </button>
@@ -2212,6 +2308,56 @@
                 return `<div class="breakdown-chips">${chips}</div>`;
             } catch (e) {
                 return breakdown || 'Invalid breakdown';
+            }
+        }
+
+        function copyWhatsappDetails(rowIndex) {
+            const row = allData[rowIndex];
+            if (!row) {
+                showError('Unable to locate the selected record.', 'Copy Failed');
+                return;
+            }
+
+            const messageLines = [
+                `Client Name: ${row[2] || '-'}`,
+                `Device Serial Number: ${row[4] || '-'}`,
+                `Balance before Top-Up: ${formatNumber(row[5], true)}`,
+                `Top Up Amount: ${formatNumber(row[9], true)}`,
+                `Current Balance: ${formatNumber(row[15], true)}`,
+                `Status: ${row[18] || '-'}`
+            ];
+
+            const message = messageLines.join('\n');
+
+            const handleSuccess = () => {
+                showSuccess('Details copied. You can now paste them into WhatsApp.', 'Copied to Clipboard');
+            };
+
+            const handleFailure = (error) => {
+                console.error('Clipboard error:', error);
+                showError('Could not copy the details automatically. Please try again.', 'Copy Failed');
+            };
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(message).then(handleSuccess).catch(handleFailure);
+            } else {
+                try {
+                    const tempTextarea = document.createElement('textarea');
+                    tempTextarea.value = message;
+                    tempTextarea.style.position = 'fixed';
+                    tempTextarea.style.opacity = '0';
+                    document.body.appendChild(tempTextarea);
+                    tempTextarea.select();
+                    const successful = document.execCommand('copy');
+                    document.body.removeChild(tempTextarea);
+                    if (successful) {
+                        handleSuccess();
+                    } else {
+                        handleFailure(new Error('execCommand copy failed'));
+                    }
+                } catch (error) {
+                    handleFailure(error);
+                }
             }
         }
 
@@ -2295,11 +2441,11 @@
         function selectDevice(device) {
             selectedDevice = device;
             document.getElementById('deviceSerial').value = device.serial;
-            
+
 
             const clientName = device.clientName || getClientNameForDevice(device.serial);
             document.getElementById('clientName').value = clientName || '';
-            
+
             document.getElementById('deviceOptions').style.display = 'none';
             document.getElementById('deviceError').style.display = 'none';
         }
@@ -2317,7 +2463,7 @@
                     selectedDevice = devicesList.find(device => device.serial === deviceInput.value);
                     deviceInput.dataset.deviceId = selectedDevice.id;
                     deviceInput.dataset.clientId = selectedDevice.clientId || '';
-                    
+
 
                     const clientName = selectedDevice.clientName || getClientNameForDevice(selectedDevice.serial);
                     document.getElementById('clientName').value = clientName || '';
@@ -2413,10 +2559,10 @@
         function clearFilters() {
             document.getElementById('globalSearch').value = '';
             document.getElementById('paymentStatusFilter').value = '';
-            
+
             selectedClients = [];
             selectedDevices = [];
-            
+
 
             const clientSearchInput = document.getElementById('clientFilterSearch');
             const deviceSearchInput = document.getElementById('deviceFilterSearch');
@@ -2428,7 +2574,7 @@
                 deviceSearchInput.value = '';
                 filterMultiSelectOptions('deviceFilter', '');
             }
-            
+
             updateFilterDisplay('clientFilter', selectedClients);
             updateFilterDisplay('deviceFilter', selectedDevices);
 
@@ -2442,7 +2588,7 @@
             updateStats();
         }
 
-        document.getElementById('dateFieldFilter').addEventListener('change', function() {
+        document.getElementById('dateFieldFilter').addEventListener('change', function () {
             const dateField = this.value;
             const startDate = document.getElementById('startDate');
             const endDate = document.getElementById('endDate');
@@ -2524,7 +2670,7 @@
 
             try {
                 const isRestrictedRole = ["Biomed", "Product Specialist"].includes(userRole);
-                
+
                 const exportData = filteredData.map(row => {
                     const baseData = {
                         'Timestamp': formatDateTime(row[0]),
@@ -2535,14 +2681,14 @@
                         'Last Edited By': row[17] || '',
                         'Status': row[18] || ''
                     };
-                    
+
 
                     if (!isRestrictedRole) {
                         baseData['Top Up Amount'] = row[9] || 0;
                         baseData['Payment Date'] = formatDate(row[10]);
                         baseData['Payment Status'] = row[11] || '';
                     }
-                    
+
                     return baseData;
                 });
 
@@ -2634,7 +2780,7 @@
 
             try {
                 const breakdown = JSON.parse(row[7] || '{}');
-                breakdownItems = Object.entries(breakdown).map(([type, amount]) => ({type, amount}));
+                breakdownItems = Object.entries(breakdown).map(([type, amount]) => ({ type, amount }));
             } catch (e) {
                 breakdownItems = [];
             }
@@ -2694,7 +2840,7 @@
         }
 
         function addBreakdownItem() {
-            breakdownItems.push({type: 'Patient', amount: 0});
+            breakdownItems.push({ type: 'Patient', amount: 0 });
             updateBreakdownDisplay();
         }
 
@@ -2715,8 +2861,8 @@
                 div.innerHTML = `
                     <select onchange="breakdownItems[${index}].type = this.value; validateBreakdown()">
                         ${breakdownOptions.map(option =>
-                            `<option value="${option}" ${item.type === option ? 'selected' : ''}>${option}</option>`
-                        ).join('')}
+                    `<option value="${option}" ${item.type === option ? 'selected' : ''}>${option}</option>`
+                ).join('')}
                     </select>
                     <input type="number" placeholder="Amount" value="${item.amount}" min="0" step="1"
                           onchange="breakdownItems[${index}].amount = parseInt(this.value) || 0; validateBreakdown()">
@@ -2758,41 +2904,41 @@
         document.getElementById('creditUsed').addEventListener('input', validateBreakdown);
 
 
-        document.addEventListener('click', function(e) {
+        document.addEventListener('click', function (e) {
             if (!e.target.closest('.multi-select-container')) {
                 document.querySelectorAll('.multi-select-dropdown').forEach(d => d.classList.remove('active'));
             }
-            
+
 
             if (e.target.closest('.multi-select-search')) {
                 e.stopPropagation();
             }
         });
 
-        document.getElementById('deviceSerial').addEventListener('click', function() {
+        document.getElementById('deviceSerial').addEventListener('click', function () {
             if (this.value === '') {
                 populateDeviceDropdown();
                 document.getElementById('deviceOptions').style.display = 'block';
             }
         });
 
-        document.addEventListener('click', function(e) {
+        document.addEventListener('click', function (e) {
             if (!e.target.closest('.searchable-dropdown')) {
                 document.getElementById('deviceOptions').style.display = 'none';
             }
         });
 
-        document.getElementById('deviceSerial').addEventListener('click', function() {
+        document.getElementById('deviceSerial').addEventListener('click', function () {
             document.getElementById('deviceOptions').style.display = 'block';
         });
 
-        document.addEventListener('click', function(e) {
+        document.addEventListener('click', function (e) {
             if (!e.target.closest('.searchable-dropdown')) {
                 document.getElementById('deviceOptions').style.display = 'none';
             }
         });
 
-        document.getElementById('recordForm').addEventListener('submit', async function(e) {
+        document.getElementById('recordForm').addEventListener('submit', async function (e) {
             e.preventDefault();
 
             if (isSubmitting) {
@@ -2810,7 +2956,7 @@
                 const clientId = selectedDevice ? (selectedDevice.clientId || '') : '';
                 const paymentDate = document.getElementById('paymentDate').value;
                 let paymentStatus = document.getElementById('paymentStatus').value || 'Pending';
-                
+
                 if (paymentDate) {
                     paymentStatus = 'Paid';
                 }
@@ -2873,4 +3019,5 @@
         });
     </script>
 </body>
+
 </html>

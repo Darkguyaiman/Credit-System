@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <base target="_top">
     <meta charset="utf-8">
@@ -7,7 +8,7 @@
     <title>Revenue Sharing Management</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
     <style>
         :root {
@@ -285,6 +286,17 @@
             box-shadow: 0 4px 12px rgba(77, 129, 140, 0.3);
         }
 
+        .btn-whatsapp {
+            background: #25d366;
+            color: var(--white);
+        }
+
+        .btn-whatsapp:hover {
+            background: #1ebe57;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+        }
+
         .btn-success {
             background: var(--success);
             color: var(--white);
@@ -394,15 +406,50 @@
             background: var(--light-gray);
         }
 
-        th:nth-child(1), td:nth-child(1) { width: 120px; }
-        th:nth-child(2), td:nth-child(2) { width: 150px; }
-        th:nth-child(3), td:nth-child(3) { width: 140px; }
-        th:nth-child(4), td:nth-child(4) { width: 130px; }
-        th:nth-child(5), td:nth-child(5) { width: 120px; }
-        th:nth-child(6), td:nth-child(6) { width: 130px; }
-        th:nth-child(7), td:nth-child(7) { width: 150px; }
-        th:nth-child(8), td:nth-child(8) { width: 140px; }
-        th:nth-child(9), td:nth-child(9) { width: 100px; }
+        th:nth-child(1),
+        td:nth-child(1) {
+            width: 120px;
+        }
+
+        th:nth-child(2),
+        td:nth-child(2) {
+            width: 150px;
+        }
+
+        th:nth-child(3),
+        td:nth-child(3) {
+            width: 140px;
+        }
+
+        th:nth-child(4),
+        td:nth-child(4) {
+            width: 130px;
+        }
+
+        th:nth-child(5),
+        td:nth-child(5) {
+            width: 120px;
+        }
+
+        th:nth-child(6),
+        td:nth-child(6) {
+            width: 130px;
+        }
+
+        th:nth-child(7),
+        td:nth-child(7) {
+            width: 150px;
+        }
+
+        th:nth-child(8),
+        td:nth-child(8) {
+            width: 140px;
+        }
+
+        th:nth-child(9),
+        td:nth-child(9) {
+            width: 100px;
+        }
 
         .status-badge {
             padding: 4px 8px;
@@ -570,8 +617,13 @@
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         .no-data {
@@ -944,7 +996,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             transition: all 0.2s ease-in-out;
         }
 
@@ -952,7 +1004,7 @@
             background: var(--light-teal);
             color: var(--white);
             border-color: var(--medium-teal);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
 
         .page-title {
@@ -1013,6 +1065,7 @@
         }
     </style>
 </head>
+
 <body>
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
@@ -1031,49 +1084,50 @@
                 <span class="menu-text">Dashboard</span>
             </a>
             <div class="menu-section">
-              <div class="menu-item menu-toggle" id="creditManagementToggle">
-                <i class="fas fa-credit-card menu-icon"></i>
-                <span class="menu-text">Credit Management</span>
-                <i class="fas fa-chevron-down toggle-arrow"></i>
-              </div>
+                <div class="menu-item menu-toggle" id="creditManagementToggle">
+                    <i class="fas fa-credit-card menu-icon"></i>
+                    <span class="menu-text">Credit Management</span>
+                    <i class="fas fa-chevron-down toggle-arrow"></i>
+                </div>
                 <div class="submenu" id="creditManagementSubmenu">
                     <div class="menu-section">
-                      <a href="<?= baseUrl ?>?page=prepaid" class="menu-item" target="_top">
-                        <i class="fas fa-money-bill-wave menu-icon"></i>
-                        <span class="menu-text">Prepaid</span>
-                      </a>
+                        <a href="<?= baseUrl ?>?page=prepaid" class="menu-item" target="_top">
+                            <i class="fas fa-money-bill-wave menu-icon"></i>
+                            <span class="menu-text">Prepaid</span>
+                        </a>
                     </div>
                     <div class="menu-section">
-                      <div class="menu-item" style="cursor: default;">
-                        <i class="fas fa-file-invoice-dollar menu-icon"></i>
-                        <span class="menu-text">Postpaid</span>
-                      </div>
-                      <div class="submenu always-open">
-                        <a href="<?= baseUrl ?>?page=postpaid-monthly" class="submenu-item" target="_top">
-                          <i class="fas fa-calendar-alt submenu-icon"></i>
-                          <span class="submenu-text">Report</span>
-                        </a>
-                        <a href="<?= baseUrl ?>?page=postpaid-topup" class="submenu-item" target="_top">
-                          <i class="fas fa-coins submenu-icon"></i>
-                          <span class="submenu-text">Top Up</span>
-                        </a>
-                      </div>
+                        <div class="menu-item" style="cursor: default;">
+                            <i class="fas fa-file-invoice-dollar menu-icon"></i>
+                            <span class="menu-text">Postpaid</span>
+                        </div>
+                        <div class="submenu always-open">
+                            <a href="<?= baseUrl ?>?page=postpaid-monthly" class="submenu-item" target="_top">
+                                <i class="fas fa-calendar-alt submenu-icon"></i>
+                                <span class="submenu-text">Report</span>
+                            </a>
+                            <a href="<?= baseUrl ?>?page=postpaid-topup" class="submenu-item" target="_top">
+                                <i class="fas fa-coins submenu-icon"></i>
+                                <span class="submenu-text">Top Up</span>
+                            </a>
+                        </div>
                     </div>
                     <div class="menu-section">
-                      <div class="menu-item" style="cursor: default;">
-                        <i class="fas fa-chart-pie menu-icon"></i>
-                        <span class="menu-text">Revenue Sharing</span>
-                      </div>
-                      <div class="submenu always-open">
-                        <a href="<?= baseUrl ?>?page=revenue-sharing-monthly" class="submenu-item" target="_top">
-                          <i class="fas fa-calendar-alt submenu-icon"></i>
-                          <span class="submenu-text">Report</span>
-                        </a>
-                        <a href="<?= baseUrl ?>?page=revenue-sharing-topup" class="submenu-item active" target="_top">
-                          <i class="fas fa-coins submenu-icon"></i>
-                          <span class="submenu-text">Top Up</span>
-                        </a>
-                      </div>
+                        <div class="menu-item" style="cursor: default;">
+                            <i class="fas fa-chart-pie menu-icon"></i>
+                            <span class="menu-text">Revenue Sharing</span>
+                        </div>
+                        <div class="submenu always-open">
+                            <a href="<?= baseUrl ?>?page=revenue-sharing-monthly" class="submenu-item" target="_top">
+                                <i class="fas fa-calendar-alt submenu-icon"></i>
+                                <span class="submenu-text">Report</span>
+                            </a>
+                            <a href="<?= baseUrl ?>?page=revenue-sharing-topup" class="submenu-item active"
+                                target="_top">
+                                <i class="fas fa-coins submenu-icon"></i>
+                                <span class="submenu-text">Top Up</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1125,7 +1179,8 @@
                             <div class="multi-select-dropdown" id="clientFilterDropdown">
                                 <div class="multi-select-search">
                                     <div class="multi-select-search-container">
-                                        <input type="text" id="clientFilterSearch" placeholder="Search clients..." oninput="filterMultiSelectOptions('clientFilter', this.value)">
+                                        <input type="text" id="clientFilterSearch" placeholder="Search clients..."
+                                            oninput="filterMultiSelectOptions('clientFilter', this.value)">
                                         <i class="fas fa-search"></i>
                                     </div>
                                 </div>
@@ -1142,7 +1197,8 @@
                             <div class="multi-select-dropdown" id="deviceFilterDropdown">
                                 <div class="multi-select-search">
                                     <div class="multi-select-search-container">
-                                        <input type="text" id="deviceFilterSearch" placeholder="Search devices..." oninput="filterMultiSelectOptions('deviceFilter', this.value)">
+                                        <input type="text" id="deviceFilterSearch" placeholder="Search devices..."
+                                            oninput="filterMultiSelectOptions('deviceFilter', this.value)">
                                         <i class="fas fa-search"></i>
                                     </div>
                                 </div>
@@ -1245,7 +1301,8 @@
                         <p id="alertModalMessage" style="margin: 0; flex: 1;">This is an alert message.</p>
                     </div>
                     <div style="display: flex; justify-content: flex-end; gap: 10px;">
-                        <button id="alertModalCancel" class="btn btn-secondary" onclick="closeAlertModal()" style="display: none;">Cancel</button>
+                        <button id="alertModalCancel" class="btn btn-secondary" onclick="closeAlertModal()"
+                            style="display: none;">Cancel</button>
                         <button id="alertModalConfirm" class="btn btn-primary" onclick="confirmAlertModal()">OK</button>
                     </div>
                 </div>
@@ -1265,15 +1322,18 @@
                         <div class="form-group">
                             <label for="deviceSerial">Device Serial Number *</label>
                             <div class="searchable-dropdown">
-                                <input type="text" id="deviceSerial" placeholder="Type to search devices..." oninput="filterDevices(this.value)">
+                                <input type="text" id="deviceSerial" placeholder="Type to search devices..."
+                                    oninput="filterDevices(this.value)">
                                 <div id="deviceOptions" class="dropdown-options"></div>
                             </div>
-                            <small id="deviceError" style="color: var(--danger); display: none;">Please select a valid device from the list</small>
+                            <small id="deviceError" style="color: var(--danger); display: none;">Please select a valid
+                                device from the list</small>
                         </div>
 
                         <div class="form-group">
                             <label for="clientName">Client Name</label>
-                            <input type="text" id="clientName" readonly style="background-color: var(--light-gray); cursor: not-allowed;">
+                            <input type="text" id="clientName" readonly
+                                style="background-color: var(--light-gray); cursor: not-allowed;">
                         </div>
 
                         <div class="form-row">
@@ -1327,94 +1387,94 @@
         let allDeviceSerials = [];
         const userRole = '<?= userInfo.role ?>';
 
-        window.onload = function() {
+        window.onload = function () {
             loadData();
             loadDevices();
         };
 
-        document.addEventListener('DOMContentLoaded', function() {
-          const sidebar = document.getElementById('sidebar');
-          const mainContent = document.getElementById('mainContent');
-          const toggleBtn = document.getElementById('toggleSidebar');
-          const mobileToggle = document.getElementById('mobileToggle');
-          const overlay = document.getElementById('overlay');
-          
-          const creditManagementToggle = document.getElementById('creditManagementToggle');
-          const creditManagementSubmenu = document.getElementById('creditManagementSubmenu');
-          const menuSection = creditManagementToggle?.closest('.menu-section');
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            const toggleBtn = document.getElementById('toggleSidebar');
+            const mobileToggle = document.getElementById('mobileToggle');
+            const overlay = document.getElementById('overlay');
+
+            const creditManagementToggle = document.getElementById('creditManagementToggle');
+            const creditManagementSubmenu = document.getElementById('creditManagementSubmenu');
+            const menuSection = creditManagementToggle?.closest('.menu-section');
 
 
-          if (["Guest", "Product Specialist"].includes(userRole)) {
+            if (["Guest", "Product Specialist"].includes(userRole)) {
 
-            const addButton = document.querySelector('.btn-success');
-            if (addButton) {
-              addButton.style.display = 'none';
+                const addButton = document.querySelector('.btn-success');
+                if (addButton) {
+                    addButton.style.display = 'none';
+                }
+
+
+                const actionHeader = document.querySelector('th:nth-child(9)');
+                const actionCells = document.querySelectorAll('td:nth-child(9)');
+
+                if (actionHeader) {
+                    actionHeader.style.display = 'none';
+                }
+
+                actionCells.forEach(cell => {
+                    cell.style.display = 'none';
+                });
             }
 
-
-            const actionHeader = document.querySelector('th:nth-child(9)'); 
-            const actionCells = document.querySelectorAll('td:nth-child(9)'); 
-            
-            if (actionHeader) {
-              actionHeader.style.display = 'none';
-            }
-            
-            actionCells.forEach(cell => {
-              cell.style.display = 'none';
+            creditManagementToggle.addEventListener('click', function (e) {
+                if (sidebar.classList.contains('collapsed')) return;
+                menuSection.classList.toggle('expanded');
+                const isExpanded = menuSection.classList.contains('expanded');
+                localStorage.setItem('creditManagementExpanded', isExpanded);
             });
-          }
 
-          creditManagementToggle.addEventListener('click', function(e) {
-            if (sidebar.classList.contains('collapsed')) return;
-            menuSection.classList.toggle('expanded');
-            const isExpanded = menuSection.classList.contains('expanded');
-            localStorage.setItem('creditManagementExpanded', isExpanded);
-          });
-
-          const creditManagementExpanded = localStorage.getItem('creditManagementExpanded') === 'true';
-          if (creditManagementExpanded && !sidebar.classList.contains('collapsed')) {
-            menuSection.classList.add('expanded');
-          }
-
-          toggleBtn.addEventListener('click', function() {
-            sidebar.classList.toggle('collapsed');
-            mainContent.classList.toggle('expanded');
-            const isCollapsed = sidebar.classList.contains('collapsed');
-            localStorage.setItem('sidebarCollapsed', isCollapsed);
-            if (isCollapsed) {
-              menuSection.classList.remove('expanded');
+            const creditManagementExpanded = localStorage.getItem('creditManagementExpanded') === 'true';
+            if (creditManagementExpanded && !sidebar.classList.contains('collapsed')) {
+                menuSection.classList.add('expanded');
             }
-          });
 
-          mobileToggle.addEventListener('click', function() {
-            sidebar.classList.add('mobile-open');
-            overlay.classList.add('active');
-          });
+            toggleBtn.addEventListener('click', function () {
+                sidebar.classList.toggle('collapsed');
+                mainContent.classList.toggle('expanded');
+                const isCollapsed = sidebar.classList.contains('collapsed');
+                localStorage.setItem('sidebarCollapsed', isCollapsed);
+                if (isCollapsed) {
+                    menuSection.classList.remove('expanded');
+                }
+            });
 
-          overlay.addEventListener('click', function() {
-            sidebar.classList.remove('mobile-open');
-            overlay.classList.remove('active');
-          });
+            mobileToggle.addEventListener('click', function () {
+                sidebar.classList.add('mobile-open');
+                overlay.classList.add('active');
+            });
 
-          const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-          if (sidebarCollapsed) {
-            sidebar.classList.add('collapsed');
-            mainContent.classList.add('expanded');
-          }
+            overlay.addEventListener('click', function () {
+                sidebar.classList.remove('mobile-open');
+                overlay.classList.remove('active');
+            });
 
-          window.addEventListener('resize', function() {
-            if (window.innerWidth > 768) {
-              sidebar.classList.remove('mobile-open');
-              overlay.classList.remove('active');
+            const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+            if (sidebarCollapsed) {
+                sidebar.classList.add('collapsed');
+                mainContent.classList.add('expanded');
             }
-          });
+
+            window.addEventListener('resize', function () {
+                if (window.innerWidth > 768) {
+                    sidebar.classList.remove('mobile-open');
+                    overlay.classList.remove('active');
+                }
+            });
         });
 
         function loadData() {
-          google.script.run
-            .withSuccessHandler(onDataLoaded)
-            .withFailureHandler(onError)
-            .getRevenueSharingDataTopUp();
+            google.script.run
+                .withSuccessHandler(onDataLoaded)
+                .withFailureHandler(onError)
+                .getRevenueSharingDataTopUp();
         }
 
         function loadDevices() {
@@ -1427,7 +1487,7 @@
         function onDataLoaded(data) {
             try {
                 const parsedData = typeof data === 'string' ? JSON.parse(data) : data;
-                allData = Array.isArray(parsedData) ? parsedData.reverse() : []; 
+                allData = Array.isArray(parsedData) ? parsedData.reverse() : [];
                 filteredData = [...allData];
 
                 populateFilters();
@@ -1575,10 +1635,10 @@
         function toggleMultiSelect(filterId) {
             const dropdown = document.getElementById(filterId + 'Dropdown');
             const isActive = dropdown.classList.contains('active');
-            
+
 
             document.querySelectorAll('.multi-select-dropdown').forEach(d => d.classList.remove('active'));
-            
+
 
             if (!isActive) {
                 dropdown.classList.add('active');
@@ -1600,7 +1660,7 @@
                     selectedClients.push(value);
                 }
                 updateFilterDisplay('clientFilter', selectedClients);
-                
+
 
                 if (index > -1) {
                     const clientDevices = clientDeviceMap[value] || [];
@@ -1624,13 +1684,13 @@
                     selectedDevices.push(value);
                 }
                 updateFilterDisplay('deviceFilter', selectedDevices);
-                
+
 
                 if (index > -1) {
                     const deviceClient = deviceClientMap[value];
                     if (deviceClient) {
                         const clientDevices = clientDeviceMap[deviceClient] || [];
-                        const hasOtherSelectedDevices = clientDevices.some(device => 
+                        const hasOtherSelectedDevices = clientDevices.some(device =>
                             device !== value && selectedDevices.includes(device)
                         );
                         if (!hasOtherSelectedDevices) {
@@ -1643,10 +1703,10 @@
                     }
                 }
             }
-            
+
 
             updateAvailableFilters();
-            
+
 
             const clientSearchInput = document.getElementById('clientFilterSearch');
             const deviceSearchInput = document.getElementById('deviceFilterSearch');
@@ -1658,7 +1718,7 @@
                 deviceSearchInput.value = '';
                 filterMultiSelectOptions('deviceFilter', '');
             }
-            
+
             applyFilters();
         }
 
@@ -1669,7 +1729,7 @@
                     selectedClients.splice(index, 1);
                 }
                 updateFilterDisplay('clientFilter', selectedClients);
-                
+
 
                 const clientDevices = clientDeviceMap[value] || [];
                 selectedDevices = selectedDevices.filter(device => {
@@ -1688,12 +1748,12 @@
                     selectedDevices.splice(index, 1);
                 }
                 updateFilterDisplay('deviceFilter', selectedDevices);
-                
+
 
                 const deviceClient = deviceClientMap[value];
                 if (deviceClient) {
                     const clientDevices = clientDeviceMap[deviceClient] || [];
-                    const hasOtherSelectedDevices = clientDevices.some(device => 
+                    const hasOtherSelectedDevices = clientDevices.some(device =>
                         device !== value && selectedDevices.includes(device)
                     );
                     if (!hasOtherSelectedDevices) {
@@ -1705,7 +1765,7 @@
                     }
                 }
             }
-            
+
 
             updateAvailableFilters();
             applyFilters();
@@ -1713,12 +1773,12 @@
 
         function updateFilterDisplay(filterId, selectedValues) {
             const display = document.getElementById(filterId + 'Display');
-            
+
             if (selectedValues.length === 0) {
                 const placeholder = filterId === 'clientFilter' ? 'All Clients' : 'All Devices';
                 display.innerHTML = `<span class="multi-select-placeholder">${placeholder}</span>`;
             } else {
-                const chips = selectedValues.map(value => 
+                const chips = selectedValues.map(value =>
                     `<span class="filter-chip">${value} <span class="remove-chip" onclick="event.stopPropagation(); removeFilterChip('${filterId}', '${value}')">&times;</span></span>`
                 ).join('');
                 display.innerHTML = `<div class="selected-chips">${chips}</div>`;
@@ -1729,24 +1789,24 @@
             const dropdown = document.getElementById(filterId + 'Dropdown');
             const checkboxes = dropdown.querySelectorAll('input[type="checkbox"]');
             const selectedValues = filterId === 'clientFilter' ? selectedClients : selectedDevices;
-            
+
             checkboxes.forEach(checkbox => {
                 checkbox.checked = selectedValues.includes(checkbox.value);
             });
         }
 
 
-        let clientDeviceMap = {}; 
-        let deviceClientMap = {}; 
+        let clientDeviceMap = {};
+        let deviceClientMap = {};
 
         function buildClientDeviceMaps() {
             clientDeviceMap = {};
             deviceClientMap = {};
-            
+
             allData.forEach(row => {
                 const clientName = row[2];
                 const deviceSerial = row[4];
-                
+
                 if (clientName && deviceSerial) {
 
                     if (!clientDeviceMap[clientName]) {
@@ -1755,7 +1815,7 @@
                     if (!clientDeviceMap[clientName].includes(deviceSerial)) {
                         clientDeviceMap[clientName].push(deviceSerial);
                     }
-                    
+
 
                     deviceClientMap[deviceSerial] = clientName;
                 }
@@ -1805,7 +1865,7 @@
         function updateAvailableFilters() {
             const availableClients = getAvailableClients();
             const availableDevices = getAvailableDevices();
-            
+
             populateMultiSelect('clientFilter', availableClients);
             populateMultiSelect('deviceFilter', availableDevices);
         }
@@ -1814,7 +1874,7 @@
             const dropdown = document.getElementById(filterId + 'Dropdown');
             const options = dropdown.querySelectorAll('.multi-select-option');
             const searchLower = searchTerm.toLowerCase();
-            
+
             options.forEach(option => {
                 const label = option.querySelector('label');
                 const text = label ? label.textContent.toLowerCase() : '';
@@ -1829,14 +1889,14 @@
         function populateMultiSelect(filterId, options) {
             const dropdown = document.getElementById(filterId + 'Dropdown');
             const selectedValues = filterId === 'clientFilter' ? selectedClients : selectedDevices;
-            
+
 
             const searchBar = dropdown.querySelector('.multi-select-search');
             const existingOptions = dropdown.querySelectorAll('.multi-select-option');
-            
+
 
             existingOptions.forEach(option => option.remove());
-            
+
 
             if (!searchBar) {
                 const searchDiv = document.createElement('div');
@@ -1849,7 +1909,7 @@
                 `;
                 dropdown.insertBefore(searchDiv, dropdown.firstChild);
             }
-            
+
 
             options.forEach(option => {
                 const optionDiv = document.createElement('div');
@@ -1935,11 +1995,11 @@
             deviceInput.value = device.serial;
             deviceInput.dataset.deviceId = device.id;
             deviceInput.dataset.clientId = device.clientId || '';
-            
+
 
             const clientName = device.clientName || getClientNameForDevice(device.serial);
             document.getElementById('clientName').value = clientName || '';
-            
+
             document.getElementById('deviceOptions').style.display = 'none';
             document.getElementById('deviceError').style.display = 'none';
         }
@@ -1957,7 +2017,7 @@
                     selectedDevice = devicesList.find(device => device.serial === deviceInput.value);
                     deviceInput.dataset.deviceId = selectedDevice.id;
                     deviceInput.dataset.clientId = selectedDevice.clientId || '';
-                    
+
 
                     const clientName = selectedDevice.clientName || getClientNameForDevice(selectedDevice.serial);
                     document.getElementById('clientName').value = clientName || '';
@@ -1989,6 +2049,9 @@
                 const actionButtons = isRestrictedUser ? '' : `
                     <td>
                         <div class="action-buttons">
+                            <button class="btn btn-whatsapp btn-sm" title="Copy WhatsApp details" onclick="copyWhatsappDetails(${allData.indexOf(row)})">
+                                <i class="fab fa-whatsapp"></i>
+                            </button>
                             <button class="btn btn-primary btn-sm" onclick="editRecord(${allData.indexOf(row)})">
                                 <i class="fas fa-edit"></i>
                             </button>
@@ -2092,7 +2155,7 @@
             document.getElementById('globalSearch').value = '';
             selectedClients = [];
             selectedDevices = [];
-            
+
 
             const clientSearchInput = document.getElementById('clientFilterSearch');
             const deviceSearchInput = document.getElementById('deviceFilterSearch');
@@ -2104,7 +2167,7 @@
                 deviceSearchInput.value = '';
                 filterMultiSelectOptions('deviceFilter', '');
             }
-            
+
             updateFilterDisplay('clientFilter', selectedClients);
             updateFilterDisplay('deviceFilter', selectedDevices);
 
@@ -2118,7 +2181,7 @@
             updateStats();
         }
 
-        document.getElementById('dateFieldFilter').addEventListener('change', function() {
+        document.getElementById('dateFieldFilter').addEventListener('change', function () {
             const value = this.value;
             const startDate = document.getElementById('startDate');
             const endDate = document.getElementById('endDate');
@@ -2199,7 +2262,7 @@
             }
             try {
                 const isRestrictedRole = ["Biomed", "Product Specialist"].includes(userRole);
-                
+
                 const exportData = filteredData.map(row => {
                     const baseData = {
                         'Timestamp': formatDateTime(row[0]),
@@ -2209,13 +2272,13 @@
                         'Last Edited By': row[10] || '',
                         'Status': row[11] || ''
                     };
-                    
+
 
                     if (!isRestrictedRole) {
                         baseData['Top Up Amount'] = row[7] || 0;
                         baseData['Balance after Top-Up'] = row[8] || 0;
                     }
-                    
+
                     return baseData;
                 });
 
@@ -2336,6 +2399,56 @@
             return num.toLocaleString('en-MY', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
         }
 
+        function copyWhatsappDetails(rowIndex) {
+            const row = allData[rowIndex];
+            if (!row) {
+                showError('Unable to locate the selected record.', 'Copy Failed');
+                return;
+            }
+
+            const messageLines = [
+                `Client Name: ${row[2] || '-'}`,
+                `Device Serial Number: ${row[4] || '-'}`,
+                `Balance before Top-Up: ${formatNumber(row[5], true)}`,
+                `Top Up Amount: ${formatNumber(row[7], true)}`,
+                `Balance after Top-Up: ${formatNumber(row[8], true)}`,
+                `Status: ${row[11] || '-'}`
+            ];
+
+            const message = messageLines.join('\n');
+
+            const handleSuccess = () => {
+                showSuccess('Details copied. You can now paste them into WhatsApp.', 'Copied to Clipboard');
+            };
+
+            const handleFailure = (error) => {
+                console.error('Clipboard error:', error);
+                showError('Could not copy the details automatically. Please try again.', 'Copy Failed');
+            };
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(message).then(handleSuccess).catch(handleFailure);
+            } else {
+                try {
+                    const tempTextarea = document.createElement('textarea');
+                    tempTextarea.value = message;
+                    tempTextarea.style.position = 'fixed';
+                    tempTextarea.style.opacity = '0';
+                    document.body.appendChild(tempTextarea);
+                    tempTextarea.select();
+                    const successful = document.execCommand('copy');
+                    document.body.removeChild(tempTextarea);
+                    if (successful) {
+                        handleSuccess();
+                    } else {
+                        handleFailure(new Error('execCommand copy failed'));
+                    }
+                } catch (error) {
+                    handleFailure(error);
+                }
+            }
+        }
+
         function formatCurrency(value, showZero = false) {
             if (value === null || value === undefined || value === '') {
                 return showZero ? 'RM 0.00' : '-';
@@ -2397,27 +2510,27 @@
 
         document.getElementById('globalSearch').addEventListener('input', applyFilters);
 
-        document.addEventListener('click', function(e) {
+        document.addEventListener('click', function (e) {
             if (!e.target.closest('.searchable-dropdown')) {
                 document.getElementById('deviceOptions').style.display = 'none';
             }
-            
+
 
             if (!e.target.closest('.multi-select-container')) {
                 document.querySelectorAll('.multi-select-dropdown').forEach(d => d.classList.remove('active'));
             }
-            
+
 
             if (e.target.closest('.multi-select-search')) {
                 e.stopPropagation();
             }
         });
 
-        document.getElementById('deviceSerial').addEventListener('click', function() {
+        document.getElementById('deviceSerial').addEventListener('click', function () {
             document.getElementById('deviceOptions').style.display = 'block';
         });
 
-        document.getElementById('recordForm').addEventListener('submit', async function(e) {
+        document.getElementById('recordForm').addEventListener('submit', async function (e) {
             e.preventDefault();
 
             if (isSubmitting) {
@@ -2488,4 +2601,5 @@
         });
     </script>
 </body>
+
 </html>
