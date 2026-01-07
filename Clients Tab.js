@@ -41,17 +41,3 @@ function updateClient(clientId, name) {
   }
   throw new Error('Client not found');
 }
-
-function deleteClient(clientId) {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Clients');
-  if (!sheet) throw new Error('Clients sheet not found');
-  
-  const data = sheet.getRange(2, 1, sheet.getLastRow() - 1, 1).getValues();
-  for (let i = 0; i < data.length; i++) {
-    if (data[i][0] === clientId) {
-      sheet.deleteRow(i + 2);
-      return { success: true };
-    }
-  }
-  throw new Error('Client not found');
-}

@@ -117,20 +117,3 @@ function updateUser(rowId, username, email, role) {
     return { success: false, error: error.toString() };
   }
 }
-
-function deleteUser(rowId) {
-  try {
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
-    const sheet = ss.getSheetByName('Settings');
-    
-    if (!sheet) {
-      throw new Error('Settings sheet not found');
-    }
-    
-    sheet.deleteRow(rowId);
-    
-    return { success: true, message: 'User deleted successfully' };
-  } catch (error) {
-    return { success: false, error: error.toString() };
-  }
-}

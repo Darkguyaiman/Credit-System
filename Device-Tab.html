@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <base target="_top">
     <meta charset="utf-8">
@@ -8,7 +7,7 @@
     <title>Device Management Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    
     <style>
         :root {
             --primary-red: #cc171d;
@@ -247,7 +246,7 @@
             transition: transform 0.3s ease;
         }
 
-        .multi-select-input.open+.multi-select-arrow {
+        .multi-select-input.open + .multi-select-arrow {
             transform: translateY(-50%) rotate(180deg);
         }
 
@@ -488,13 +487,8 @@
         }
 
         @keyframes spin {
-            from {
-                transform: rotate(0deg);
-            }
-
-            to {
-                transform: rotate(360deg);
-            }
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .no-results {
@@ -539,25 +533,13 @@
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         @keyframes slideIn {
-            from {
-                transform: translateY(-50px);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         .modal-header {
@@ -690,15 +672,8 @@
         }
 
         @keyframes slideInRight {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
         .confirm-modal {
@@ -908,91 +883,91 @@
 
 
         .menu-section {
-            margin-bottom: 4px;
+          margin-bottom: 4px;
         }
 
         .menu-toggle {
-            cursor: pointer;
-            position: relative;
-            justify-content: space-between;
+          cursor: pointer;
+          position: relative;
+          justify-content: space-between;
         }
 
         .menu-toggle .toggle-arrow {
-            font-size: 12px;
-            transition: transform 0.3s ease;
-            margin-left: auto;
+          font-size: 12px;
+          transition: transform 0.3s ease;
+          margin-left: auto;
         }
 
         .menu-section.expanded .menu-toggle .toggle-arrow {
-            transform: rotate(180deg);
+          transform: rotate(180deg);
         }
 
         .submenu {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-            background: rgba(0, 0, 0, 0.1);
+          max-height: 0;
+          overflow: hidden;
+          transition: max-height 0.3s ease;
+          background: rgba(0, 0, 0, 0.1);
         }
 
         .menu-section.expanded .submenu {
-            max-height: 300px;
+          max-height: 300px;
         }
 
         .submenu-item {
-            display: flex;
-            align-items: center;
-            padding: 10px 20px 10px 52px;
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            transition: all 0.2s;
-            border-left: 3px solid transparent;
-            font-size: 14px;
+          display: flex;
+          align-items: center;
+          padding: 10px 20px 10px 52px;
+          color: rgba(255, 255, 255, 0.7);
+          text-decoration: none;
+          transition: all 0.2s;
+          border-left: 3px solid transparent;
+          font-size: 14px;
         }
 
         .submenu-item:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--white);
+          background: rgba(255, 255, 255, 0.05);
+          color: var(--white);
         }
 
         .submenu-item.active {
-            background: rgba(77, 129, 140, 0.2);
-            color: var(--white);
-            border-left-color: var(--light-teal);
+          background: rgba(77, 129, 140, 0.2);
+          color: var(--white);
+          border-left-color: var(--light-teal);
         }
 
         .submenu-icon {
-            font-size: 14px;
-            width: 20px;
-            margin-right: 12px;
+          font-size: 14px;
+          width: 20px;
+          margin-right: 12px;
         }
 
         .submenu-text {
-            font-weight: 400;
-            white-space: nowrap;
-            overflow: hidden;
+          font-weight: 400;
+          white-space: nowrap;
+          overflow: hidden;
         }
 
         /* Collapsed sidebar styles */
         .sidebar.collapsed .submenu {
-            display: none;
+          display: none;
         }
 
         .sidebar.collapsed .menu-toggle .toggle-arrow {
-            display: none;
+          display: none;
         }
 
         .sidebar.collapsed .submenu-item {
-            padding: 12px 0;
-            justify-content: center;
+          padding: 12px 0;
+          justify-content: center;
         }
 
         .sidebar.collapsed .submenu-text {
-            display: none;
+          display: none;
         }
 
         .sidebar.collapsed .submenu-icon {
-            margin-right: 0;
-            font-size: 16px;
+          margin-right: 0;
+          font-size: 16px;
         }
 
         .main-content {
@@ -1021,7 +996,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             transition: all 0.2s ease-in-out;
         }
 
@@ -1029,7 +1004,7 @@
             background: var(--light-teal);
             color: var(--white);
             border-color: var(--medium-teal);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
         }
 
         .page-title {
@@ -1195,9 +1170,21 @@
             margin: 2px;
             font-size: 11px;
         }
+        .status-chip {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            color: var(--white);
+        }
+        .status-chip.low {
+            background: var(--danger);
+        }
+        .status-chip.ok {
+            background: var(--success);
+        }
     </style>
 </head>
-
 <body>
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
@@ -1209,56 +1196,56 @@
                 <i class="fas fa-chevron-left"></i>
             </button>
         </div>
-
+        
         <nav class="sidebar-menu">
             <a href="<?= baseUrl ?>?page=dashboard" class="menu-item" target="_top">
                 <i class="fas fa-home menu-icon"></i>
                 <span class="menu-text">Dashboard</span>
             </a>
             <div class="menu-section">
-                <div class="menu-item menu-toggle" id="creditManagementToggle">
-                    <i class="fas fa-credit-card menu-icon"></i>
-                    <span class="menu-text">Credit Management</span>
-                    <i class="fas fa-chevron-down toggle-arrow"></i>
-                </div>
+              <div class="menu-item menu-toggle" id="creditManagementToggle">
+                <i class="fas fa-credit-card menu-icon"></i>
+                <span class="menu-text">Credit Management</span>
+                <i class="fas fa-chevron-down toggle-arrow"></i>
+              </div>
                 <div class="submenu" id="creditManagementSubmenu">
                     <div class="menu-section">
-                        <a href="<?= baseUrl ?>?page=prepaid" class="menu-item" target="_top">
-                            <i class="fas fa-money-bill-wave menu-icon"></i>
-                            <span class="menu-text">Prepaid</span>
+                      <a href="<?= baseUrl ?>?page=prepaid" class="menu-item" target="_top">
+                        <i class="fas fa-money-bill-wave menu-icon"></i>
+                        <span class="menu-text">Prepaid</span>
+                      </a>
+                    </div>
+                    <div class="menu-section">
+                      <div class="menu-item" style="cursor: default;">
+                        <i class="fas fa-file-invoice-dollar menu-icon"></i>
+                        <span class="menu-text">Postpaid</span>
+                      </div>
+                      <div class="submenu always-open">
+                        <a href="<?= baseUrl ?>?page=postpaid-monthly" class="submenu-item" target="_top">
+                          <i class="fas fa-calendar-alt submenu-icon"></i>
+                          <span class="submenu-text">Report</span>
                         </a>
+                        <a href="<?= baseUrl ?>?page=postpaid-topup" class="submenu-item" target="_top">
+                          <i class="fas fa-coins submenu-icon"></i>
+                          <span class="submenu-text">Top Up</span>
+                        </a>
+                      </div>
                     </div>
                     <div class="menu-section">
-                        <div class="menu-item" style="cursor: default;">
-                            <i class="fas fa-file-invoice-dollar menu-icon"></i>
-                            <span class="menu-text">Postpaid</span>
-                        </div>
-                        <div class="submenu always-open">
-                            <a href="<?= baseUrl ?>?page=postpaid-monthly" class="submenu-item" target="_top">
-                                <i class="fas fa-calendar-alt submenu-icon"></i>
-                                <span class="submenu-text">Report</span>
-                            </a>
-                            <a href="<?= baseUrl ?>?page=postpaid-topup" class="submenu-item" target="_top">
-                                <i class="fas fa-coins submenu-icon"></i>
-                                <span class="submenu-text">Top Up</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="menu-section">
-                        <div class="menu-item" style="cursor: default;">
-                            <i class="fas fa-chart-pie menu-icon"></i>
-                            <span class="menu-text">Revenue Sharing</span>
-                        </div>
-                        <div class="submenu always-open">
-                            <a href="<?= baseUrl ?>?page=revenue-sharing-monthly" class="submenu-item" target="_top">
-                                <i class="fas fa-calendar-alt submenu-icon"></i>
-                                <span class="submenu-text">Report</span>
-                            </a>
-                            <a href="<?= baseUrl ?>?page=revenue-sharing-topup" class="submenu-item" target="_top">
-                                <i class="fas fa-coins submenu-icon"></i>
-                                <span class="submenu-text">Top Up</span>
-                            </a>
-                        </div>
+                      <div class="menu-item" style="cursor: default;">
+                        <i class="fas fa-chart-pie menu-icon"></i>
+                        <span class="menu-text">Revenue Sharing</span>
+                      </div>
+                      <div class="submenu always-open">
+                        <a href="<?= baseUrl ?>?page=revenue-sharing-monthly" class="submenu-item" target="_top">
+                          <i class="fas fa-calendar-alt submenu-icon"></i>
+                          <span class="submenu-text">Report</span>
+                        </a>
+                        <a href="<?= baseUrl ?>?page=revenue-sharing-topup" class="submenu-item" target="_top">
+                          <i class="fas fa-coins submenu-icon"></i>
+                          <span class="submenu-text">Top Up</span>
+                        </a>
+                      </div>
                     </div>
                 </div>
             </div>
@@ -1284,168 +1271,173 @@
     </button>
 
     <main class="main-content" id="mainContent">
-        <div class="container">
-            <div class="header">
-                <h1>
+    <div class="container">
+        <div class="header">
+            <h1>
+                <i class="fas fa-microchip"></i>
+                Devices Tab
+            </h1>
+        </div>
+
+        <div class="content">
+            <div class="tabs">
+                <button class="tab active" data-type="Prepaid" onclick="switchTab('Prepaid')">
+                    <i class="fas fa-wallet"></i> Prepaid
+                </button>
+                <button class="tab" data-type="Postpaid" onclick="switchTab('Postpaid')">
+                    <i class="fas fa-file-invoice-dollar"></i> Postpaid
+                </button>
+                <button class="tab" data-type="Revenue Sharing" onclick="switchTab('Revenue Sharing')">
+                    <i class="fas fa-handshake"></i> Revenue Sharing
+                </button>
+            </div>
+
+            <div class="controls">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="globalSearch" placeholder="Search devices, serials, clients...">
+                </div>
+                
+                <div class="filter-group">
+                    <div class="multi-select-container">
+                        <div class="multi-select-input" id="clientFilterInput">
+                            <span class="multi-select-placeholder">Select Clients...</span>
+                        </div>
+                        <i class="fas fa-chevron-down multi-select-arrow"></i>
+                        <div class="multi-select-dropdown" id="clientFilterDropdown">
+                            <div class="multi-select-search">
+                                <input type="text" id="clientFilterSearch" placeholder="Search clients...">
+                            </div>
+                            <div id="clientFilterOptions"></div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-secondary btn-sm" onclick="clearAllFilters()">
+                        <i class="fas fa-times"></i> Clear
+                    </button>
+                    
+                    <button class="btn btn-primary" onclick="openAddModal()">
+                        <i class="fas fa-plus"></i> Add Device
+                    </button>
+                </div>
+            </div>
+
+            <div class="stats">
+                <div class="stat-card">
                     <i class="fas fa-microchip"></i>
-                    Devices Tab
-                </h1>
+                    <div class="stat-info">
+                        <h3 id="totalDevices">0</h3>
+                        <p>Total Devices</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <i class="fas fa-users"></i>
+                    <div class="stat-info">
+                        <h3 id="totalClients">0</h3>
+                        <p>Total Clients</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <i class="fas fa-eye"></i>
+                    <div class="stat-info">
+                        <h3 id="visibleDevices">0</h3>
+                        <p>Visible Devices</p>
+                    </div>
+                </div>
             </div>
 
-            <div class="content">
-                <div class="tabs">
-                    <button class="tab active" data-type="Prepaid" onclick="switchTab('Prepaid')">
-                        <i class="fas fa-wallet"></i> Prepaid
-                    </button>
-                    <button class="tab" data-type="Postpaid" onclick="switchTab('Postpaid')">
-                        <i class="fas fa-file-invoice-dollar"></i> Postpaid
-                    </button>
-                    <button class="tab" data-type="Revenue Sharing" onclick="switchTab('Revenue Sharing')">
-                        <i class="fas fa-handshake"></i> Revenue Sharing
-                    </button>
-                </div>
+            <div id="loadingState" class="loading">
+                <div><i class="fas fa-spinner"></i></div>
+                <p>Loading device data...</p>
+            </div>
 
-                <div class="controls">
-                    <div class="search-box">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="globalSearch" placeholder="Search devices, serials, clients...">
-                    </div>
+            <div id="tableContainer" class="table-container" style="display: none;">
+                <table>
+                    <thead id="tableHeader">
+                    </thead>
+                    <tbody id="deviceTableBody">
+                    </tbody>
+                </table>
+            </div>
 
-                    <div class="filter-group">
-                        <div class="multi-select-container">
-                            <div class="multi-select-input" id="clientFilterInput">
-                                <span class="multi-select-placeholder">Select Clients...</span>
-                            </div>
-                            <i class="fas fa-chevron-down multi-select-arrow"></i>
-                            <div class="multi-select-dropdown" id="clientFilterDropdown">
-                                <div class="multi-select-search">
-                                    <input type="text" id="clientFilterSearch" placeholder="Search clients...">
-                                </div>
-                                <div id="clientFilterOptions"></div>
-                            </div>
-                        </div>
-
-                        <button class="btn btn-secondary btn-sm" onclick="clearAllFilters()">
-                            <i class="fas fa-times"></i> Clear
-                        </button>
-
-                        <button class="btn btn-primary" onclick="openAddModal()">
-                            <i class="fas fa-plus"></i> Add Device
-                        </button>
-                    </div>
-                </div>
-
-                <div class="stats">
-                    <div class="stat-card">
-                        <i class="fas fa-microchip"></i>
-                        <div class="stat-info">
-                            <h3 id="totalDevices">0</h3>
-                            <p>Total Devices</p>
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <i class="fas fa-users"></i>
-                        <div class="stat-info">
-                            <h3 id="totalClients">0</h3>
-                            <p>Total Clients</p>
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <i class="fas fa-eye"></i>
-                        <div class="stat-info">
-                            <h3 id="visibleDevices">0</h3>
-                            <p>Visible Devices</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="loadingState" class="loading">
-                    <div><i class="fas fa-spinner"></i></div>
-                    <p>Loading device data...</p>
-                </div>
-
-                <div id="tableContainer" class="table-container" style="display: none;">
-                    <table>
-                        <thead id="tableHeader">
-                        </thead>
-                        <tbody id="deviceTableBody">
-                        </tbody>
-                    </table>
-                </div>
-
-                <div id="noResults" class="no-results" style="display: none;">
-                    <div><i class="fas fa-search"></i></div>
-                    <h3>No devices found</h3>
-                    <p>Try adjusting your search criteria or filters</p>
-                </div>
+            <div id="noResults" class="no-results" style="display: none;">
+                <div><i class="fas fa-search"></i></div>
+                <h3>No devices found</h3>
+                <p>Try adjusting your search criteria or filters</p>
             </div>
         </div>
+    </div>
 
-        <div id="deviceModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 id="modalTitle">Add Device</h2>
-                    <button class="close" onclick="closeModal()">&times;</button>
+    <div id="deviceModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add Device</h2>
+                <button class="close" onclick="closeModal()">&times;</button>
+            </div>
+            
+            <form id="deviceForm">
+                <div class="form-group">
+                    <label for="serialNumber">Device Serial Number *</label>
+                    <input type="text" id="serialNumber" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="clientName">Client Name *</label>
+                    <div class="searchable-select">
+                        <input type="text" id="clientName" placeholder="Type to search clients..." required>
+                        <div id="clientDropdown" class="dropdown-options"></div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="minCredit">Minimum Credit *</label>
+                    <input type="number" id="minCredit" min="0" step="1" required>
                 </div>
 
-                <form id="deviceForm">
+                <div id="postpaidFields" style="display: none;">
                     <div class="form-group">
-                        <label for="serialNumber">Device Serial Number *</label>
-                        <input type="text" id="serialNumber" required>
+                        <label for="chargesPerCredit">Charges per Credit (RM) *</label>
+                        <div class="currency-input">
+                            <span class="currency-prefix">RM</span>
+                            <input type="number" id="chargesPerCredit" step="0.01" min="0" placeholder="0.00">
+                        </div>
                     </div>
+                </div>
 
+                <div id="prepaidFields" style="display: none;">
                     <div class="form-group">
-                        <label for="clientName">Client Name *</label>
-                        <div class="searchable-select">
-                            <input type="text" id="clientName" placeholder="Type to search clients..." required>
-                            <div id="clientDropdown" class="dropdown-options"></div>
+                        <label>Credit Purchase Options *</label>
+                        <div class="credit-options-container" id="creditOptionsContainer">
                         </div>
-                    </div>
-
-                    <div id="postpaidFields" style="display: none;">
-                        <div class="form-group">
-                            <label for="chargesPerCredit">Charges per Credit (RM) *</label>
-                            <div class="currency-input">
-                                <span class="currency-prefix">RM</span>
-                                <input type="number" id="chargesPerCredit" step="0.01" min="0" placeholder="0.00">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="prepaidFields" style="display: none;">
-                        <div class="form-group">
-                            <label>Credit Purchase Options *</label>
-                            <div class="credit-options-container" id="creditOptionsContainer">
-                            </div>
-                            <button type="button" class="btn-add-option" onclick="addCreditOption()">
-                                <i class="fas fa-plus"></i> Add Option
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="modal-actions">
-                        <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-                        <button type="submit" class="btn btn-primary" id="saveBtn">
-                            <i class="fas fa-save"></i> Save Device
+                        <button type="button" class="btn-add-option" onclick="addCreditOption()">
+                            <i class="fas fa-plus"></i> Add Option
                         </button>
                     </div>
-                </form>
-            </div>
-        </div>
-
-        <div id="confirmModal" class="confirm-modal">
-            <div class="confirm-content">
-                <i class="fas fa-exclamation-triangle"></i>
-                <h3 id="confirmTitle">Confirm Action</h3>
-                <p id="confirmMessage">Are you sure you want to proceed?</p>
-                <div class="confirm-actions">
-                    <button class="btn btn-secondary" onclick="closeConfirmModal()">Cancel</button>
-                    <button class="btn btn-danger" id="confirmBtn">Confirm</button>
                 </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="saveBtn">
+                        <i class="fas fa-save"></i> Save Device
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="confirmModal" class="confirm-modal">
+        <div class="confirm-content">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h3 id="confirmTitle">Confirm Action</h3>
+            <p id="confirmMessage">Are you sure you want to proceed?</p>
+            <div class="confirm-actions">
+                <button class="btn btn-secondary" onclick="closeConfirmModal()">Cancel</button>
+                <button class="btn btn-danger" id="confirmBtn">Confirm</button>
             </div>
         </div>
+    </div>
     </main>
     <script>
         let allDevices = [];
@@ -1456,99 +1448,99 @@
         let currentBusinessType = 'Prepaid';
         let selectedClients = [];
 
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             loadInitialData();
             setupEventListeners();
         });
 
-        document.addEventListener('DOMContentLoaded', function () {
-            const sidebar = document.getElementById('sidebar');
-            const mainContent = document.getElementById('mainContent');
-            const toggleBtn = document.getElementById('toggleSidebar');
-            const mobileToggle = document.getElementById('mobileToggle');
-            const overlay = document.getElementById('overlay');
+        document.addEventListener('DOMContentLoaded', function() {
+          const sidebar = document.getElementById('sidebar');
+          const mainContent = document.getElementById('mainContent');
+          const toggleBtn = document.getElementById('toggleSidebar');
+          const mobileToggle = document.getElementById('mobileToggle');
+          const overlay = document.getElementById('overlay');
+          
+
+          const creditManagementToggle = document.getElementById('creditManagementToggle');
+          const creditManagementSubmenu = document.getElementById('creditManagementSubmenu');
+          const menuSection = creditManagementToggle.closest('.menu-section');
+
+          creditManagementToggle.addEventListener('click', function(e) {
+
+            if (sidebar.classList.contains('collapsed')) return;
+            
+            menuSection.classList.toggle('expanded');
+            
+
+            const isExpanded = menuSection.classList.contains('expanded');
+            localStorage.setItem('creditManagementExpanded', isExpanded);
+          });
 
 
-            const creditManagementToggle = document.getElementById('creditManagementToggle');
-            const creditManagementSubmenu = document.getElementById('creditManagementSubmenu');
-            const menuSection = creditManagementToggle.closest('.menu-section');
-
-            creditManagementToggle.addEventListener('click', function (e) {
-
-                if (sidebar.classList.contains('collapsed')) return;
-
-                menuSection.classList.toggle('expanded');
+          const creditManagementExpanded = localStorage.getItem('creditManagementExpanded') === 'true';
+          if (creditManagementExpanded && !sidebar.classList.contains('collapsed')) {
+            menuSection.classList.add('expanded');
+          }
 
 
-                const isExpanded = menuSection.classList.contains('expanded');
-                localStorage.setItem('creditManagementExpanded', isExpanded);
-            });
+          toggleBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
 
+            const isCollapsed = sidebar.classList.contains('collapsed');
+            localStorage.setItem('sidebarCollapsed', isCollapsed);
+            
 
-            const creditManagementExpanded = localStorage.getItem('creditManagementExpanded') === 'true';
-            if (creditManagementExpanded && !sidebar.classList.contains('collapsed')) {
-                menuSection.classList.add('expanded');
+            if (isCollapsed) {
+              menuSection.classList.remove('expanded');
             }
+          });
 
+          mobileToggle.addEventListener('click', function() {
+            sidebar.classList.add('mobile-open');
+            overlay.classList.add('active');
+          });
 
-            toggleBtn.addEventListener('click', function () {
-                sidebar.classList.toggle('collapsed');
-                mainContent.classList.toggle('expanded');
+          overlay.addEventListener('click', function() {
+            sidebar.classList.remove('mobile-open');
+            overlay.classList.remove('active');
+          });
 
-                const isCollapsed = sidebar.classList.contains('collapsed');
-                localStorage.setItem('sidebarCollapsed', isCollapsed);
+          const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+          if (sidebarCollapsed) {
+            sidebar.classList.add('collapsed');
+            mainContent.classList.add('expanded');
+          }
 
-
-                if (isCollapsed) {
-                    menuSection.classList.remove('expanded');
-                }
-            });
-
-            mobileToggle.addEventListener('click', function () {
-                sidebar.classList.add('mobile-open');
-                overlay.classList.add('active');
-            });
-
-            overlay.addEventListener('click', function () {
-                sidebar.classList.remove('mobile-open');
-                overlay.classList.remove('active');
-            });
-
-            const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-            if (sidebarCollapsed) {
-                sidebar.classList.add('collapsed');
-                mainContent.classList.add('expanded');
+          window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+              sidebar.classList.remove('mobile-open');
+              overlay.classList.remove('active');
             }
-
-            window.addEventListener('resize', function () {
-                if (window.innerWidth > 768) {
-                    sidebar.classList.remove('mobile-open');
-                    overlay.classList.remove('active');
-                }
-            });
+          });
         });
 
         function setupEventListeners() {
-            document.getElementById('globalSearch').addEventListener('input', function () {
+            document.getElementById('globalSearch').addEventListener('input', function() {
                 applyFilters();
             });
 
             setupMultiSelectFilter();
 
-            document.getElementById('deviceForm').addEventListener('submit', function (e) {
+            document.getElementById('deviceForm').addEventListener('submit', function(e) {
                 e.preventDefault();
                 saveDevice();
             });
 
             setupSearchableDropdown('clientName', 'clientDropdown', 'client');
 
-            document.getElementById('deviceModal').addEventListener('click', function (e) {
+            document.getElementById('deviceModal').addEventListener('click', function(e) {
                 if (e.target === this) {
                     closeModal();
                 }
             });
 
-            document.getElementById('confirmModal').addEventListener('click', function (e) {
+            document.getElementById('confirmModal').addEventListener('click', function(e) {
                 if (e.target === this) {
                     closeConfirmModal();
                 }
@@ -1561,9 +1553,9 @@
             const searchInput = document.getElementById('clientFilterSearch');
 
 
-            input.addEventListener('click', function (e) {
+            input.addEventListener('click', function(e) {
                 if (e.target.classList.contains('multi-select-chip-remove')) {
-                    return;
+                    return; 
                 }
                 const isOpen = dropdown.classList.contains('show');
                 if (isOpen) {
@@ -1574,17 +1566,17 @@
             });
 
 
-            searchInput.addEventListener('input', function () {
+            searchInput.addEventListener('input', function() {
                 renderClientFilterOptions(this.value);
             });
 
 
-            searchInput.addEventListener('click', function (e) {
+            searchInput.addEventListener('click', function(e) {
                 e.stopPropagation();
             });
 
 
-            document.addEventListener('click', function (e) {
+            document.addEventListener('click', function(e) {
                 if (!input.contains(e.target) && !dropdown.contains(e.target)) {
                     closeMultiSelectDropdown();
                 }
@@ -1595,7 +1587,7 @@
             const input = document.getElementById('clientFilterInput');
             const dropdown = document.getElementById('clientFilterDropdown');
             const searchInput = document.getElementById('clientFilterSearch');
-
+            
             input.classList.add('open');
             dropdown.classList.add('show');
             searchInput.value = '';
@@ -1606,7 +1598,7 @@
         function closeMultiSelectDropdown() {
             const input = document.getElementById('clientFilterInput');
             const dropdown = document.getElementById('clientFilterDropdown');
-
+            
             input.classList.remove('open');
             dropdown.classList.remove('show');
         }
@@ -1636,10 +1628,10 @@
 
         function updateClientFilterDisplay() {
             const input = document.getElementById('clientFilterInput');
-
+            
 
             input.innerHTML = '';
-
+            
             if (selectedClients.length === 0) {
                 const placeholder = document.createElement('span');
                 placeholder.className = 'multi-select-placeholder';
@@ -1663,11 +1655,11 @@
         function renderClientFilterOptions(searchTerm = '') {
             const optionsContainer = document.getElementById('clientFilterOptions');
             optionsContainer.innerHTML = '';
-
-            const filteredOptions = clientOptions.filter(client =>
+            
+            const filteredOptions = clientOptions.filter(client => 
                 client.name.toLowerCase().includes(searchTerm.toLowerCase())
             );
-
+            
             if (filteredOptions.length === 0) {
                 const noResults = document.createElement('div');
                 noResults.className = 'multi-select-option';
@@ -1677,7 +1669,7 @@
                 optionsContainer.appendChild(noResults);
                 return;
             }
-
+            
             filteredOptions.forEach(client => {
                 const isSelected = selectedClients.includes(client.name);
                 const option = document.createElement('div');
@@ -1686,13 +1678,13 @@
                     <input type="checkbox" ${isSelected ? 'checked' : ''} onchange="toggleClientSelection('${escapeHtml(client.name)}')">
                     <span>${escapeHtml(client.name)}</span>
                 `;
-
-                option.addEventListener('click', function (e) {
+                
+                option.addEventListener('click', function(e) {
                     if (e.target.tagName !== 'INPUT') {
                         toggleClientSelection(client.name);
                     }
                 });
-
+                
                 optionsContainer.appendChild(option);
             });
         }
@@ -1712,7 +1704,7 @@
 
         function switchTab(businessType) {
             currentBusinessType = businessType;
-
+            
             document.querySelectorAll('.tab').forEach(tab => {
                 tab.classList.remove('active');
             });
@@ -1766,7 +1758,7 @@
             const searchTerm = document.getElementById('globalSearch').value.toLowerCase();
 
             filteredDevices = allDevices.filter(device => {
-                const matchesSearch = !searchTerm ||
+                const matchesSearch = !searchTerm || 
                     device.serialNumber.toLowerCase().includes(searchTerm) ||
                     device.clientName.toLowerCase().includes(searchTerm);
 
@@ -1781,7 +1773,7 @@
 
         function updateStats() {
             const uniqueClients = new Set(allDevices.map(device => device.clientName)).size;
-
+            
             document.getElementById('totalDevices').textContent = allDevices.length;
             document.getElementById('totalClients').textContent = uniqueClients;
             document.getElementById('visibleDevices').textContent = filteredDevices.length;
@@ -1793,13 +1785,15 @@
 
         function renderTableHeader() {
             const thead = document.getElementById('tableHeader');
-
+            
             if (currentBusinessType === 'Revenue Sharing') {
-                thead.innerHTML = `
+              thead.innerHTML = `
                 <tr>
                   <th><i class="fas fa-barcode"></i> Device Serial Number</th>
                   <th><i class="fas fa-user"></i> Client Name</th>
                   <th><i class="fas fa-coins"></i> Current Device Balance</th>
+                  <th><i class="fas fa-sort-numeric-up"></i> Minimum Credit</th>
+                  <th><i class="fas fa-battery-half"></i> Credit Status</th>
                   <th><i class="fas fa-user-edit"></i> Last Edited By</th>
                   <th><i class="fas fa-cogs"></i> Actions</th>
                 </tr>
@@ -1811,6 +1805,8 @@
                         <th><i class="fas fa-user"></i> Client Name</th>
                         <th><i class="fas fa-money-bill"></i> Charges per Credit (RM)</th>
                         <th><i class="fas fa-coins"></i> Current Device Balance</th>
+                        <th><i class="fas fa-sort-numeric-up"></i> Minimum Credit</th>
+                        <th><i class="fas fa-battery-half"></i> Credit Status</th>
                         <th><i class="fas fa-user-edit"></i> Last Edited By</th>
                         <th><i class="fas fa-cogs"></i> Actions</th>
                     </tr>
@@ -1822,6 +1818,8 @@
                         <th><i class="fas fa-user"></i> Client Name</th>
                         <th><i class="fas fa-tags"></i> Credit Purchase Options</th>
                         <th><i class="fas fa-coins"></i> Current Device Balance</th>
+                        <th><i class="fas fa-sort-numeric-up"></i> Minimum Credit</th>
+                        <th><i class="fas fa-battery-half"></i> Credit Status</th>
                         <th><i class="fas fa-user-edit"></i> Last Edited By</th>
                         <th><i class="fas fa-cogs"></i> Actions</th>
                     </tr>
@@ -1848,19 +1846,18 @@
 
             filteredDevices.forEach(device => {
                 const row = document.createElement('tr');
-
+                
                 if (currentBusinessType === 'Revenue Sharing') {
                     row.innerHTML = `
                         <td><span class="serial-number">${escapeHtml(device.serialNumber)}</span></td>
                         <td><span class="client-name">${escapeHtml(device.clientName)}</span></td>
                         <td><span class="text">${device.totalBalance || 0}</span></td>
+                        <td><span class="text">${device.minCredit || 0}</span></td>
+                        <td><span class="status-chip ${device.totalBalance < (device.minCredit || 0) ? 'low' : 'ok'}">${device.totalBalance < (device.minCredit || 0) ? 'Low Credit' : 'Sufficient Credit'}</span></td>
                         <td><span class="text">${escapeHtml(device.lastEditedBy || 'N/A')}</span></td>
                         <td class="actions">
                             <button class="btn btn-primary btn-sm" onclick='editDevice(${JSON.stringify(device)})'>
                                 <i class="fas fa-edit"></i> Edit
-                            </button>
-                            <button class="btn btn-danger btn-sm" onclick="confirmDeleteDevice('${device.deviceId}')" style="display: none;">
-                                <i class="fas fa-trash"></i>
                             </button>
                         </td>
                     `;
@@ -1870,38 +1867,36 @@
                         <td><span class="client-name">${escapeHtml(device.clientName)}</span></td>
                         <td><span class="charges">RM ${formatCurrency(device.chargesPerCredit || 0)}</span></td>
                         <td><span class="text">${device.totalBalance || 0}</span></td>
+                        <td><span class="text">${device.minCredit || 0}</span></td>
+                        <td><span class="status-chip ${device.totalBalance < (device.minCredit || 0) ? 'low' : 'ok'}">${device.totalBalance < (device.minCredit || 0) ? 'Low Credit' : 'Sufficient Credit'}</span></td>
                         <td><span class="text">${escapeHtml(device.lastEditedBy || 'N/A')}</span></td>
                         <td class="actions">
                             <button class="btn btn-primary btn-sm" onclick='editDevice(${JSON.stringify(device)})'>
                                 <i class="fas fa-edit"></i> Edit
                             </button>
-                            <button class="btn btn-danger btn-sm" onclick="confirmDeleteDevice('${device.deviceId}')" style="display: none;">
-                                <i class="fas fa-trash"></i>
-                            </button>
                         </td>
                     `;
                 } else if (currentBusinessType === 'Prepaid') {
-                    const optionsHtml = (device.creditPurchaseOptions || []).map(opt =>
+                    const optionsHtml = (device.creditPurchaseOptions || []).map(opt => 
                         `<span class="credit-option-badge">${opt.creditAmount} credits: RM ${formatCurrency(opt.priceAfterDiscount)}</span>`
                     ).join(' ');
-
+                    
                     row.innerHTML = `
                         <td><span class="serial-number">${escapeHtml(device.serialNumber)}</span></td>
                         <td><span class="client-name">${escapeHtml(device.clientName)}</span></td>
                         <td><div class="credit-options-list">${optionsHtml || '<em>No options</em>'}</div></td>
                         <td><span class="text">${device.totalBalance || 0}</span></td>
+                        <td><span class="text">${device.minCredit || 0}</span></td>
+                        <td><span class="status-chip ${device.totalBalance < (device.minCredit || 0) ? 'low' : 'ok'}">${device.totalBalance < (device.minCredit || 0) ? 'Low Credit' : 'Sufficient Credit'}</span></td>
                         <td><span class="text">${escapeHtml(device.lastEditedBy || 'N/A')}</span></td>
                         <td class="actions">
                             <button class="btn btn-primary btn-sm" onclick='editDevice(${JSON.stringify(device)})'>
                                 <i class="fas fa-edit"></i> Edit
                             </button>
-                            <button class="btn btn-danger btn-sm" onclick="confirmDeleteDevice('${device.deviceId}')" style="display: none;">
-                                <i class="fas fa-trash"></i>
-                            </button>
                         </td>
                     `;
                 }
-
+                
                 tbody.appendChild(row);
             });
         }
@@ -1946,6 +1941,7 @@
 
             document.getElementById('serialNumber').value = device.serialNumber;
             document.getElementById('clientName').value = device.clientName;
+            document.getElementById('minCredit').value = device.minCredit || 0;
 
             document.getElementById('postpaidFields').style.display = 'none';
             document.getElementById('prepaidFields').style.display = 'none';
@@ -1973,11 +1969,11 @@
         function addCreditOption(data = null) {
             const container = document.getElementById('creditOptionsContainer');
             const optionId = Date.now();
-
+            
             const optionDiv = document.createElement('div');
             optionDiv.className = 'credit-option-item';
             optionDiv.id = `option-${optionId}`;
-
+            
             optionDiv.innerHTML = `
                 <div class="form-group">
                     <label>Credit Amount</label>
@@ -1999,23 +1995,23 @@
                     <i class="fas fa-trash"></i>
                 </button>
             `;
-
+            
             container.appendChild(optionDiv);
-
+            
             const priceInput = optionDiv.querySelector('.credit-price');
             const discountInput = optionDiv.querySelector('.credit-discount');
             const finalPriceInput = optionDiv.querySelector('.credit-final-price');
-
+            
             function calculateFinalPrice() {
                 const price = parseFloat(priceInput.value) || 0;
                 const discount = parseFloat(discountInput.value) || 0;
                 const finalPrice = price - (price * discount / 100);
                 finalPriceInput.value = finalPrice.toFixed(2);
             }
-
+            
             priceInput.addEventListener('input', calculateFinalPrice);
             discountInput.addEventListener('input', calculateFinalPrice);
-
+            
             if (data) {
                 calculateFinalPrice();
             }
@@ -2028,33 +2024,6 @@
             }
         }
 
-        function confirmDeleteDevice(deviceId) {
-            const device = allDevices.find(d => d.deviceId === deviceId);
-            if (!device) return;
-
-            document.getElementById('confirmTitle').textContent = 'Delete Device';
-            document.getElementById('confirmMessage').textContent = `Are you sure you want to delete device with serial number "${device.serialNumber}"?`;
-
-            const confirmBtn = document.getElementById('confirmBtn');
-            confirmBtn.onclick = function () {
-                deleteDevice(deviceId);
-                closeConfirmModal();
-            };
-
-            document.getElementById('confirmModal').classList.add('show');
-        }
-
-        function deleteDevice(deviceId) {
-            google.script.run
-                .withSuccessHandler(() => {
-                    showPopup('Device deleted successfully!', 'success');
-                    switchTab(currentBusinessType);
-                })
-                .withFailureHandler((error) => {
-                    showPopup('Error deleting device: ' + error.message, 'error');
-                })
-                .deleteDevice(deviceId, currentBusinessType);
-        }
 
         function closeModal() {
             document.getElementById('deviceModal').classList.remove('show');
@@ -2070,9 +2039,14 @@
             const saveBtn = document.getElementById('saveBtn');
             const serialNumber = document.getElementById('serialNumber').value.trim();
             const clientName = document.getElementById('clientName').value.trim();
+            const minCreditValue = parseInt(document.getElementById('minCredit').value, 10);
 
             if (!serialNumber || !clientName) {
                 showPopup('Please fill in all required fields', 'error');
+                return;
+            }
+            if (isNaN(minCreditValue) || minCreditValue < 0) {
+                showPopup('Please enter a valid minimum credit (0 or more)', 'error');
                 return;
             }
 
@@ -2085,7 +2059,8 @@
             const deviceData = {
                 serialNumber: serialNumber,
                 clientId: clientOption.id,
-                businessType: currentBusinessType
+                businessType: currentBusinessType,
+                minCredit: minCreditValue
             };
 
             if (currentBusinessType === 'Postpaid') {
@@ -2098,18 +2073,18 @@
             } else if (currentBusinessType === 'Prepaid') {
                 const optionItems = document.querySelectorAll('.credit-option-item');
                 const creditPurchaseOptions = [];
-
+                
                 for (let item of optionItems) {
                     const creditAmount = parseInt(item.querySelector('.credit-amount').value);
                     const price = parseFloat(item.querySelector('.credit-price').value);
                     const discount = parseFloat(item.querySelector('.credit-discount').value);
                     const priceAfterDiscount = parseFloat(item.querySelector('.credit-final-price').value);
-
+                    
                     if (isNaN(creditAmount) || isNaN(price) || isNaN(discount)) {
                         showPopup('Please fill in all credit option fields correctly', 'error');
                         return;
                     }
-
+                    
                     creditPurchaseOptions.push({
                         creditAmount: creditAmount,
                         price: price,
@@ -2117,12 +2092,12 @@
                         priceAfterDiscount: priceAfterDiscount
                     });
                 }
-
+                
                 if (creditPurchaseOptions.length === 0) {
                     showPopup('Please add at least one credit purchase option', 'error');
                     return;
                 }
-
+                
                 deviceData.creditPurchaseOptions = creditPurchaseOptions;
             }
 
@@ -2167,12 +2142,12 @@
             const input = document.getElementById(inputId);
             const dropdown = document.getElementById(dropdownId);
 
-            input.addEventListener('click', function () {
+            input.addEventListener('click', function() {
                 populateDropdown(inputId, dropdownId, type);
                 dropdown.style.display = 'block';
             });
 
-            input.addEventListener('input', function () {
+            input.addEventListener('input', function() {
                 populateDropdown(inputId, dropdownId, type, this.value);
                 dropdown.style.display = 'block';
                 if (type === 'client') {
@@ -2180,7 +2155,7 @@
                 }
             });
 
-            document.addEventListener('click', function (e) {
+            document.addEventListener('click', function(e) {
                 if (!input.contains(e.target) && !dropdown.contains(e.target)) {
                     dropdown.style.display = 'none';
                 }
@@ -2190,7 +2165,7 @@
         function populateDropdown(inputId, dropdownId, type, searchTerm = '') {
             const dropdown = document.getElementById(dropdownId);
             const options = clientOptions;
-
+            
             dropdown.innerHTML = '';
 
             const filteredOptions = options.filter(option => {
@@ -2211,7 +2186,7 @@
                 const div = document.createElement('div');
                 div.className = 'dropdown-option';
                 div.textContent = option.name;
-                div.addEventListener('click', function () {
+                div.addEventListener('click', function() {
                     document.getElementById(inputId).value = this.textContent;
                     selectedClientId = option.id;
                     dropdown.style.display = 'none';
@@ -2238,5 +2213,4 @@
         }
     </script>
 </body>
-
 </html>

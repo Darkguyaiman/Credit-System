@@ -21,16 +21,20 @@ function getDeviceDataByType(businessType) {
   try {
     let sheetName = '';
     let lastEditedColIndex;
+    let minCreditColIndex;
     
     if (businessType === 'Revenue Sharing') {
       sheetName = 'D Revenue Sharing';
-      lastEditedColIndex = 6; 
+      lastEditedColIndex = 6;
+      minCreditColIndex = 7;
     } else if (businessType === 'Prepaid') {
       sheetName = 'D Prepaid';
-      lastEditedColIndex = 7; 
+      lastEditedColIndex = 7;
+      minCreditColIndex = 8;
     } else if (businessType === 'Postpaid') {
       sheetName = 'D Postpaid';
-      lastEditedColIndex = 7; 
+      lastEditedColIndex = 7;
+      minCreditColIndex = 8;
     } else {
       throw new Error('Invalid business type');
     }
@@ -45,10 +49,10 @@ function getDeviceDataByType(businessType) {
     let balanceColIndex;
 
     if (businessType === 'Prepaid' || businessType === 'Postpaid') {
-      lastCol = 8; 
+      lastCol = 9;
       balanceColIndex = 5;
     } else if (businessType === 'Revenue Sharing') {
-      lastCol = 7; 
+      lastCol = 8;
       balanceColIndex = 4;
     }
 
@@ -64,7 +68,8 @@ function getDeviceDataByType(businessType) {
           clientId: row[2] ? row[2].toString() : '',
           clientName: row[3] ? row[3].toString() : '',
           totalBalance: row[balanceColIndex] ? parseFloat(row[balanceColIndex]) || 0 : 0,
-          lastEditedBy: row[lastEditedColIndex] ? row[lastEditedColIndex].toString() : ''
+          lastEditedBy: row[lastEditedColIndex] ? row[lastEditedColIndex].toString() : '',
+          minCredit: row[minCreditColIndex] ? parseInt(row[minCreditColIndex], 10) || 0 : 0
         };
 
         if (businessType === 'Postpaid') {
@@ -125,16 +130,20 @@ function addDevice(deviceData) {
   try {
     let sheetName = '';
     let emailColumn;
+    let minCreditColumn;
     
     if (deviceData.businessType === 'Revenue Sharing') {
       sheetName = 'D Revenue Sharing';
-      emailColumn = 6; 
+      emailColumn = 6;
+      minCreditColumn = 8;
     } else if (deviceData.businessType === 'Prepaid') {
       sheetName = 'D Prepaid';
-      emailColumn = 7; 
+      emailColumn = 7;
+      minCreditColumn = 9;
     } else if (deviceData.businessType === 'Postpaid') {
       sheetName = 'D Postpaid';
-      emailColumn = 7; 
+      emailColumn = 7;
+      minCreditColumn = 9;
     } else {
       throw new Error('Invalid business type');
     }
@@ -178,6 +187,7 @@ function addDevice(deviceData) {
 
 
     sheet.getRange(targetRow, emailColumn).setValue(userEmail);
+    sheet.getRange(targetRow, minCreditColumn).setValue(deviceData.minCredit || 0);
 
     return { success: true, deviceId: deviceId };
 
@@ -191,16 +201,20 @@ function updateDevice(deviceData) {
   try {
     let sheetName = '';
     let emailColumn;
+    let minCreditColumn;
     
     if (deviceData.businessType === 'Revenue Sharing') {
       sheetName = 'D Revenue Sharing';
-      emailColumn = 6; 
+      emailColumn = 6;
+      minCreditColumn = 8;
     } else if (deviceData.businessType === 'Prepaid') {
       sheetName = 'D Prepaid';
-      emailColumn = 7; 
+      emailColumn = 7;
+      minCreditColumn = 9;
     } else if (deviceData.businessType === 'Postpaid') {
       sheetName = 'D Postpaid';
-      emailColumn = 7; 
+      emailColumn = 7;
+      minCreditColumn = 9;
     } else {
       throw new Error('Invalid business type');
     }
@@ -232,6 +246,7 @@ function updateDevice(deviceData) {
           sheet.getRange(rowNumber, 5).setValue(jsonString);
         }
 
+        sheet.getRange(rowNumber, minCreditColumn).setValue(deviceData.minCredit || 0);
 
         sheet.getRange(rowNumber, emailColumn).setValue(userEmail);
 
@@ -246,49 +261,3 @@ function updateDevice(deviceData) {
     throw new Error('Failed to update device: ' + error.message);
   }
 }
-
-/*
-function deleteDevice(deviceId, businessType) {
-  try {
-    let sheetName = '';
-    if (businessType === 'Revenue Sharing') {
-      sheetName = 'D Revenue Sharing';
-    } else if (businessType === 'Prepaid') {
-      sheetName = 'D Prepaid';
-    } else if (businessType === 'Postpaid') {
-      sheetName = 'D Postpaid';
-    } else {
-      throw new Error('Invalid business type');
-    }
-    
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
-    if (!sheet) throw new Error('Sheet named "' + sheetName + '" not found');
-
-    const lastRow = sheet.getLastRow();
-    if (lastRow < 2) return { success: true, message: "Deleted already" };
-
-    const values = sheet.getRange(2, 1, lastRow - 1, 1).getValues().flat();
-    const idx = values.indexOf(deviceId);
-
-    if (idx === -1) {
-      return { success: true, message: "Deleted already" };
-    }
-
-    const rowNumber = idx + 2;
-    sheet.deleteRow(rowNumber);
-
-    if (rowNumber === 2) {
-      sheet.getRange("D2").setFormula(
-        '=ARRAYFORMULA(IF(C2:C="","",IFERROR(VLOOKUP(C2:C,{Clients!A2:A,Clients!B2:B},2,0),"")))'
-      );
-    }
-
-    return { success: true, message: "Deleted successfully" };
-
-  } catch (error) {
-    console.error('Error in deleteDevice:', error);
-    throw new Error('Failed to delete device: ' + error.message);
-  }
-}
-
-*/
